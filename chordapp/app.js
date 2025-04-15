@@ -11,6 +11,8 @@ app.set("view engine", "ejs");
 
 app.use(express.static("scripts"));
 
+app.use(express.static("CSS"));
+
 
 app.listen(port, () => {
     console.log('Server listening on port:', port )
