@@ -7,10 +7,13 @@ const port = 3000;
 
 app.set("view engine", "ejs");
 
-app.use(express.static("public"));
+//app.use(express.static("public"));
+
+app.use(express.static("scripts"));
+
 
 app.listen(port, () => {
-    console.log("Server listening on port:${port}" )
+    console.log('Server listening on port:', port )
 })
 
 app.get("/", (req, res) => {
