@@ -10,9 +10,12 @@ app.set("view engine", "ejs");
 
 //app.use(express.static("public"));
 
-app.use(express.static("scripts"));
+//app.use(express.static("scripts"));
 
-app.use(express.static("CSS"));
+app.use(express.static(__dirname + '/'));
+
+
+//app.use(express.static("CSS"));
 
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }))
