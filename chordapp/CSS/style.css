@@ -1,31 +1,30 @@
-* {
+body {
     margin: 0;
-    box-sizing: border-box;
-}
-html, body {
-    height: 100%;
-    background-color: white;
+    padding: 0;
+    text-align: center;
 }
 .wrapper {
+    margin: 0;
+    box-sizing: border-box;
     display: flex;
     position: relative;
     min-height: 100vh;
 }
 .container {
-    max-width: 50%;
-    padding: 5rem;
+    max-width: fit-content;
+    padding: 4rem;
 }
 #login_container {
-    padding: 1rem;
+    padding: 10%;
     border-style: solid;
-    border-color: black;
-    border-radius: 1px;
+    background: #F8F9FA;
+    border-radius: 20%;;
 }
 #register_container {
-    padding: 1rem;
+    padding: 10%;
     border-style: solid;
-    border-color: black;
-    border-radius: 1px;
+    background: #F8F9FA;
+    border-radius: 20%;;
 }
 nav {
     width: 100%;
