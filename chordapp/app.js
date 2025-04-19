@@ -1,6 +1,7 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const path = require("path");
+const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
 const port = 3000;
@@ -9,16 +10,21 @@ const port = 3000;
 app.set("view engine", "ejs");
 
 //app.use(express.static("public"));
-
+//app.use(express.static("CSS"));
 //app.use(express.static("scripts"));
 
 app.use(express.static(__dirname + '/'));
 
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
 
-//app.use(express.static("CSS"));
-
-app.use(bodyParser.json()) // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }))
+const db = new sqlite3.Database('./database.db', sqlite3.OPN_READWRITE, (err) => {
+    if (err) {
+        console.log('[ERROR]: Could not connect to database.', err.message);
+    } else {
+        console.log('[INFO]: Connected to database.')
+    }  
+});
 
 
 app.listen(port, () => {

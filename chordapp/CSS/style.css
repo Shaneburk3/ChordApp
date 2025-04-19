@@ -5,19 +5,20 @@ body {
 }
 .wrapper {
     display: flex;
-    text-align: center;
+    align-items: center;
     margin: 0;
     box-sizing: border-box;
     display: flex;
     position: relative;
     min-height: 100vh;
-}
-.container {
-    max-width: 50%;
     padding: 4rem;
 }
+.container {
+    text-align: left;
+    max-width: 50%;
+}
 #login_container {
-    padding-left: 10%;
+    padding-left: 15%;
     padding-right: 10%;
     border-style: solid;
     border-width: thin;
@@ -26,7 +27,7 @@ body {
 }
 #register_container {
     padding-right: 10%;
-    padding-left: 10%;
+    padding-left: 15%;
     border-style: solid;
     border-width: thin;
     background: #F8F9FA;
