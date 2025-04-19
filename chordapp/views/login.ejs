@@ -4,55 +4,59 @@
 <body>
   <%- include("partials/nav") %>
 
-  <div class="container">
+  <div class="wrapper">
     <%- include("partials/header") %>
-
     <div class="container">
-      <div>
-        <form id="register_form">
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      <div id="login_container" style="display: block;">
+        <form id="login_form" action="/user_login" method="POST">
+          <div class="form-group">
+            <label for="login_email">Email address</label>
+            <input type="email" name="login_email" class="form-control" id="login_email" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
           </div>
-          <div class="mb-3">
-            <label for="password1" class="form-label">Password</label>
-            <input type="password" id="password1" class="form-control" aria-describedby="passwordHelpBlock">
-            <div id="passwordHelpBlock" class="form-text">
-              Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-            </div>
+          <div class="form-group">
+            <label for="login_password">Password</label>
+            <input type="password" name="login_password" class="form-control" id="login_password" placeholder="Password">
           </div>
-          <form>
-            <fieldset id="register_field" style="display: none">
-              <div class="mb-3">
-                <label for="disabledTextInput" class="form-label">Retype password </label>
-                <input type="text" id="retype_password" class="form-control" placeholder="Retype">
-              </div>
-              <div class="mb-3">
-                <label for="disabledTextInput" class="form-label">First Name </label>
-                <input type="text" id="first_name" class="form-control" placeholder="First Name">
-              </div>
-              <div class="mb-3">
-                <label for="disabledTextInput" class="form-label">Last Name </label>
-                <input type="text" id="Last_name" class="form-control" placeholder="Last Name">
-              </div>              
-              <div class="mb-3">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck">
-                  <label class="form-check-label" for="register_check">
-                    Agree to terms and conditions
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-            <div>
-              <button type="submit" onclick="user_submit()" class="btn btn-primary">Submit</button>
-              <button type="button" id="register_btn" class="btn btn-secondary">Register</button>
-            </div>
-          </form>
+          <br>
+          <button type="submit" id="login_btn" class="btn btn-primary">Login</button>
+          <button type="submit" id="reg_form_btn" class="btn btn-primary">Register</button>
         </form>
-    </div>
       </div>
+      <div id="register_container" style="display: none;">
+        <form id="register_form" action="/register" method="POST">
+          <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" class="form-control" id="first_name" aria-describedby="firstName" required>
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" class="form-control" id="last_name" aria-describedby="lastName" required>
+          </div>
+          <div class="form-group">
+            <label for="register_email">Email address</label>
+            <input type="email" name="register_email" class="form-control" id="register_email" aria-describedby="emailHelp" required>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-group">
+            <label for="register_password">Password</label>
+            <input type="password" name="register_password1" class="form-control" id="register_password" placeholder="Password" required>
+          </div>        
+          <div class="form-group">
+            <label for="register_password2">Retype Password</label>
+            <input type="password" name="register_password2" class="form-control" id="register_password2" placeholder="Password" required>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1" required>Agree to terms and conditions</label>
+          </div>
+          <button type="submit" id="register_btn" class="btn btn-primary">Register</button>
+          <button type="submit" id="login_Form_btn" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+
+      </div>
+    </div>
 
   </div>
 

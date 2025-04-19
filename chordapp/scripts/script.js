@@ -1,17 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+const regFormBtn = document.getElementById("reg_form_btn");
+const regContainer = document.getElementById("register_container");
+const loginContainer = document.getElementById("login_container");
 
-const regBtn = document.getElementById("register_btn");
-const regField = document.getElementById("register_field");
 
-regBtn.addEventListener('click', async function () {
-    if (regField.style.display === "none") {
-        regField.style.display = "block"; 
-        regBtn.innerHTML = "Hide";
+regFormBtn.addEventListener('click', async function (event) {
+    event.preventDefault();
+    if (regContainer.style.display === "none") {
+        regContainer.style.display = "block"; 
+        loginContainer.style.display = "none";
     } else {
-        regField.style.display === 'block';
-        regField.style.display = "none"; 
-        regBtn.innerHTML = "Register";
+        regContainer.style.display = "none";
+        loginContainer.style.display = "block";
     }
 });
 
