@@ -5,8 +5,8 @@
   <%- include("partials/nav") %>
 
   <div class="wrapper">
-    <%- include("partials/header") %>
     <div class="container">
+      <%- include("partials/header") %>
       <div id="login_container" style="display: block;">
         <form id="login_form" action="/user_login" method="POST">
           <div class="form-group">
@@ -22,7 +22,7 @@
           <button type="submit" id="login_btn" class="btn btn-primary">Login</button>
         </form>
         <br>
-        <button type="button" id="reg_form_btn" class="btn btn-secondary">Register</button>
+        <button type="button" id="reg_form_btn" class="btn btn-link">Register</button>
       </div>
       <div id="register_container" style="display: none;">
         <form id="register_form" action="/register" method="POST">
@@ -48,13 +48,13 @@
             <input type="password" name="register_password2" class="form-control" id="register_password2" placeholder="Password" required>
           </div>
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1" required>Agree to terms and conditions</label>
+            <input type="checkbox" class="form-check-input" id="TermsCheck">
+            <label class="form-check-label" for="TermsCheck" required>Agree to terms and conditions</label>
           </div>
           <button type="submit" id="register_btn" class="btn btn-primary">Register</button>
         </form>
         <br>
-        <button type="button" id="login_Form_btn" class="btn btn-secondary">Login</button>
+        <button type="button" id="login_Form_btn" class="btn btn-link">Login</button>
 
       </div>
 
