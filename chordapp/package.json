@@ -18,5 +18,7 @@
     "knex": "^3.1.0",
     "postgresql": "^0.0.1",
     "sqlite3": "^5.1.7"
+  }, "overrides": {
+    "bson": "^4.0.4"
   }
 }

@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const User = require('../models/userModel');
+const { getDate } = require('../scripts/functions');
 
 
 exports.validateRegister = async (req, res) => {
@@ -16,10 +17,11 @@ exports.validateRegister = async (req, res) => {
         console.log("[ERROR]: Passwords do no match.")
         return res.send('Password do not match');
     }
+    const creation_date = getDate();
     console.log('Register Request made')
     //res.render('register', {errors: null })
-    User.create(first_name, last_name, register_email, register_password1);
-    console.log(`User created with email: ${register_email}`)
+    User.create(first_name, last_name, register_email, creation_date, register_password1);
+    console.log(`User created with email: ${register_email} on: ${creation_date}`)
     res.redirect('/login')
 };
 
@@ -40,5 +42,5 @@ exports.validateLogin = async (req, res) => {
         } 
         return res.redirect('/profile')
     })
-
 };
+

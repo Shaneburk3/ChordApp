@@ -20,6 +20,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Connect to database.
+/*
 const db = new sqlite3.Database('./database.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log('[ERROR]: Could not connect to database.', err.message);
@@ -27,9 +28,34 @@ const db = new sqlite3.Database('./database.db', sqlite3.OPEN_READWRITE, (err) =
         console.log('[INFO]: Connected to database.')
     }  
 });
+*/
+const { Client } = require('pg');
+
+const client = new Client({
+    user: "postgres",
+    host: "localhost",
+    password: "F7d4rbhwkab3",
+    database: "chordExplorer",
+    port: 5432
+});
+
+client.connect();
+
+client.query('Select * from users', (err, res) =>{
+    if (!err) {
+        console.log(res.rows);
+    } else {
+        console.log("Error: ",err.messagge);
+    }
+    client.end;
+})
+
+module.exports = client;
+
+
 
 //Export connection to the database to use elsewhere.
-module.exports = db;
+//module.exports = db;
 
 const userRoutes = require('../chordapp/routes/userRoutes')
 
