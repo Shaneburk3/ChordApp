@@ -16,9 +16,11 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/'));
 
 app.use(bodyParser.json()); // for parsing application/json
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = new sqlite3.Database('./database.db', sqlite3.OPN_READWRITE, (err) => {
+//Connect to database.
+const db = new sqlite3.Database('./database.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log('[ERROR]: Could not connect to database.', err.message);
     } else {
@@ -26,9 +28,15 @@ const db = new sqlite3.Database('./database.db', sqlite3.OPN_READWRITE, (err) =>
     }  
 });
 
+//Export connection to the database to use elsewhere.
+module.exports = db;
+
+const userRoutes = require('../chordapp/routes/userRoutes')
+
+app.use('/users', userRoutes);
 
 app.listen(port, () => {
-    console.log('Server listening on port:', port )
+    console.log(`Server listening on port: ${port}` )
 });
 
 app.get("/", (req, res) => {
@@ -48,14 +56,18 @@ app.get("/login", (req, res) => {
 app.get("/profile", (req, res) => {
     res.render("profile", {header: "Profile", title: "Profile"});
 });
+/*
 app.post('/user_login', (req, res) => {
     const { email, password} = req.body;
     console.log("Welcome: ", email)
 });
+*/
+/*
 app.post('/register', (req, res) => {
     const { first_name, last_name, email, password, password2 } = req.body;
     console.log("Welcome: ", first_name)
 });
+*/
 
 
 

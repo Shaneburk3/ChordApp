@@ -8,7 +8,7 @@
     <div class="container">
       <%- include("partials/header") %>
       <div id="login_container" style="display: block;">
-        <form id="login_form" action="/user_login" method="POST">
+        <form id="login_form" action="users/login" method="POST">
           <div class="form-group">
             <label for="login_email">Email address</label>
             <input type="email" name="login_email" class="form-control" id="login_email" aria-describedby="emailHelp" placeholder="Enter email">
@@ -25,7 +25,7 @@
         <button type="button" id="reg_form_btn" class="btn btn-link">Register</button>
       </div>
       <div id="register_container" style="display: none;">
-        <form id="register_form" action="/register" method="POST">
+        <form id="register_form" action="users/register" method="POST">
           <div class="form-group">
             <label for="first_name">First Name</label>
             <input type="text" name="first_name" class="form-control" id="first_name" aria-describedby="firstName" required>
@@ -41,7 +41,7 @@
           </div>
           <div class="form-group">
             <label for="register_password">Password</label>
-            <input type="password" name="register_password1" class="form-control" id="register_password" placeholder="Password" required>
+            <input type="password" name="register_password1" class="form-control" id="register_password1" placeholder="Password" required>
           </div>        
           <div class="form-group">
             <label for="register_password2">Retype Password</label>
