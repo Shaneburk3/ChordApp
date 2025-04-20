@@ -50,11 +50,10 @@ client.query('Select * from users', (err, res) =>{
     client.end;
 })
 
+//Export connection to the database to use elsewhere.
 module.exports = client;
 
 
-
-//Export connection to the database to use elsewhere.
 //module.exports = db;
 
 const userRoutes = require('../chordapp/routes/userRoutes')
@@ -79,9 +78,11 @@ app.get("/login", (req, res) => {
     res.render("login", {header: "Login / Register", title: "Login"});
 });
 
+
 app.get("/profile", (req, res) => {
     res.render("profile", {header: "Profile", title: "Profile"});
 });
+
 /*
 app.post('/user_login', (req, res) => {
     const { email, password} = req.body;

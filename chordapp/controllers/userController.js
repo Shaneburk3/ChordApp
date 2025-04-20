@@ -33,7 +33,7 @@ exports.validateLogin = async (req, res) => {
     }
     console.log("Login validated.");
     const { login_email, login_password } = req.body;
-    User.findByEmail(login_email, async (errors, user) =>{
+    User.findUser(login_email, login_password, async (errors, user) =>{
         if (errors) {
             console.log("Errors finding user account")
         } else if (!user) {
