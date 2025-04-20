@@ -8,7 +8,16 @@ const User = {
     },
     findByEmail: (email, callback) => {
         console.log(`Searching for: ${email}`);
-        client.query("SELECT * FROM users WHERE email = ($1)", [email], callback)
+        client.query("SELECT * FROM users WHERE email = ($1)", [email], (err, res) =>{
+            if (!err) {
+                console.log("Found User: ", res.rows);
+                callback(null, res.rows[0])
+            } else {
+                console.log("Error: ", err.messagge);
+                callback(err, null);
+            }
+            client.end;
+        })
     }
 }
 
