@@ -9,7 +9,7 @@ const { Client } = require('pg');
     });
 
     client.connect();
-
+    /*
     client.query('Select * from users', (err, res) =>{
         if (!err) {
             console.log(res.rows);
@@ -18,5 +18,6 @@ const { Client } = require('pg');
         }
         client.end;
     })
+    */
 
     module.exports = client;

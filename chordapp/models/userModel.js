@@ -8,7 +8,7 @@ const User = {
     },
     findUser: (email, password, callback) => {
         console.log(`Searching for: ${email}`);
-        client.query("SELECT * FROM users WHERE email = ($1)", [email], (err, res) =>{
+        client.query("SELECT * FROM users WHERE email = ($1)", [email], (err, res) => {
             if (!err) {
                 console.log("Found User: ", res.rows);
 
@@ -19,6 +19,18 @@ const User = {
             }
             client.end;
         })
+    },
+    getUserByID: (user_id) => {
+        client.query("SELECT * FROM users WHERE user_ID = ($1)", [user_id], (err, res) => {
+            if (!err) {
+                console.log(`Found user with id: ${user_id}`);
+                callback(null, res.rows[0]);
+            } else {
+                console.log("Error getting user with ID:", err.messgae);
+                callback(err, null);
+            }
+            client.end;
+        });
     }
 }
 

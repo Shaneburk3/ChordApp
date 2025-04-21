@@ -1,3 +1,5 @@
+
+//Handle conversion to and from json with body-parser
 const bodyParser = require("body-parser");
 const express = require("express");
 const path = require("path");
@@ -39,49 +41,46 @@ const client = new Client({
     port: 5432
 });
 
-client.connect();
-
-client.query('Select * from users', (err, res) =>{
-    if (!err) {
-        console.log(res.rows);
-    } else {
-        console.log("Error: ",err.messagge);
-    }
-    client.end;
-})
+try {
+    client.connect();
+    console.log("Connected to database.")
+} catch (error) {
+    console.log("Error: could not connect to database:", error.message)
+}
 
 //Export connection to the database to use elsewhere.
 module.exports = client;
 
-
-//module.exports = db;
-
 const userRoutes = require('../chordapp/routes/userRoutes')
-
 app.use('/users', userRoutes);
 
+
 app.listen(port, () => {
-    console.log(`Server listening on port: ${port}` )
+    console.log(`Server listening on port: ${port}`)
 });
 
 app.get("/", (req, res) => {
-    res.render("index", {header: "index", title: "Index"});
+    res.render("index", { header: "index", title: "Index", user: null });
 });
 
 app.get("/about", (req, res) => {
-    res.render("about", {header: "About", title: "About"});
+    res.render("about", { header: "About", title: "About" });
 });
 app.get("/contact", (req, res) => {
-    res.render("contact", {header: "Contact", title: "Contact"});
+    res.render("contact", { header: "Contact", title: "Contact" });
 });
 app.get("/login", (req, res) => {
-    res.render("login", {header: "Login / Register", title: "Login"});
+    res.render("login", { title: "Login", login_message: null });
+});
+app.get("/register_user", (req, res) => {
+    res.render("register_user", { title: "Register", login_message: null });
 });
 
 
 app.get("/profile", (req, res) => {
-    res.render("profile", {header: "Profile", title: "Profile"});
+    res.render("profile", { title: "Profile" });
 });
+
 
 /*
 app.post('/user_login', (req, res) => {

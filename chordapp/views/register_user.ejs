@@ -6,24 +6,7 @@
 
   <div class="wrapper">
     <div class="container">
-      <div id="login_container" style="display: block;">
-        <form id="login_form" action="users/login" method="POST">
-          <div class="form-group">
-            <label for="login_email">Email address</label>
-            <input type="email" name="login_email" class="form-control" id="login_email" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-          </div>
-          <div class="form-group">
-            <label for="login_password">Password</label>
-            <input type="password" name="login_password" class="form-control" id="login_password" placeholder="Password">
-          </div>
-          <br>
-          <button type="submit" id="login_btn" class="btn btn-primary">Login</button>
-        </form>
-        <br>
-        <button type="button" id="reg_form_btn" class="btn btn-link">Register</button>
-      </div>
-      <div id="register_container" style="display: none;">
+      <div id="register_container">
         <form id="register_form" action="users/register" method="POST">
           <div class="form-group">
             <label for="first_name">First Name</label>
@@ -56,7 +39,6 @@
         <button type="button" id="login_Form_btn" class="btn btn-link">Login</button>
         <br>
         <p style="color: red; font-weight: bold;"> <%= login_message %> </p>
-
       </div>
 
       </div>

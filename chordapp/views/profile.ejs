@@ -1,103 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include("partials/head") %>
-<body>  
+<%- include("partials/head") %>
+
+  <body>
     <%- include("partials/nav") %>
-    <div class="wrapper">
-    <%- include("partials/header") %>
-      
-      <menu id="user" class="dynamicMenu">
-      
-        <div class="user_profile">
-          <div class="profile_pic">
-            <img src="https://images.unsplash.com/photo-1549669944-ca3e8b576248?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80" alt="username here" />
-          </div>
-      
-          <div class="user_info">
-            <div class="username">
-              <p><strong>Replaec with username</strong> </p>
+      <div class="wrapper">
+        <menu id="user" class="dynamicMenu">
+          <%- include("partials/header") %>
+
+            <div class="user_profile row">
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top"
+                  src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">User Bio</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                  <p><strong>Age: </strong>[Users Age]</p>
+                  <p><strong>Country: </strong>[Users Country]</p>
+                  <p><strong>City: </strong>[Users City]</p>
+                  <a href="#" class="btn btn-primary">Edit Information</a>
+                </div>
+              </div>
+              <div class="card" style="width: 40rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Information</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card Contact</h6>
+                  <p><strong>Email: </strong>[Users email]</p>
+                  <p><strong>Phone: </strong>[Users Phone]</p>
+                  <a href="#" class="card-link">Instgram</a>
+                  <a href="#" class="card-link">LinkedIn</a>
+                </div>
+              </div>
+              <div class="user_info">
+                <div class="username">
+                  <p><strong>Hello, <%= user.first_name %></strong> </p>
+                </div>
+              </div>
             </div>
             <ul class="profile_menu">
-              <li><a href="/directory"><span class="glyphicon glyphicon-list-alt" title="Directory Phonebook"></span></a></li>
-              <li><a href="/help?topic=index"><span class="glyphicon glyphicon-question-sign" title="Help"></span></a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-cog" title="Settings"></span></a></li>
-              <li><a href="/login"><span class="glyphicon glyphicon-log-out" title="Log Out / End Session"></span></a></li>
+              <li> <a href="#"> Audio translater link </a></li>
+              <li> <a href="#"> Link Examples </a></li>
+              <li> <a href="#"> Link Examples </a></li>
             </ul>
-          </div>
-        </div>
-      
-        <ul class="admin-menu">
-          <li> <a href="#">  </a></li>
-          <li> <a href="#"> Audio translater link </a></li>
-          <li> <a href="#"> Link Examples </a></li>
-          <li> <a href="#"> Link Examples </a></li>
-        </ul>
-      </menu>
-      
-      <main>
-        <section>
-          <h2>About me</h2>
-      
-          <p> Insert about me information here ----- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa qui architecto facilis voluptatum ex recusandae id aperiam! Molestiae, repellat distinctio quasi, similique labore aut, cumque dicta architecto pariatur suscipit ut.</p>
-         <br><br>
-         <h2>Audio files</h2>
-          <br>
-                <div class="row">
-
-                  <div class="col-md-4">
-                    <div class="card-content">
-                      <div class="card">
-                        <h6>Title: LINK to TITLE</h6>
-                        <p>AUDIO PLAYABLE</p>
-                        <span><h4>CHORD: RESULT</h4></span>
-                      </div>
+            <section>
+              <h2>Audio files</h2>
+              <br>
+              <p> Below is an assortment of your saved audio files, to select and review. Have fun!</p>
+              <br>
+              <div class="row">
+                <a href="#"></a>
+                <div class="col-md-4">
+                  <div class="card-content">
+                    <div class="card">
+                      <h6>Title: TITLE</h6>
+                      <p>AUDIO PLAYABLE</p>
+                      <span>
+                        <h4>CHORD: RESULT</h4>
+                      </span>
                       <div class="card-desc">
                         <h3>Heading</h3>
-                        <p>The words nature and natural are used for all the things that are normally not made by humans. Things like weather, organisms, landforms, celestial bodies and much more are part of nature. ...</p>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature. ...</p>
                         <a href="#" class="btn-card">Read more</a>
                       </div>
                     </div>
                   </div>
-                  
-                  <div class="col-md-4">
-                    <div class="card-content">
-                      <div class="card">
-                        <h6>Title: LINK to TITLE</h6>
-                        <p>AUDIO PLAYABLE</p>
-                        <span><h4>CHORD: RESULT</h4></span>
-                      </div>
-                      <div class="card-desc">
-                        <h3>Heading</h3>
-                        <p>The words nature and natural are used for all the things that are normally not made by humans. Things like weather, organisms, landforms, celestial bodies and much more are part of nature. ...</p>
-                        <a href="#" class="btn-card">Read more</a>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="card-content">
-                      <div class="card">
-                        <h6>Title: LINK to TITLE</h6>
-                        <p>AUDIO PLAYABLE</p>
-                        <span><h4>CHORD: RESULT</h4></span>
-                      </div>
-                      <div class="card-desc">
-                        <h3>Heading</h3>
-                        <p>The words nature and natural are used for all the things that are normally not made by humans. Things like weather, organisms, landforms, celestial bodies and much more are part of nature. ...</p>
-                        <a href="#" class="btn-card">Read more</a>
-                      </div>
-                    </div>
-                  </div>
-
                 </div>
-              
-          
-      
-        </section>
-      </main>
 
 
-    </div>
-    <%- include("partials/footer") %>
-</body>
+                <div class="col-md-4">
+                  <div class="card-content">
+                    <div class="card">
+                      <h6>Title: TITLE</h6>
+                      <p>AUDIO PLAYABLE</p>
+                      <span>
+                        <h4>CHORD: RESULT</h4>
+                      </span>
+                      <div class="card-desc">
+                        <h3>Heading</h3>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature. ...</p>
+                        <a href="#" class="btn-card">Read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card-content">
+                    <div class="card">
+                      <h6>Title: TITLE</h6>
+                      <p>AUDIO PLAYABLE</p>
+                      <span>
+                        <h4>CHORD: RESULT</h4>
+                      </span>
+                      <div class="card-desc">
+                        <h3>Heading</h3>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature. ...</p>
+                        <a href="#" class="btn-card">Read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+        </menu>
+      </div>
+      <%- include("partials/footer") %>
+  </body>
+
 </html>

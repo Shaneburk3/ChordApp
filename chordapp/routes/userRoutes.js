@@ -22,6 +22,7 @@ router.post('/login', [
     body('login_password').escape().isLength({ min: 8, max: 20})
 ], userController.validateLogin)
 
+//router.get("/users/:id", userController.getUserByID);
 
 
 module.exports = router;
