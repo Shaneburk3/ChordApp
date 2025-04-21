@@ -21,7 +21,8 @@
           <button type="submit" id="login_btn" class="btn btn-primary">Login</button>
         </form>
         <br>
-        <button type="button" id="reg_form_btn" class="btn btn-link">Register</button>
+        <a href="/register_user">Register instead</a>
+        <button type="button" href="/register_user" id="reg_form_btn" class="btn btn-link">Register</button>
       </div>
       <div id="register_container" style="display: none;">
         <form id="register_form" action="users/register" method="POST">
@@ -53,9 +54,10 @@
           <button type="submit" id="register_btn" class="btn btn-primary">Register</button>
         </form>
         <br>
+        <a href="/register_user">Login instead</a>
         <button type="button" id="login_Form_btn" class="btn btn-link">Login</button>
         <br>
-        <p style="color: red; font-weight: bold;"> <%= login_message %> </p>
+        <p style="color: red; font-weight: bold;"> <%= error_message %> </p>
 
       </div>
 

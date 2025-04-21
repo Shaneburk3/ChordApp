@@ -70,10 +70,10 @@ app.get("/contact", (req, res) => {
     res.render("contact", { header: "Contact", title: "Contact" });
 });
 app.get("/login", (req, res) => {
-    res.render("login", { title: "Login", login_message: null });
+    res.render("login", { title: "Login", error_message: "Login message" });
 });
 app.get("/register_user", (req, res) => {
-    res.render("register_user", { title: "Register", login_message: null });
+    res.render("register_user", { title: "Register", error_message: "Register Message" });
 });
 
 

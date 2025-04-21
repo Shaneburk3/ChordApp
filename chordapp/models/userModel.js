@@ -11,7 +11,6 @@ const User = {
         client.query("SELECT * FROM users WHERE email = ($1)", [email], (err, res) => {
             if (!err) {
                 console.log("Found User: ", res.rows);
-
                 callback(null, res.rows[0])
             } else {
                 console.log("Error: ", err.messagge);
