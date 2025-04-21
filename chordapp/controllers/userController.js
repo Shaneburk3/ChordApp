@@ -7,18 +7,20 @@ exports.validateRegister = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         console.log("[ERROR]: ", errors.array())
-        return res.render('login', {
-            title: "Login",
-            login_message: "Error",
+        const msg = errors.array().map(e => e.msg);
+        console.log("single message: ", msg)
+        return res.render('register_user', {
+            title: "Register",
+            error_message: `${msg}`,
             errors: errors.array(),
             userData: req.body
         });
     }
     const { first_name, last_name, register_email, register_password1, register_password2 } = req.body;
     if (register_password1 != register_password2) {
-        const msg = 'Sorry, passwords do not match';
+        const msg = 'Passwords do not match';
         console.log("[ERROR]: Passwords do no match.")
-        return res.render('login', { title: "Login", error_message: `${msg}` })
+        return res.render('register_user', { title: "Login", error_message: `${msg}` })
     }
     const creation_date = getDate();
     console.log('Registering user...')
@@ -33,18 +35,18 @@ exports.validateLogin = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty) {
         console.log("[ERROR]: Login form error", errors.array());
-        return res.status(401).render('/login')
+        return res.status(401).render('login', {error_message: `${errors.array()}`})
     }
     console.log("Login  data validated.");
     const { login_email, login_password } = req.body;
     User.findUser(login_email, login_password, async (errors, user) => {
         if (errors) {
-            console.log("Error finding user account")
-            return res.status(401).render('login')
+            const msg = 'Error finding user account.';
+            return res.status(401).render('login', { title: "Login", error_message: `${msg}` })
         } else if (!user) {
             const msg = 'No associated account with that email.';
             console.log(`User ${login_email} does not exist`)
-            return res.status(401).render('login', { title: "Login", error_message: `${msg}` })
+            return res.render('login', { title: "Login", error_message: `${msg}` })
         }
         console.log("Found user");
         if (login_password != user.password) {
@@ -54,6 +56,6 @@ exports.validateLogin = async (req, res) => {
         }
         console.log("Password correct.")
         return res.render("profile", { user, title: "Profile" });
-    })
+    });
 };
 

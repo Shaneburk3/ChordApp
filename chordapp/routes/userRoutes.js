@@ -12,8 +12,8 @@ router.post('/register', [
     body('first_name').escape(),
     body('last_name').escape(),
     body('email').escape(),
-    body('register_password1').escape().isLength({ min: 8, max: 20}),
-    body('register_password2').escape().isLength({ min: 8, max: 20})], 
+    body('register_password1').escape().isLength({ min: 8, max: 30}).withMessage("Password does not meet the requirements."),
+    body('register_password2').escape().isLength({ min: 8, max: 30})], 
     userController.validateRegister
     );
 
