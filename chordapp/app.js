@@ -60,26 +60,12 @@ app.listen(port, () => {
     console.log(`Server listening on port: ${port}`)
 });
 
-app.get("/", (req, res) => {
-    res.render("index", { header: "index", title: "Index", user: null });
-});
-
 app.get("/about", (req, res) => {
     res.render("about", { header: "About", title: "About" });
 });
+
 app.get("/contact", (req, res) => {
     res.render("contact", { header: "Contact", title: "Contact" });
-});
-app.get("/login", (req, res) => {
-    res.render("login", { title: "Login", error_message: " " });
-});
-app.get("/register_user", (req, res) => {
-    res.render("register_user", { title: "Register", error_message: "Register Message" });
-});
-
-
-app.get("/profile", (req, res) => {
-    res.render("profile", { title: "Profile" });
 });
 
 

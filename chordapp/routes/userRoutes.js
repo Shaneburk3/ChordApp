@@ -24,5 +24,25 @@ router.post('/login', [
 
 //router.get("/users/:id", userController.getUserByID);
 
+router.get("/", (req, res) => {
+    res.render("index", { header: "index", title: "Index", user: null });
+});
+
+router.get("/login", (req, res) => {
+    res.render("login", { title: "Login", error_message: " " });
+});
+
+router.get("/register_user", (req, res) => {
+    res.render("register_user", { title: "Register", error_message: "Register Message" });
+});
+
+
+router.get("/profile", (req, res) => {
+    res.render("profile", { title: "Profile" });
+});
+
+router.get("/update", (req, res) => {
+    res.render("update", { header: "Update", title: "Update" });
+});
 
 module.exports = router;

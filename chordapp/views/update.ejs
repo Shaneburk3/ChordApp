@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("partials/head") %>
+
+  <body>
+    <%- include("partials/nav") %>
+      <div class="wrapper">
+        <menu id="user" class="dynamicMenu">
+          <%- include("partials/header") %>
+
+          <div class="user_info">
+            <div class="username">
+              <p><strong>Hello, <%= user.first_name %> ! let's update your Information</strong> </p>
+            </div>
+          </div>
+
+            <div class="user_profile row">
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top"
+                  src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">User Bio</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                  <p><strong>Age: </strong>[Users Age]</p>
+                  <p><strong>Country: </strong>[Users Country]</p>
+                  <p><strong>City: </strong>[Users City]</p>
+                  <a href="/update" class="btn btn-primary">Edit Information</a>
+                </div>
+              </div>
+              <div class="card" style="width: 40rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Information</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card Contact</h6>
+                  <p><strong>Email: </strong>[Users email]</p>
+                  <p><strong>Phone: </strong>[Users Phone]</p>
+                  <a href="#" class="card-link">Instgram</a>
+                  <a href="#" class="card-link">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+        </menu>
+      </div>
+      <%- include("partials/footer") %>
+  </body>
+
+</html>
