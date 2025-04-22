@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^2.2.0",
+    "crypto": "^1.0.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
@@ -18,7 +19,8 @@
     "knex": "^3.1.0",
     "postgresql": "^0.0.1",
     "sqlite3": "^5.1.7"
-  }, "overrides": {
+  },
+  "overrides": {
     "bson": "^4.0.4"
   }
 }

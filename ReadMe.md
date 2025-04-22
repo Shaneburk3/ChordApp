@@ -30,8 +30,8 @@ npm install express-session
 #npm install knex
 
 ## SECURITY FEATURES
-npm install express-validator??
-npm install bcrypt??
+npm install express-validator
+npm install crypto
 
 # TESTING
 npm install playwright??

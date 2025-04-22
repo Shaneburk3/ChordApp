@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const User = require('../models/userModel');
+const Cipher = require('../utils/encryption');
 const { getDate } = require('../scripts/functions');
 
 
@@ -24,8 +25,10 @@ exports.validateRegister = async (req, res) => {
     }
     const creation_date = getDate();
     console.log('Registering user...')
+    let encrypted_password = Cipher.encrypt(register_password1)
+    console.log(`encrypted password: ${encrypted_password}`)
     //res.render('register', {errors: null })
-    User.create(first_name, last_name, register_email, creation_date, register_password1);
+    User.create(first_name, last_name, register_email, creation_date, encrypted_password);
     console.log(`User created with email: ${register_email} on: ${creation_date}`)
     //You cannot pass other arguments with a redirect, only render can do that.
     res.redirect('/login')
