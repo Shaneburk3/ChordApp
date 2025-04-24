@@ -20,17 +20,14 @@ const Cipher = {
             throw error;
         }   
     },
-    compare: (message, message2) => {
-        bcrypt.compare(message, message2, (err, result) => {
-            if (err) {
-                console.log("Error comparing hashes.")
-                return;
-            } if (result) {
-                console.log("We have a match")
-            } else {
-                console.log('No match.')
-            }
-        })
+    compare: async (message, message2) => {
+        try {
+            const result = await bcrypt.compare(message, message2);
+            return result;   
+        } catch (error) {
+            console.log("Error comparing hashes.", error.message)
+            return false;       
+        }
     },
     encrypt: (message) => {
         let cipher = crypto.createCipheriv(algorithm, key, iv);

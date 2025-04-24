@@ -42,21 +42,21 @@ exports.registerUser = async (req, res) => {
             }
         });
         */
-    //Create user
-    try {
-        const hashed_password = await Cipher.createHash(register_password1)
-        const creation_date = getDate();
-        console.log(`Hashed: ${hashed_password}`)
-        await User.create(first_name, last_name, register_email, creation_date, hashed_password);
-        console.log(`User created with email: ${register_email}, password: ${hashed_password}, on: ${creation_date}`);
-        //You cannot pass other arguments with a redirect, only render can do that.
-        res.redirect('/login')
-    } catch (error) {
-        console.log(error);
-        const msg = 'Error creating user.';
-        console.log("Error creating user.");
-        res.status(500).render('login', { title: "Login", error_message: msg })
-    }
+        //Create user
+        try {
+            const hashed_password = await Cipher.createHash(register_password1)
+            const creation_date = getDate();
+            console.log(`Hashed: ${hashed_password}`)
+            await User.create(first_name, last_name, register_email, creation_date, hashed_password);
+            console.log(`User created with email: ${register_email}, password: ${hashed_password}, on: ${creation_date}`);
+            //You cannot pass other arguments with a redirect, only render can do that.
+            res.redirect('/login')
+        } catch (error) {
+            console.log(error);
+            const msg = 'Error creating user.';
+            console.log("Error creating user.");
+            res.status(500).render('login', { title: "Login", error_message: msg })
+        }
     });
 };
 
@@ -64,11 +64,11 @@ exports.validateLogin = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty) {
         console.log("[ERROR]: Login form error", errors.array());
-        return res.status(401).render('login', { error_message: `${errors.array()}` })
+        return res.status(401).render('login', { error_message: `${errors.array()}` });
     }
     console.log("Login  data validated.");
     const { login_email, login_password } = req.body;
-    User.findUser(login_email, async (errors, user) => {
+    User.findByEmail(login_email, async (errors, user) => {
         if (errors) {
             const msg = 'Error finding user account.';
             return res.status(401).render('login', { title: "Login", error_message: `${msg}` })
@@ -78,15 +78,16 @@ exports.validateLogin = async (req, res) => {
             return res.render('login', { title: "Login", error_message: `${msg}` })
         }
 
-        const result = Cipher.compare(login_password, user.password)
+        const result = await Cipher.compare(login_password, user.password)
         if (!result) {
             console.log("Password incorrect.")
             const msg = "Error please try again.";
             return res.render('login', { title: "Login", error_message: `${msg}` })
+        } else {
+            console.log("Password correct.")
+            req.session.user_id = user.user_id;
+            return res.render(`profile`, { user, title: "Profile" }); F
         }
-        console.log("Password correct.")
-        req.session.user_id = user.user_id;
-        return res.render(`profile`, { user, title: "Profile" });
     });
 
     exports.getProfile = async (req, res) => {
