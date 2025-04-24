@@ -5,24 +5,20 @@ const userController = require('../controllers/userController');
 const { body } = require('express-validator');
 const session = require('../utils/express-session')
 
-/*
-router.get('/register', (req, res) => {
-    res.render('users/register', {errors: null})
-});
-*/
 router.post('/register', [
     body('first_name').escape(),
     body('last_name').escape(),
     body('email').escape(),
-    body('register_password1').escape().isLength({ min: 8, max: 30}).withMessage("Password does not meet the requirements."),
-    body('register_password2').escape().isLength({ min: 8, max: 30})], 
+    body('register_password1').escape().isLength({ min: 8, max: 30 }).withMessage("Password does not meet the requirements."),
+    body('register_password2').escape().isLength({ min: 8, max: 30 })],
     userController.registerUser
-    );
+);
 
 router.post('/login', [
     body('login_email').escape(),
-    body('login_password').escape().isLength({ min: 8, max: 20})
-], userController.validateLogin)
+    body('login_password').escape().isLength({ min: 8, max: 30 })
+], userController.loginUser
+);
 
 //router.get("/users/:id", userController.getUserByID);
 
