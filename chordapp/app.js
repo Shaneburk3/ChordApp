@@ -2,6 +2,7 @@
 //Handle conversion to and from json with body-parser
 const bodyParser = require("body-parser");
 const express = require("express");
+const session = require('express-session');
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 
@@ -20,6 +21,13 @@ app.use(express.static(__dirname + '/'));
 app.use(bodyParser.json()); // for parsing application/json
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false
+}))
+
 
 //Connect to database.
 /*

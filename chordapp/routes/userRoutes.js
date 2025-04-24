@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const { body } = require('express-validator');
+const session = require('../utils/express-session')
 
 /*
 router.get('/register', (req, res) => {
@@ -14,7 +15,7 @@ router.post('/register', [
     body('email').escape(),
     body('register_password1').escape().isLength({ min: 8, max: 30}).withMessage("Password does not meet the requirements."),
     body('register_password2').escape().isLength({ min: 8, max: 30})], 
-    userController.validateRegister
+    userController.registerUser
     );
 
 router.post('/login', [
@@ -33,12 +34,17 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/register_user", (req, res) => {
-    res.render("register_user", { title: "Register", error_message: "Register Message" });
+    res.render("register_user", { title: "Register", error_message: "" });
 });
 
 
 router.get("/profile", (req, res) => {
     res.render("profile", { title: "Profile" });
+});
+
+router.get("/profile/:user_id", session.authSession, (req, res) => {
+    const user_id = req.session.user_id;
+    res.render("profile", { title: "Profile", user });
 });
 
 router.get("/update", (req, res) => {

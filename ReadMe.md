@@ -32,6 +32,7 @@ npm install express-session
 ## SECURITY FEATURES
 npm install express-validator
 npm install crypto
+npm install express-session
 
 # TESTING
 npm install playwright??
