@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models/userModel');
 const userController = require('../controllers/userController');
 const { body } = require('express-validator');
 const session = require('../utils/express-session')
@@ -42,13 +43,15 @@ router.get("/profile", (req, res) => {
     res.render("profile", { title: "Profile" });
 });
 
-router.get("/profile/:user_id", session.authSession, (req, res) => {
+router.get("/update/:user_id", session.authSession, (req, res) => {
     const user_id = req.session.user_id;
-    res.render("profile", { title: "Profile", user });
+    console.log(`Users sessions ID: ${user_id}`)
+    userController.getUserDetails
+    res.render("profile", { title: "Profile", user: User });
 });
 
 router.get("/update", (req, res) => {
-    res.render("update", { header: "Update", title: "Update" });
+    res.render("update", { header: "Update", title: "Update", user: null });
 });
 
 module.exports = router;
