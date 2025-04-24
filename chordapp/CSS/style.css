@@ -13,21 +13,25 @@ body {
     min-height: 100vh;
     padding: 4rem;
 }
+label {
+    text-align: center;
+    align-self: center;
+}
 .container {
-    text-align: left;
+    margin: 4rem;
     max-width: 50%;
 }
 #login_container {
-    padding-left: 15%;
-    padding-right: 10%;
+    padding-left: 5rem;
+    padding-right: 5rem;
     border-style: solid;
     border-width: thin;
     background: #F8F9FA;
     border-radius: 20%;;
 }
 #register_container {
-    padding-right: 10%;
-    padding-left: 15%;
+    padding-right: 5rem;
+    padding-left: 5rem;
     border-style: solid;
     border-width: thin;
     background: #F8F9FA;
