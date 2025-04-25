@@ -6,12 +6,12 @@
     <%- include("partials/nav") %>
       <div class="wrapper">
         <div class="image_banner">
-          <img src="../images/music.png" style="width: 100%; height: 40rem;" alt="">
+          <img src="../images/music.png" style="width: 100%; height: 30rem;" alt="">
         </div>
         <menu id="user" class="dynamicMenu">
-            <div class="user_profile row">
-              <div class="card" style="width: 18rem;">
-                <%- include("partials/header") %>
+          <div class="user_profile row">
+            <div class="card" style="width: 18rem;">
+              <%- include("partials/header") %>
                 <img class="card-img-top"
                   src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Card image cap">
@@ -23,94 +23,118 @@
                   <p><strong>Country: </strong>[Users Country]</p>
                   <p><strong>City: </strong>[Users City]</p>
                 </div>
-              </div>
-              <div class="card" style="width: 40rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Information</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card Contact</h6>
-                  <p><strong>Email: </strong>[Users email]</p>
-                  <p><strong>Phone: </strong>[Users Phone]</p>
-                  <a href="#" class="card-link">Instgram</a>
-                  <a href="#" class="card-link">LinkedIn</a>
-                </div>
-              </div>
-              <div class="user_info">
-                <div class="username">
-                  <p><strong>Hello, <%= user.first_name %></strong> </p>
-                </div>
+            </div>
+            <div class="card" style="width: 40rem;">
+              <div class="card-body">
+                <h5 class="card-title">Information</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card Contact</h6>
+                <p><strong>Email: </strong>[Users email]</p>
+                <p><strong>Phone: </strong>[Users Phone]</p>
+                <a href="#" class="card-link">Instgram</a>
+                <a href="#" class="card-link">LinkedIn</a>
               </div>
             </div>
-            <ul class="profile_menu">
-              <li><a href="#" method="GET" class="btn btn-dark">Audio translater</a></li>
-              <li><a href="/update/:user_id" method="GET" class="btn btn-dark">Edit Information</a></li>
-            </ul>
-            <section>
-              <h2>Audio files</h2>
-              <br>
-              <p> Below is an assortment of your saved audio files, to select and review. Have fun!</p>
-              <br>
-              <div class="row">
-                <a href="#"></a>
-                <div class="col-md-4">
-                  <div class="card-content">
-                    <div class="card">
-                      <h6>Title: TITLE</h6>
-                      <p>AUDIO PLAYABLE</p>
-                      <span>
-                        <h4>CHORD: RESULT</h4>
-                      </span>
-                      <div class="card-desc">
-                        <h3>Heading</h3>
-                        <p>The words nature and natural are used for all the things that are normally not made by
-                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
-                          nature. ...</p>
-                        <a href="#" class="btn-card">Select</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <div class="col-md-4">
-                  <div class="card-content">
-                    <div class="card">
-                      <h6>Title: TITLE</h6>
-                      <p>AUDIO PLAYABLE</p>
-                      <span>
-                        <h4>CHORD: RESULT</h4>
-                      </span>
-                      <div class="card-desc">
-                        <h3>Heading</h3>
-                        <p>The words nature and natural are used for all the things that are normally not made by
-                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
-                          nature. ...</p>
-                        <a href="#" class="btn-card">Read more</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-4">
-                  <div class="card-content">
-                    <div class="card">
-                      <h6>Title: TITLE</h6>
-                      <p>AUDIO PLAYABLE</p>
-                      <span>
-                        <h4>CHORD: RESULT</h4>
-                      </span>
-                      <div class="card-desc">
-                        <h3>Heading</h3>
-                        <p>The words nature and natural are used for all the things that are normally not made by
-                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
-                          nature. ...</p>
-                        <a href="#" class="btn-card">Read more</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+            <div class="user_info">
+              <div class="username">
+                <p><strong>Hello, <%= user.first_name %></strong> </p>
               </div>
-            </section>
+            </div>
+          </div>
+          <ul class="profile_menu">
+            <li><a href="#" method="GET" class="btn btn-dark">Audio translater</a></li>
+            <li><a href="/update/:user_id" method="GET" class="btn btn-dark">Edit Information</a></li>
+          </ul>
+          <section>
+            <h2>Audio files</h2>
+            <br>
+            <p> Below is an assortment of your saved audio files, to select and review. Have fun!</p>
+            <br>
+            <div class="row">
+
+              <div class="col-sm-4 col-md-6" id="audio_box">
+                <div class="p-3 border bg-dark">
+                  <div class="card-content">
+                    <div class="card bg-dark" id="audio_card">
+                      <h4>Title: TITLE</h4>
+                      <span>
+                        <h5>Chord: Audio.Result</h5>
+                      </span>
+                      <div class="card-desc bg-dark" id="audio_card">
+                        <h6>Heading</h6>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature cdcsd scsd cscsd c sdcs csdc sdcs dcsd csdd csd csdc dc . ...</p>
+                        <a href="#" class="btn btn-light">Read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-6" id="audio_box">
+                <div class="p-3 border bg-dark">
+                  <div class="card-content">
+                    <div class="card bg-dark" id="audio_card">
+                      <h4>Title: TITLE</h4>
+                      <span>
+                        <h5>Chord: Audio.Result</h5>
+                      </span>
+                      <div class="card-desc bg-dark" id="audio_card">
+                        <h6>Heading</h6>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature cdcsd scsd cscsd c sdcs csdc sdcs dcsd csdd csd csdc dc . ...</p>
+                        <a href="#" class="btn btn-light">Read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-6" id="audio_box">
+                <div class="p-3 border bg-dark">
+                  <div class="card-content">
+                    <div class="card bg-dark" id="audio_card">
+                      <h4>Title: TITLE</h4>
+                      <span>
+                        <h5>Chord: Audio.Result</h5>
+                      </span>
+                      <div class="card-desc bg-dark" id="audio_card">
+                        <h6>Heading</h6>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature cdcsd scsd cscsd c sdcs csdc sdcs dcsd csdd csd csdc dc . ...</p>
+                        <a href="#" class="btn btn-light">Read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-6" id="audio_box">
+                <div class="p-3 border bg-dark">
+                  <div class="card-content">
+                    <div class="card bg-dark" id="audio_card">
+                      <h4>Title: TITLE</h4>
+                      <span>
+                        <h5>Chord: Audio.Result</h5>
+                      </span>
+                      <div class="card-desc bg-dark" id="audio_card">
+                        <h6>Heading</h6>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature cdcsd scsd cscsd c sdcs csdc sdcs dcsd csdd csd csdc dc . ...</p>
+                        <a href="#" class="btn btn-light">Read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+            </div>
+          </section>
         </menu>
       </div>
 

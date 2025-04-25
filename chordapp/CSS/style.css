@@ -1,7 +1,13 @@
 body, html {
 width: 100%;
 height: 100%;  
-background-color: indianred;
+}
+#audio_card {
+    color: white;
+    font-weight: 300;
+}
+#audio_box {
+    width: 25rem;
 }
 
 #wrapper {
@@ -10,7 +16,7 @@ background-color: indianred;
 
 .image_banner {
     background-position: center;
-    height: 15rem;
+    height: 1rem;
     background-size:cover;
 }
 label {
