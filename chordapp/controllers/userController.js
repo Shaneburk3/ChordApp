@@ -62,7 +62,7 @@ exports.registerUser = async (req, res) => {
         res.redirect('/login')
     } catch (error) {
         console.log(error);
-        const msg = 'Error creating user.';
+        const msg = ['Error creating user'];
         console.log("Error creating user.");
         res.status(500).render('login', { title: "Login", error_message: msg })
     }
@@ -80,19 +80,19 @@ exports.loginUser = async (req, res) => {
     const foundUser = await User.findByEmail(login_email);
     console.log(`Found this guy: ${JSON.stringify(foundUser)}`)
     if (!foundUser) {
-        const msg = 'No associated account with that email.';
+        const msg = ['No associated account with that email'];
         console.log(`User ${login_email} does not exist`)
-        return res.render('login', { title: "Login", error_message: `${msg}` })
+        return res.render('login', { title: "Login", error_message: msg })
     }
     const result = await Cipher.compare(login_password, foundUser.password)
     if (!result) {
         console.log("Password incorrect.")
-        const msg = "Error please try again.";
-        return res.render('login', { title: "Login", error_message: `${msg}` })
+        const msg = ["Error please try again."];
+        return res.render('login', { title: "Login", error_message: msg })
     } else {
         console.log("Password correct.")
         req.session.user = { id: foundUser.user_id, email: foundUser.email };
-        return res.render(`profile`, { user: foundUser, title: `${foundUser.first_name}` }); F
+        return res.render(`profile`, { user: foundUser, title: `${foundUser.first_name}`}); F
     }
 
     exports.getProfile = async (req, res) => {

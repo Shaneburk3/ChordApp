@@ -24,6 +24,7 @@
               <br>
               <button type="submit" id="login_btn" class="btn btn-primary">Login</button>
             </form>
+            <br>
             <% if (error_message && error_message.length> 0) { %>
               <ul>
                 <% for (var i=0; i < error_message.length; i++) { %>
@@ -33,7 +34,6 @@
                   <% } %>
                     <% } %>
               </ul>
-              <br>
               <p>Don't have an account? <a href="/register_user">Register</a></p>
               <br>
           </div>
