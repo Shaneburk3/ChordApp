@@ -1,7 +1,11 @@
 body, html {
 width: 100%;
 height: 100%;  
-align-items: center;
+background-color: indianred;
+}
+
+#wrapper {
+    display: flex;
 }
 
 .image_banner {
@@ -13,15 +17,10 @@ label {
     text-align: center;
     align-self: center;
 }
-.container {
-    margin: 2rem;
-    max-width: 60%;
-    padding: 3rem;
-    position: relative;
-}
 #user_container {
     margin: 2rem;
     padding: 3rem;
+    width: 50%;
     border-style: solid;
     border-width: thin;
     background: #F8F9FA;

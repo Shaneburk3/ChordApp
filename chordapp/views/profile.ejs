@@ -5,11 +5,13 @@
   <body>
     <%- include("partials/nav") %>
       <div class="wrapper">
+        <div class="image_banner">
+          <img src="../images/music.png" style="width: 100%; height: 40rem;" alt="">
+        </div>
         <menu id="user" class="dynamicMenu">
-          <%- include("partials/header") %>
-
             <div class="user_profile row">
               <div class="card" style="width: 18rem;">
+                <%- include("partials/header") %>
                 <img class="card-img-top"
                   src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Card image cap">
@@ -20,7 +22,6 @@
                   <p><strong>Age: </strong>[Users Age]</p>
                   <p><strong>Country: </strong>[Users Country]</p>
                   <p><strong>City: </strong>[Users City]</p>
-                  <a href="/update/:user_id" method="GET" class="btn btn-primary">Edit Information</a>
                 </div>
               </div>
               <div class="card" style="width: 40rem;">
@@ -40,9 +41,8 @@
               </div>
             </div>
             <ul class="profile_menu">
-              <li> <a href="#"> Audio translater link </a></li>
-              <li> <a href="#"> Link Examples </a></li>
-              <li> <a href="#"> Link Examples </a></li>
+              <li><a href="#" method="GET" class="btn btn-dark">Audio translater</a></li>
+              <li><a href="/update/:user_id" method="GET" class="btn btn-dark">Edit Information</a></li>
             </ul>
             <section>
               <h2>Audio files</h2>
@@ -113,6 +113,7 @@
             </section>
         </menu>
       </div>
+
       <%- include("partials/footer") %>
   </body>
 
