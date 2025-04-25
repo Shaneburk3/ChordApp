@@ -75,7 +75,8 @@ exports.loginUser = async (req, res) => {
     }
     console.log("Login  data validated.");
     const { login_email, login_password } = req.body;
-    const foundUser = User.findByEmail(login_email);
+    const foundUser = await User.findByEmail(login_email);
+    console.log(`Found this guy: ${JSON.stringify(foundUser)}`)
     if (!foundUser) {
         const msg = 'No associated account with that email.';
         console.log(`User ${login_email} does not exist`)
@@ -89,7 +90,7 @@ exports.loginUser = async (req, res) => {
     } else {
         console.log("Password correct.")
         req.session.user = { id: foundUser.user_id, email: foundUser.email };
-        return res.render(`profile`, { foundUser, title: `${foundUser.first_name}` }); F
+        return res.render(`profile`, { user: foundUser, title: `${foundUser.first_name}` }); F
     }
 
     exports.getProfile = async (req, res) => {

@@ -22,7 +22,7 @@ const Cipher = {
     },
     compare: async (message, message2) => {
         try {
-            console.log('Compairing passwords....')
+            console.log(`Compairing passwords...., ${message} and ${message2}`)
             const result = await bcrypt.compare(message, message2);
             return result;   
         } catch (error) {
