@@ -6,17 +6,17 @@ const { body } = require('express-validator');
 const session = require('../utils/express-session')
 
 router.post('/register', [
-    body('first_name').escape(),
-    body('last_name').escape(),
+    body('first_name').escape().notEmpty().withMessage('First name required'),
+    body('last_name').escape().notEmpty().withMessage('Last name required'),
     body('email').escape(),
-    body('register_password1').escape().isLength({ min: 8, max: 30 }).withMessage("Password does not meet the requirements."),
-    body('register_password2').escape().isLength({ min: 8, max: 30 })],
-    userController.registerUser
+    body('register_password1').escape().isLength({ min: 8}).withMessage("Password is not long enough"),
+    body('register_password2').escape().isLength({ min: 8}).withMessage(" ")], userController.registerUser
 );
 
 router.post('/login', [
-    body('login_email').escape(),
-    body('login_password').escape().isLength({ min: 8, max: 30 })
+    body('login_email').escape().isEmail(),
+    body('login_password').escape().isLength({ min: 8 }).withMessage('Must be more then 8 characters in length'),
+    body('login_password').escape().isLength({max: 30}).withMessage('password too long')
 ], userController.loginUser
 );
 
@@ -27,11 +27,11 @@ router.get("/", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-    res.render("login", { title: "Login", error_message: " " });
+    res.render("login", { title: "Login", error_message: [] });
 });
 
 router.get("/register_user", (req, res) => {
-    res.render("register_user", { title: "Register", error_message: "" });
+    res.render("register_user", { title: "Register", error_message: [] });
 });
 
 

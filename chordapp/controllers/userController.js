@@ -1,10 +1,11 @@
 const { validationResult } = require('express-validator');
 const User = require('../models/userModel');
 const Cipher = require('../utils/encryption');
-const Session = require('../utils/express-session.js')
+const Session = require('../utils/express-session.js');
 const { getDate } = require('../scripts/functions');
 
 exports.findUser = (req, res) => {
+
     User.findByEmail(register_email, async (err, user) => {
         if (err) {
             const msg = 'Database Error.';
@@ -22,33 +23,34 @@ exports.findUser = (req, res) => {
 };
 
 exports.registerUser = async (req, res) => {
-    const newUser = { 
-        first_name, 
-        last_name, 
-        register_email, 
-        register_password1, 
-        register_password2 
+
+    const newUser = {
+        first_name,
+        last_name,
+        register_email,
+        register_password1,
+        register_password2
     } = req.body;
 
-    const errors = validationResult(newUser);
+    const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            console.log("[ERROR]: ", errors.array())
-            const msg = errors.array().map(e => e.msg);
-            console.log("ERROR: ", msg);
-            return res.render('register_user', { title: "Register", error_message: `${msg}`, errors: errors.array(), userData: req.body });
-        } else if (register_password1 != register_password2) {
-            const msg = "passwords must be the same."
-            console.log(msg);
-            return res.status(400).render('register_user', { title: "Register", error_message: msg })
-        }
-
-        const userExists = await User.findByEmail(register_email);
-        if (userExists) {
-            const msg = "Account already associated with that email."
-            console.log(msg);
-            return res.status(400).render('register_user', { title: "Register", error_message: msg })
-        }
+    if (!errors.isEmpty()) {
+        //only map the message from each array object
+        const msg = errors.array().map(e => e.msg);
+        console.log(`full info: ${JSON.stringify(errors.array())}`)
+        console.log("Errors were sending: ", msg)
+        return res.render('register_user', { title: "Register", error_message: msg});
+    } else if (register_password1 != register_password2) {
+        const msg = ["Passwords do not match"];
+        console.log(msg);
+        return res.status(400).render('register_user', { title: "Register", error_message: msg})
+    }
+    const userExists = await User.findByEmail(register_email);
+    if (userExists) {
+        const msg = ["Account already associated with that email."];
+        console.log(msg);
+        return res.status(400).render('register_user', { title: "Register", error_message: msg})
+    }
     // if it passes the validation and passwords match and unused email -- Create user
     try {
         const hashed_password = await Cipher.createHash(register_password1)
