@@ -43,7 +43,7 @@ router.get("/update/:user_id", session.authSession, (req, res) => {
     const user_id = req.session.user_id;
     console.log(`Users sessions ID: ${user_id}`)
     userController.getUserDetails
-    res.render("profile", { title: "Profile", user: User });
+    res.render("update", { title: "Profile", user: User });
 });
 
 router.get("/update", (req, res) => {
