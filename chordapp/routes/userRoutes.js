@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/userModel');
+const User = require('../models/usersModel')
+const Detail = require('../models/detailsModel')
 const userController = require('../controllers/userController');
 const { body } = require('express-validator');
 const { validationResult } = require('express-validator');
 const session = require('../utils/express-session');
+
+router.get("/register", (req, res) => {
+    res.render("register", { title: "Register", error_message: [] });
+});
 
 router.post('/register', [
 
@@ -18,16 +23,24 @@ router.post('/register', [
 
         if (!errors.isEmpty()) {
             const msg = errors.array().map(e => e.msg);
-            return res.render("register_user", { title: "Register", error_message: msg });
+            return res.render("register", { title: "Register", error_message: msg });
         } 
         try {
             await userController.registerUser(req, res);
         } catch (error) {
             console.log(error.message)
-            return res.status(500).render('register_user', { title: "Register", error_message: ["Could not register user. Try again."]})
+            return res.status(500).render('register', { title: "Register", error_message: ["Could not register user. Try again."]})
         }
     }
 )
+
+router.get("/", (req, res) => {
+    res.render("index", { header: "index", title: "Index", user: null });
+});
+
+router.get("/login", (req, res) => {
+    res.render("login", { title: "Login", error_message: [] });
+});
 
 router.post('/login', [
     body('login_email').escape().isEmail(),
@@ -44,27 +57,16 @@ router.post('/login', [
         //After validation, Login user.
         await userController.loginUser(req, res);
     } catch (error) {
-        console.log(error.message);
+        console.log("Cant log in damn: ", error.message);
         return res.render("login", { title: "Login", error_message: ["Could not log user in"] });  
     }
     } 
 );
 
-//router.get("/users/:id", userController.getUserByID);
-
-router.get("/", (req, res) => {
-    res.render("index", { header: "index", title: "Index", user: null });
+router.get("/profile", (req, res) => {
+    res.render("profile", { title: "Profile", user: [], error_message: [], details: []});
 });
-
-router.get("/login", (req, res) => {
-    res.render("login", { title: "Login", error_message: [] });
-});
-
-router.get("/register_user", (req, res) => {
-    res.render("register_user", { title: "Register", error_message: [] });
-});
-
-
+/*
 router.get("/profile", async (req, res) => {
     try {
         const user = await userController.getUser();
@@ -74,15 +76,24 @@ router.get("/profile", async (req, res) => {
         console.log(error);
         res.render("login", { title: "Login", error_message: [] });
     }
-
 });
-
+*/
 router.get("/update/:user_id", async (req, res) => {
     const user_ID = req.params.user_id;
+    console.log(user_ID);
+    try {
+        const userInfo = await User.findById(user_ID);
+        const userDetails = await Detail.findById(user_ID);
 
-    const results = await userController.getUserInfo();
-    console.log("RESULSTSSS ",results)
-    res.render("update", { title: "Profile", user: results.User, details: results.userInfo });
+        if(!userInfo || ! userDetails) {
+            console.log("Could not get users information.")
+            return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
+        }
+        res.render("update", { title: "Update Profile", user: userInfo, error_message: [], details: userDetails });
+    } catch (error) {
+        console.log(error);
+        res.render("login", { title: "Login", error_message: [] });
+    }
 });
 
 router.get("/update", (req, res) => {

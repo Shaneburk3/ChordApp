@@ -1,8 +1,9 @@
-const { validationResult } = require('express-validator');
-const User = require('../models/userModel');
+const User = require('../models/usersModel.js');
+const Details = require('../models/detailsModel.js'); 
 const Cipher = require('../utils/encryption');
 const Session = require('../utils/express-session.js');
 const { getDate } = require('../scripts/functions');
+const { json } = require('body-parser');
 
 exports.registerUser = async (req, res) => {
 
@@ -18,7 +19,7 @@ exports.registerUser = async (req, res) => {
     if (userExists) {
         const msg = ["Account already associated with that email."];
         //console.log(msg);
-        return res.status(400).render('register_user', { title: "Register", error_message: msg})
+        return res.status(400).render('register', { title: "Register", error_message: msg});
     }
     // if it passes the validation and passwords match and unused email -- Create user
     try {
@@ -27,12 +28,13 @@ exports.registerUser = async (req, res) => {
         const creation_date = getDate();
 
         console.log(`Hashed: ${hashed_password}`)
-        console.log("creating user...")
-        User.create(first_name, last_name, register_email, creation_date, hashed_password);
+        console.log("creating user...");
 
-        const findUserID = await User.findByEmail(register_email);
+        await User.create(first_name, last_name, register_email, creation_date, hashed_password);
+        const foundUser = await User.findByEmail(register_email);
+        const userID = foundUser.user_ID
+        await Details.create(userID);
 
-        User.createUserDetails(findUserID.user_ID)
         //You cannot pass other arguments with a redirect, only render can do that.
         return res.redirect('/login');
 
@@ -48,6 +50,7 @@ exports.loginUser = async (req, res) => {
 
     const { login_email, login_password } = req.body;
     const foundUser = await User.findByEmail(login_email);
+    const foundDetails = await Details.findById(foundUser.user_ID);
     
     //console.log(`Found this guy: ${JSON.stringify(foundUser)}`)
     if (!foundUser) {
@@ -63,48 +66,33 @@ exports.loginUser = async (req, res) => {
         return res.render('login', { title: "Login", error_message: msg })
     } else {
         console.log("Found user", foundUser)
-        const userDetails = await User.getUserInfo(foundUser.user_ID);
-        console.log("Logging in user", userDetails)
-        //return {foundUser, userDetails}
-        return res.render(`profile`, { user: foundUser, details: userDetails, title: `${foundUser.first_name}`});
-    }
-};
-
-exports.getUserInfo = async (req, res) => {
-    try {
-        const userID = req.params.user_id || req.body.user_id;
-        
-        const User = await User.findByID(userID);
-        const userDetails = await User.getUserInfo(userID);
-
-        
-
-
-        console.log("GetUserInfo found: ", User)
-        const userInfo = await User.getUserInfo(req);
-        console.log("GetUserInfo found: ", userInfo)
-
-        if (!userDetails) {
-            return res.status(404).render('404', { title: "404", error_message: ["User not found!"] })
+        //console.log(foundUser.user_ID)
+        try {
+            return res.render(`profile`, { user: foundUser, details: foundDetails, title: `${foundUser.first_name}`});     
+        } catch (error) {
+            console.log(error)
+            const msg = error.array().map(e => e.msg);
+            return res.render('login', { title: "Login", error_message: msg })
         }
-        // If okay...
-        return (User, userInfo)
-    } catch (error) {
-        console.log(error.message);
-        //return res.status(404).render("404", { title: "404", error_message: ["Details not found!"] })
     }
 };
 
 exports.updateUser = async (req, res) => {
+    const userID = req.params.user_id || req.body.user_id;
+
     try {
-        const update = await User.updateProfile(req);
-        console.log(`sent to update: ${update}`)
-        if (update) {
-            const updated = await User.getUserInfo(req);
-            console.log("Updated:", updated)
-            return res.redirect(`profile`);
-        }
+        
+        const user = await User.findById(userID);
+        const userInfo = await Details.findById(userID);
+
+        if (!userInfo || !user) {
+            return res.status(404).render('404', { title: "404", error_message: ["User not found!"] })
+        } 
+        // If okay...
+        return([user, userInfo])
+        //return res.status(200).render(`profile`, { user: foundUser, details: userDetails, title: `${foundUser.first_name}`});
     } catch (error) {
-        console.log("Error updating profile: ", error.message);
+        console.log(error.message);
+        return res.status(500).render("404", { title: "404", error_message: ["Details not found!"] })
     }
-}
+};
