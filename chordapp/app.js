@@ -22,13 +22,6 @@ app.use(bodyParser.json()); // for parsing application/json
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: false
-}))
-
-
 //Connect to database.
 /*
 const db = new sqlite3.Database('./database.db', sqlite3.OPEN_READWRITE, (err) => {
