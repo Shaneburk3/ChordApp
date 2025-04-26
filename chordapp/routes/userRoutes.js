@@ -79,8 +79,10 @@ router.get("/profile", async (req, res) => {
 
 router.get("/update/:user_id", async (req, res) => {
     const user_ID = req.params.user_id;
-    
-    res.render("update", { title: "Profile", user: [], details: [] });
+
+    const results = await userController.getUserInfo();
+    console.log("RESULSTSSS ",results)
+    res.render("update", { title: "Profile", user: results.User, details: results.userInfo });
 });
 
 router.get("/update", (req, res) => {

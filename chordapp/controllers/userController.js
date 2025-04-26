@@ -78,7 +78,8 @@ exports.getUserInfo = async (req, res) => {
             return res.status(404).render('404', { title: "404", error_message: ["User not found!"] })
         }
         // If okay...
-        return res.render(`profile`, { user: User, details: userInfo, title: `${User.first_name}`});
+        return (User, userInfo)
+        //return res.render(`profile`, { user: User, details: userInfo, title: `${User.first_name}`});
     } catch (error) {
         console.log(error.message);
         res.status(500).render("404", { title: "404", error_message: ["Details not found!"] })
@@ -91,8 +92,8 @@ exports.updateUser = async (req, res) => {
         console.log(`sent to update: ${update}`)
         if (update) {
             const updated = await User.getUserInfo(req);
-            console.log(foundUser)
-            return res.render(`profile`, { user: foundUser, details: updated, title: `${foundUser.first_name}`}); F
+            console.log("Updated:", updated)
+            return res.redirect(`profile`);
         }
     } catch (error) {
         console.log("Error updating profile: ", error.message);
