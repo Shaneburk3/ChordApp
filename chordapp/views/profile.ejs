@@ -32,16 +32,18 @@
                   <p class="card-text" id="user_bio"><%= details.user_bio%>.</p>
                 </div>
               </div>
+              <ul class="form-group">
+                <a href="/update/<%= user.user_ID%>" method="GET" class="btn btn-dark">Update Information</a>
+              </ul>
             </div>
             <div class="user_info">
               <div class="username">
-                <p><strong>Hello, <%= user.first_name%></strong></p>
+                <p>Check out <%= user.first_name%>'s audio page</p>
               </div>
             </div>
           </div>
           <ul class="form-group">
             <a href="#" method="GET" class="btn btn-dark">Audio translater</a>
-            <a href="/update/<%= user.user_ID%>" method="GET" class="btn btn-dark">Update Information</a>
           </ul>
           <section>
             <h2>Audio files</h2>
