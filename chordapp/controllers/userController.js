@@ -79,7 +79,6 @@ exports.loginUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     const userID = req.params.user_id || req.body.user_id;
-
     try {
         
         const user = await User.findById(userID);
