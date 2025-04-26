@@ -72,17 +72,26 @@ exports.loginUser = async (req, res) => {
 
 exports.getUserInfo = async (req, res) => {
     try {
-        const User = await User.findByID(req);
+        const userID = req.params.user_id || req.body.user_id;
+        
+        const User = await User.findByID(userID);
+        const userDetails = await User.getUserInfo(userID);
+
+        
+
+
+        console.log("GetUserInfo found: ", User)
         const userInfo = await User.getUserInfo(req);
+        console.log("GetUserInfo found: ", userInfo)
+
         if (!userDetails) {
             return res.status(404).render('404', { title: "404", error_message: ["User not found!"] })
         }
         // If okay...
         return (User, userInfo)
-        //return res.render(`profile`, { user: User, details: userInfo, title: `${User.first_name}`});
     } catch (error) {
         console.log(error.message);
-        res.status(500).render("404", { title: "404", error_message: ["Details not found!"] })
+        //return res.status(404).render("404", { title: "404", error_message: ["Details not found!"] })
     }
 };
 

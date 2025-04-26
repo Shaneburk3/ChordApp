@@ -69,6 +69,10 @@ app.get("/contact", (req, res) => {
     res.render("contact", { header: "Contact", title: "Contact" });
 });
 
+app.get("/404", (req, res) => {
+    res.render("contact", { header: "404", title: "404", error_message: [] });
+});
+
 
 /*
 app.post('/user_login', (req, res) => {
