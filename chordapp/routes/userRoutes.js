@@ -89,7 +89,7 @@ router.get("/update/:user_id", async (req, res) => {
             console.log("Could not get users information.")
             return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
         }
-        res.render("update", { title: "Update Profile", user: userInfo, error_message: [], details: userDetails });
+        res.render("profile", { title: "Profile", user: userInfo, error_message: [], details: userDetails });
     } catch (error) {
         console.log(error);
         res.render("login", { title: "Login", error_message: [] });

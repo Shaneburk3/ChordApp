@@ -20,6 +20,9 @@ exports.registerUser = async (req, res) => {
         const msg = ["Account already associated with that email."];
         //console.log(msg);
         return res.status(400).render('register', { title: "Register", error_message: msg});
+    } else if (register_password1 != register_password2) {
+        const msg = ["Passwords are not the same."];
+        return res.status(400).render('register', { title: "Register", error_message: msg});
     }
     // if it passes the validation and passwords match and unused email -- Create user
     try {

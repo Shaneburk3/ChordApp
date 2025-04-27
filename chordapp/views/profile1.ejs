@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("partials/head") %>
+
+  <body>
+    <%- include("partials/nav") %>
+      <div class="wrapper">
+        <div class="image_banner">
+          <img src="../images/music.png" style="width: 100%; height: 30rem;" alt="user profile">
+        </div>
+        <menu id="user_menu" class="dynamicMenu">
+          <div class="user_profile row">
+            <div class="card" style="width: 18rem;">
+              <%- include("partials/header") %>
+                <img class="card-img-top"
+                  src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Card image cap">
+                <div class="card-body">
+                  <p id="user_age"><strong>Age: </strong><%= details.user_age%></p>
+                  <p id="user_country"><strong>Country: </strong><%= details.user_country%></p>
+                  <p id="user_city"><strong>City: </strong><%= details.user_city%></p>
+                </div>
+            </div>
+            <div class="card" style="width: 40rem;">
+              <div class="card-body">
+                <h5 class="card-title">Information</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card Contact</h6>
+                <p id="user_email"><strong>Email: </strong><%= user.email %></p>
+                <p id="user_phone"><strong>Phone: </strong>[Users Phone]</p>
+                <div class="form-group">
+                  <h5 class="card-title">User Bio</h5>
+                  <p class="card-text" id="user_bio"><%= details.user_bio%>.</p>
+                </div>
+              </div>
+              <ul class="form-group">
+                <a href="/update/<%= user.user_ID%>" method="GET" class="btn btn-dark">Update Information</a>
+              </ul>
+            </div>
+          </div>
+          <ul class="form-group">
+            <a href="#" method="GET" class="btn btn-dark">Audio translater</a>
+          </ul>
+          <section>
+            <h2>Audio files</h2>
+            <br>
+            <p> Below is an assortment of your saved audio files, to select and review. Have fun!</p>
+            <br>
+            <div class="row">
+              <div class="col-sm-4 col-md-6" id="audio_box">
+                <div class="p-3 border bg-dark">
+                  <div class="card-content">
+                    <div class="card bg-dark" id="audio_card">
+                      <h4 id="audio_title">Title: [audio.title] </h4>
+                      <span>
+                        <h5>Chord: Audio.Result</h5>
+                      </span>
+                      <div class="card-desc bg-dark" id="audio_card">
+                        <h6>Heading</h6>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature cdcsd scsd cscsd c sdcs csdc sdcs dcsd csdd csd csdc dc . ...</p>
+                        <a href="/audios/:audio_id" class="btn btn-light">Select Audio</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4 col-md-6" id="audio_box">
+                <div class="p-3 border bg-dark">
+                  <div class="card-content">
+                    <div class="card bg-dark" id="audio_card">
+                      <h4 id="audio_title">Title: [audio.title] </h4>
+                      <span>
+                        <h5>Chord: Audio.Result</h5>
+                      </span>
+                      <div class="card-desc bg-dark" id="audio_card">
+                        <h6>Heading</h6>
+                        <p>The words nature and natural are used for all the things that are normally not made by
+                          humans. Things like weather, organisms, landforms, celestial bodies and much more are part of
+                          nature cdcsd scsd cscsd c sdcs csdc sdcs dcsd csdd csd csdc dc . ...</p>
+                        <a href="/audios/:audio_id" class="btn btn-light">Select Audio</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </menu>
+      </div>
+
+      <%- include("partials/footer") %>
+  </body>
+
+</html>

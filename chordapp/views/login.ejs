@@ -4,11 +4,10 @@
 
   <body>
     <%- include("partials/nav") %>
-
-      <div class="wrapper">
-        <div class="container">
-          <div id="user_container" style="display: block;">
-            <form id="login_form" action="/login" method="POST">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4" id="user_container" style="display: block;">
+          <form id="login_form" action="/login" method="POST">
               <div class="form-group">
                 <label for="login_email">Email address</label>
                 <input type="email" name="login_email" class="form-control" id="login_email"
@@ -35,11 +34,10 @@
               </ul>
               <p>Don't have an account? <a href="/register">Register</a></p>
               <br>
-          </div>
         </div>
       </div>
-
-      </div>
+    </div>
+  </div>
 
       <%- include("partials/footer") %>
   </body>
