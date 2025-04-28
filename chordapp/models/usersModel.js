@@ -38,12 +38,28 @@ const User = {
             return false;
         }
     },
-    update: async (data) => {
+    updateUser: async (data) => {
 
     },
-    delete: async (data) => {
+    deleteUser: async (data) => {
 
     },
-}
+    getUserWithDetails: async(user_id) => {
+        console.log(`Searching for user ID: ${user_id}`);
+        try {
+            const response = await client.query('SELECT users.*, user_details.* FROM users INNER JOIN user_details ON users."user_ID" = user_details."user_id" WHERE users."user_ID" = ($1)', [user_id]);
+            if (response.rows.length == 0) {
+                console.log("didnt find the email.")
+                return false;
+            } else {
+                return response.rows[0];
+            }
+        } catch (error) {
+            console.log("ERROR:", error.message);
+            return false;
+        }
+    }    
+
+    }
 
 module.exports = User;

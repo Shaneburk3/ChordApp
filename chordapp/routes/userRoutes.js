@@ -82,14 +82,16 @@ router.get("/update/:user_id", async (req, res) => {
     const user_ID = req.params.user_id;
     console.log(user_ID);
     try {
-        const userInfo = await User.findById(user_ID);
-        const userDetails = await Detail.findById(user_ID);
+        //const userInfo = await User.findById(user_ID);
+        //const userDetails = await Detail.findById(user_ID);
+        const allUserDetails = await User.getUserWithDetails(user_ID);
 
-        if(!userInfo || ! userDetails) {
+        if(!allUserDetails) {
             console.log("Could not get users information.")
             return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
         }
-        res.render("profile", { title: "Profile", user: userInfo, error_message: [], details: userDetails });
+        console.log("All the deets: ", allUserDetails)
+        res.render("update", { title: "Profile", user: allUserDetails, error_message: [] });
     } catch (error) {
         console.log(error);
         res.render("login", { title: "Login", error_message: [] });
@@ -101,6 +103,8 @@ router.get("/update", (req, res) => {
 });
 
 router.put("/update", (req, res) => {
+    const details = { user_age, user_country, user_city, user_bio } = req.body;
+    console.log("All user details to update: ", details);
     res.render("/update/:user_id", { header: "Update", title: "Update", user: User, details: [] });
     userController.getProfile
 });
