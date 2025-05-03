@@ -35,7 +35,7 @@ router.post('/register', [
 )
 
 router.get("/", (req, res) => {
-    res.render("index", { header: "index", title: "Index", user: null });
+    res.render("index", { header: "index", title: "Index", user: null, error_message: []});
 });
 
 router.get("/login", (req, res) => {
@@ -107,6 +107,10 @@ router.put("/update", (req, res) => {
     console.log("All user details to update: ", details);
     res.render("/update/:user_id", { header: "Update", title: "Update", user: User, details: [] });
     userController.getProfile
+});
+
+router.get("/audio", (req, res) => {
+    res.render("audio", { header: "audio page", title: "audio", user: null, error_message: []});
 });
 
 module.exports = router;

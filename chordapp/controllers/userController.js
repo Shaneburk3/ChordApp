@@ -34,11 +34,11 @@ exports.registerUser = async (req, res) => {
         const foundUser = await User.findByEmail(register_email);
         const userID = foundUser.user_ID;
         await Details.create(userID);
-        return res.redirect('/login');
+        return res.redirect('/');
 
     } catch (error) {
         var msg = ['Error creating user'];
-        return res.status(400).render('login', { title: "Login", error_message: msg })
+        return res.status(400).render('/', { title: "Login", error_message: msg })
     }
 };
 
