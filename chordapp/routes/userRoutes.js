@@ -44,7 +44,7 @@ router.get("/login", (req, res) => {
 
 router.post('/login', [
     body('login_email').escape().isEmail(),
-    body('login_password').escape().isLength({ min: 8 }).withMessage('Must be more then 8 characters in length'),
+    body('login_password').escape().isLength({ max: 20 }).withMessage('Must be less then 20 characters in length'),
     body('login_password').escape().isLength({max: 30}).withMessage('password too long')
 ], async (req, res) => {
     //First validate user input

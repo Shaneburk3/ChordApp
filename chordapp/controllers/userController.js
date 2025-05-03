@@ -52,11 +52,11 @@ exports.loginUser = async (req, res) => {
     if (!foundUser) {
         var msg = ['No associated account with that email'];
         console.log(`User ${login_email} does not exist`)
-        return res.render('login', { title: "Login", error_message: msg })
+        return res.render('index', { title: "Login", error_message: msg })
     } else if (!isMatch) {
         console.log("Password incorrect.")
         const msg = ["Error please try again."];
-        return res.render('login', { title: "Login", error_message: msg })
+        return res.render('index', { title: "Login", error_message: msg })
     } else {
         console.log("Found user", foundUser)
         try {
