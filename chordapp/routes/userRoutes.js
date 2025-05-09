@@ -6,18 +6,20 @@ const userController = require('../controllers/userController');
 const { body } = require('express-validator');
 const { validationResult } = require('express-validator');
 const session = require('../utils/express-session');
+const validate = require('../middleware/validator')
 
 router.get("/register", (req, res) => {
     res.render("register", { title: "Register", error_message: [] });
 });
 
 router.post('/register', [
-
+    // Validate user input using express-validator
     body('first_name').escape().notEmpty().withMessage('First name required'),
     body('last_name').escape().notEmpty().withMessage('Last name required'),
     body('email').escape(),
-    body('register_password1').escape().isLength({ min: 8}).withMessage("Password is not long enough"),
-    body('register_password2').escape().isLength({ min: 8}).withMessage(" ")], async (req, res) => {
+    body('register_password1').escape().isLength({ min: 8}).withMessage("Password is not long enough").matches(/^[A-Za-z0-9 .,'!&]+$/),
+    body('register_password2').escape().isLength({ min: 8}).withMessage(" "),
+    body('terms_check').equals('on').withMessage('Please agree to T&Cs')], async (req, res) => {
 
         const errors =  validationResult(req);
 
@@ -51,14 +53,14 @@ router.post('/login', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const msg = errors.array().map(e => e.msg);
-        return res.render("login", { title: "Login", error_message: msg });
+        return res.render("index", { title: "Login", error_message: msg });
     }
     try {
         //After validation, Login user.
         await userController.loginUser(req, res);
     } catch (error) {
         console.log("Cant log in damn: ", error.message);
-        return res.render("login", { title: "Login", error_message: ["Could not log user in"] });  
+        return res.render("index", { title: "Login", error_message: ["Could not log user in"] });  
     }
     } 
 );
