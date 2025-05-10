@@ -1,6 +1,6 @@
 const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js'); 
-const Cipher = require('../utils/encryption');
+const Cipher = require('../middleware/encryption');
 const Session = require('../utils/express-session.js');
 const { getDate } = require('../scripts/functions');
 const { json } = require('body-parser');
