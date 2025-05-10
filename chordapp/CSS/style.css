@@ -1,5 +1,5 @@
 body, html {
-width: 100%;
+    margin: 0;
 height: 100%;  
 }
 #audio_card {
@@ -9,17 +9,27 @@ height: 100%;
 #audio_box {
     width: 25rem;
 }
+#links {
+    text-decoration: none;
+}
+#banner {
+    background-color: #474e5d;
+    color: white;
+    margin: 0;
+    height: 10rem;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+}
+#about_card {
+    background-color: #474e5d;
+    color: white;
+}
 
 .fakeimg {
     height: 200px;
     background: #aaa;
 }
 
-.image_banner {
-    background-position: center;
-    height: 10rem;
-    background-size:cover;
-}
 label {
     text-align: center;
     align-self: center;
@@ -39,12 +49,10 @@ nav {
     width: 100%;
 }
 footer {
-    position:relative;
-    text-align: center;
-    padding: 10%;
-    bottom: 0px;
-    width: 100%;
-    margin-bottom: 0%;
+    clear: both;
+    position: relative;
+    height: 100px;
+    margin-top: -200px;
 }
 header {
     padding: 1rem;
