@@ -14,7 +14,8 @@
                 class="card-img-top rounded-top" alt="Profile piture" style=" height: 10rem;">
 
               <div class="card-body">
-                <form action="/update-profile" method="PUT">
+                <form id="update_form">
+                  <input name="user_id" id="user_id" hidden value="<%= user.user_ID %>">
                   <div class="mb-3">
                     <label for="user_dob" class="form-label"><strong>Date of Birth</strong></label>
                     <input type="date" id="user_dob" name="user_dob" class="form-control" value="<%= user.user_dob %>">
@@ -23,20 +24,19 @@
 
                   <div class="mb-3">
                     <label for="user_country" class="form-label"><strong>Country</strong></label>
-                    <input type="text" id="user_country" name="user_country" class="form-control"
-                      value="<%= user.user_country %>">
+                    <input type="text" id="user_country" name="user_country" class="form-control" placeholder="<%= user.user_country %>">
                   </div>
 
                   <div class="mb-3">
                     <label for="user_city" class="form-label"><strong>City</strong></label>
                     <input type="text" id="user_city" name="user_city" class="form-control"
-                      value="<%= user.user_city %>">
+                      placeholder="<%= user.user_city %>">
                   </div>
 
                   <div class="mb-3">
                     <label for="user_bio" class="form-label"><strong>Bio</strong></label>
                     <textarea id="user_bio" name="user_bio" class="form-control"
-                      rows="3"><%= user.user_bio %></textarea>
+                      rows="3" placeholder="<%= user.user_bio %>"></textarea>
                   </div>
 
                   <button type="submit" class="btn btn-primary w-100">Update Profile</button>

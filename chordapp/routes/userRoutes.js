@@ -80,7 +80,7 @@ router.get("/profile", async (req, res) => {
     }
 });
 */
-router.get("/update/:user_id", async (req, res) => {
+router.get("/users/:user_id", async (req, res) => {
     const user_ID = req.params.user_id;
     console.log(user_ID);
     try {
@@ -92,7 +92,7 @@ router.get("/update/:user_id", async (req, res) => {
             console.log("Could not get users information.")
             return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
         }
-        console.log("All the deets: ", allUserDetails)
+        //console.log("All the deets: ", allUserDetails)
         res.render("update", { title: "Profile", user: allUserDetails, error_message: [] });
     } catch (error) {
         console.log(error);
@@ -104,11 +104,12 @@ router.get("/update", (req, res) => {
     res.render("update", { header: "Update", title: "Update", user: [], details: [] });
 });
 
-router.put("/update", (req, res) => {
-    const details = { user_age, user_country, user_city, user_bio } = req.body;
+router.put("/users/:user_id", (req, res) => {
+    const user_ID = req.params.user_id;
+    console.log("Updating user: ", user_ID);
+    const details = req.body;
     console.log("All user details to update: ", details);
-    res.render("/update/:user_id", { header: "Update", title: "Update", user: User, details: [] });
-    userController.getProfile
+    userController.updateUser(details);
 });
 
 router.get("/audio", (req, res) => {

@@ -58,7 +58,7 @@ exports.loginUser = async (req, res) => {
         const msg = ["Error please try again."];
         return res.render('index', { title: "Login", error_message: msg })
     } else {
-        console.log("Found user", foundUser)
+        //console.log("Found user", foundUser)
         try {
             return res.render(`profile`, { user: foundUser, details: foundDetails, title: `${foundUser.first_name}`});     
         } catch (error) {
@@ -71,10 +71,13 @@ exports.loginUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
 
-    const userID = req.params.user_id || req.body.user_id;
-    try {        
+    const updates = {user_id, user_dob, user_country, user_city, user_bio } =  await req.body
+    console.log('DEETS to update', updates)
+    try {     
         const user = await User.findById(userID);
         const userDetails = await Details.findById(userID);
+        //User.updateUser(userID, user, userDetails)
+        Details.update(updates)
         if (!userDetails || !user) {
             return res.status(404).render('404', { title: "404", error_message: ["User not found!"] })
         } 

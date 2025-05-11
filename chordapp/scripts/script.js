@@ -1,23 +1,27 @@
 document.addEventListener('DOMContentLoaded', async function() {
 
-    document.getElementById('update_user_form').addEventListener('submit', async (e) => {
+    document.getElementById('update_form').addEventListener('submit', async (e) => {
 
         e.preventDefault();
 
-        const user_age = document.getElementById('user_age').value;
+        const user_age = document.getElementById('user_dob').value;
         const user_country = document.getElementById('user_country').value;
         const user_city = document.getElementById('user_city').value;
         const user_bio = document.getElementById('user_bio').value;
+        const user_id = document.getElementById('user_id').value;
 
         const updates = { 
-            users_age: user_age,
-            users_country: user_country,
-            users_city: user_city,
-            users_bio: user_bio
+            user_id: user_id,
+            user_age: user_age,
+            user_country: user_country,
+            user_city: user_city,
+            user_bio: user_bio
         };
 
+        console.log('USER!', user_id)
+
         try {
-            const response = await fetch('/update', {
+            const response = await fetch(`/users/${user_id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updates)

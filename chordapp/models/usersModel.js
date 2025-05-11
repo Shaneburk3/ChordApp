@@ -38,8 +38,20 @@ const User = {
             return false;
         }
     },
-    updateUser: async (data) => {
-
+    updateUser: async (user_id) => {
+        console.log(`Updating user ID: ${user_id}`);
+        try {
+            const response = await client.query('UPDATE users.*, user_details.* FROM users INNER JOIN user_details ON users."user_ID" = user_details."user_id" WHERE users."user_ID" = ($1)', [user_id]);
+            if (response.rows.length == 0) {
+                console.log("didnt find the email.")
+                return false;
+            } else {
+                return response.rows[0];
+            }
+        } catch (error) {
+            console.log("ERROR:", error.message);
+            return false;
+        }
     },
     deleteUser: async (data) => {
 
