@@ -2,19 +2,13 @@
 //Handle conversion to and from json with body-parser
 const bodyParser = require("body-parser");
 const express = require("express");
-const session = require('express-session');
-const path = require("path");
-const sqlite3 = require("sqlite3").verbose();
-
+//const path = require("path");
+//const sqlite3 = require("sqlite3").verbose();
 const app = express();
 const port = 3000;
 
 
 app.set("view engine", "ejs");
-
-//app.use(express.static("public"));
-//app.use(express.static("CSS"));
-//app.use(express.static("scripts"));
 
 app.use(express.static(__dirname + '/'));
 

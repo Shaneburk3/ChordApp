@@ -28,6 +28,7 @@ npm install express
 npm install ejs
 npm install express-session
 #npm install knex
+npm install nodemailer
 
 ## SECURITY FEATURES
 npm install express-validator
@@ -44,7 +45,7 @@ Command line: node app.js
 
 Open web browser, enter: http://localhost:3000/
 
-## RUN TESTS ??????????
+## RUN TESTS ?
 
 npm test
 npx playwright test tests/register.spec.js
@@ -53,7 +54,7 @@ npx playwright test tests/xss_Attack.spec.js
 npx playwright test tests/createBlog.spec.js
 
 
-## How to use website ????????
+## How to use website
 
 1 - Navigate to register page from the dropdown menu in the nab bar.
 2 - Register a new user. Example:
@@ -66,7 +67,7 @@ Retype password: Password12
 
 3 - redirected to blogs page, views blogs or either create, update or delete blogs.
 
-## Database ??????
+## Database ?
 
 When the app.js is run, the database is created, and the following is ran in the db.js file: 
 
