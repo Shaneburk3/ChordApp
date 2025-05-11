@@ -57,31 +57,25 @@ exports.loginUser = async (req, res) => {
         console.log("Password incorrect.")
         const msg = ["Error please try again."];
         return res.render('index', { title: "Login", error_message: msg })
-    } else {
-        //console.log("Found user", foundUser)
-        try {
+    }
+    try {
             return res.render(`profile`, { user: foundUser, details: foundDetails, title: `${foundUser.first_name}`});     
         } catch (error) {
             console.log(error)
             const msg = error.array().map(e => e.msg);
             return res.render('login', { title: "Login", error_message: msg })
         }
-    }
 };
 
 exports.updateUser = async (req, res) => {
-
-    const updates = {user_id, user_dob, user_country, user_city, user_bio } =  await req.body
-    console.log('DEETS to update', updates)
+    const user_id = req.params.user_id;
+    const updates = { user_dob, user_country, user_city, user_bio } =  req.body
+    const data = {user_id, updates}
+    if (!updates) {
+        return res.status(404).render('404', { title: "404", error_message: ["User updates not found!"] })
+    } 
     try {     
-        const user = await User.findById(userID);
-        const userDetails = await Details.findById(userID);
-        //User.updateUser(userID, user, userDetails)
-        Details.update(updates)
-        if (!userDetails || !user) {
-            return res.status(404).render('404', { title: "404", error_message: ["User not found!"] })
-        } 
-        return([user, userDetails])
+        Details.update(data)
     } catch (error) {
         console.log(error.message);
         return res.status(500).render("404", { title: "404", error_message: ["user data not found"] })

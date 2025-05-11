@@ -103,15 +103,16 @@ router.get("/users/:user_id", async (req, res) => {
 router.get("/update", (req, res) => {
     res.render("update", { header: "Update", title: "Update", user: [], details: [] });
 });
+router.put("/users/:user_id", userController.updateUser);
+
+/*
 
 router.put("/users/:user_id", (req, res) => {
-    const user_ID = req.params.user_id;
-    console.log("Updating user: ", user_ID);
     const details = req.body;
     console.log("All user details to update: ", details);
-    userController.updateUser(details);
+    userController.updateUser(req, res);
 });
-
+*/
 router.get("/audio", (req, res) => {
     res.render("audio", { header: "audio page", title: "audio", user: null, error_message: []});
 });

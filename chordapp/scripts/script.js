@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const updates = { 
             user_id: user_id,
-            user_age: user_age,
+            user_dob: user_dob,
             user_country: user_country,
             user_city: user_city,
             user_bio: user_bio
@@ -26,37 +26,17 @@ document.addEventListener('DOMContentLoaded', async function() {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updates)
             });
-            const result = await response.json();
-            if(!response) {
-                console.log("No Update received")
+            let result = null;
+            if(!response.ok) {
+                console.log("No Update received", response.status)
             } else {
-                console.log("Profile updated.")
+                result = await response.json();
+                console.log("Profile updated.", result)
             }
         } catch (error) {
             console.log(error);
         }
 
     });
-/*
-    document.getElementById('update_btn').addEventListener('submit', async (e) => {
-
-        const user_age = document.getElementById('user_age').value;
-        const user_country = document.getElementById('user_country').value;
-        const user_city = document.getElementById('user_city').value;
-        const user_bio = document.getElementById('user_bio').value;
-
-        console.log("Got updates.")
-
-        const response = await fetch('/update', {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({user_age, user_country, user_city, user_bio})
-        });
-
-        const result = await response.json();
-        console.log("RESULT: ", result);
-
-    }));
-*/
 
 });

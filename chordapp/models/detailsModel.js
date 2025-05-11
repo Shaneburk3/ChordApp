@@ -21,11 +21,13 @@ const Details = {
             console.log("GetUserInfo ERROR:", error.message);
         }
     },
-    update: async (updates) => {
-        const { user_id, user_age, user_country, user_city, user_bio } = updates
+    update: async (data) => {
+        const { user_id, user_age, user_country, user_city, user_bio } = data
+        console.log("UPDATE::", user_id, user_age, user_country, user_city, user_bio)
         try {
             console.log('Lets update this user...')
-        client.query("UPDATE user_details SET user_age = $1, user_country =  $2, user_city = $3, user_bio = $4 WHERE user_id = $5)", [user_age], [user_country], [user_city], [user_bio], [user_id] (req, res));
+            const result = client.query(`UPDATE user_details SET user_age = $1, user_country =  $2, user_city = $3, user_bio = $4 WHERE user_id = $5 RETURNING *`, [user_age, user_country, user_city, user_bio, user_id]);
+            return result.rows[0];
         } catch (error) {
             console.log("Error updating database:", error.message)
         }
