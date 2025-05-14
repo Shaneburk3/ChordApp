@@ -18,12 +18,16 @@ body, html {
     color: white;
     margin: 0;
     height: 10rem;
-    padding: 2rem;
+    padding-bottom: 2rem;
     margin-bottom: 2rem;
 }
 #about_card {
-    background-color: #474e5d;
-    color: white;
+    
+    margin: 1rem;
+}
+#about_bio {
+    padding: 1rem;
+
 }
 
 .fakeimg {

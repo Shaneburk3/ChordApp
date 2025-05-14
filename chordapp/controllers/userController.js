@@ -2,7 +2,7 @@ const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js'); 
 const Cipher = require('../middleware/encryption');
 const Session = require('../utils/express-session.js');
-const { getDate } = require('../scripts/functions');
+const { getDate } = require('../public/scripts/functions.js');
 const { json } = require('body-parser');
 
 exports.registerUser = async (req, res) => {

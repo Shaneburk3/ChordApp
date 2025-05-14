@@ -1,9 +1,8 @@
 
-//Handle conversion to and from json with body-parser
+//Handle conversion of json with body-parser
 const bodyParser = require("body-parser");
 const express = require("express");
 const path = require("path");
-//const sqlite3 = require("sqlite3").verbose();
 const app = express();
 const port = 3000;
 
@@ -11,22 +10,17 @@ const port = 3000;
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname,'views'))
 
-app.use(express.static(__dirname + '/'));
+//app.use(express.static(__dirname + '/'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json()); // for parsing application/json
-
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const userRoutes = require('./routes/users')
+app.use(userRoutes);
+
 //Connect to database.
-/*
-const db = new sqlite3.Database('./database.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) {
-        console.log('[ERROR]: Could not connect to database.', err.message);
-    } else {
-        console.log('[INFO]: Connected to database.')
-    }  
-});
-*/
 const { Client } = require('pg');
 
 const client = new Client({
@@ -47,13 +41,20 @@ try {
 //Export connection to the database to use elsewhere.
 module.exports = client;
 
-const userRoutes = require('../chordapp/routes/userRoutes')
-//app.use('/users', userRoutes);
-app.use(userRoutes);
-
-
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`)
+});
+
+app.get("/", (req, res) => {
+    res.render("index", { header: "index", title: "Index", user: null, error_message: []});
+});
+
+app.get("/login", (req, res) => {
+    res.render("login", { title: "Login", error_message: [] });
+});
+
+app.get("/register", (req, res) => {
+    res.render("register", { title: "Register", error_message: [] });
 });
 
 app.get("/about", (req, res) => {
@@ -67,20 +68,6 @@ app.get("/contact", (req, res) => {
 app.get("/404", (req, res) => {
     res.render("contact", { header: "404", title: "404", error_message: [] });
 });
-
-
-/*
-app.post('/user_login', (req, res) => {
-    const { email, password} = req.body;
-    console.log("Welcome: ", email)
-});
-*/
-/*
-app.post('/register', (req, res) => {
-    const { first_name, last_name, email, password, password2 } = req.body;
-    console.log("Welcome: ", first_name)
-});
-*/
 
 
 

@@ -8,10 +8,6 @@ const { validationResult } = require('express-validator');
 const session = require('../utils/express-session');
 const validate = require('../middleware/validator')
 
-router.get("/register", (req, res) => {
-    res.render("register", { title: "Register", error_message: [] });
-});
-
 router.post('/register', [
     // Validate user input using express-validator
     body('first_name').escape().notEmpty().withMessage('First name required'),
@@ -35,14 +31,6 @@ router.post('/register', [
         }
     }
 )
-
-router.get("/", (req, res) => {
-    res.render("index", { header: "index", title: "Index", user: null, error_message: []});
-});
-
-router.get("/login", (req, res) => {
-    res.render("login", { title: "Login", error_message: [] });
-});
 
 router.post('/login', [
     body('login_email').escape().isEmail(),
@@ -68,19 +56,8 @@ router.post('/login', [
 router.get("/profile", (req, res) => {
     res.render("profile", { title: "Profile", user: [], error_message: [], details: []});
 });
-/*
-router.get("/profile", async (req, res) => {
-    try {
-        const user = await userController.getUser();
-        const details = await userController.getUserDetails();
-        res.render("profile", { title: "Profile", user: user, error_message: [], details: details });
-    } catch (error) {
-        console.log(error);
-        res.render("login", { title: "Login", error_message: [] });
-    }
-});
-*/
-router.get("/users/:user_id", async (req, res) => {
+
+router.get("/api/users/:user_id", async (req, res) => {
     const user_ID = req.params.user_id;
     console.log(user_ID);
     try {
@@ -103,7 +80,7 @@ router.get("/users/:user_id", async (req, res) => {
 router.get("/update", (req, res) => {
     res.render("update", { header: "Update", title: "Update", user: [], details: [] });
 });
-router.put("/users/:user_id", userController.updateUser);
+router.put("/api/users/:user_id", userController.updateUser);
 
 /*
 

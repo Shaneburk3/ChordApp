@@ -1,8 +1,9 @@
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', function() {
 
-    document.getElementById('update_form').addEventListener('submit', async (e) => {
-
-        e.preventDefault();
+    const update_form = document.getElementById('update_form');
+    if(update_form) {
+        update_form.addEventListener('submit', async (e) => {
+                    e.preventDefault();    
 
         const user_age = document.getElementById('user_dob').value;
         const user_country = document.getElementById('user_country').value;
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log('USER!', user_id)
 
         try {
-            const response = await fetch(`/users/${user_id}`, {
+            const response = await fetch(`/api/users/${user_id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updates)
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         } catch (error) {
             console.log(error);
         }
-
     });
+}
 
 });

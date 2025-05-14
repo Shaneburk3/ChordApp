@@ -15,12 +15,12 @@
                       <form id="login_form" action="/login" method="POST">
                         <div class="text-start">
                           <label for="login_email" class="form-label">Email address</label>
-                          <input type="email" name="login_email" class="form-control" id="login_email" placeholder="Enter email" required>
+                          <input type="email" autocomplete="email" name="login_email" class="form-control" id="login_email" placeholder="Enter email" required>
                           <small class="form-text text-muted">We won't share your email with anyone else.</small>
                         </div>
                         <div class="text-start">
                           <label for="login_password" class="form-label">Password</label>
-                          <input type="password" name="login_password" class="form-control" id="login_password" placeholder="Password" required>
+                          <input type="password" autocomplete="password" name="login_password" class="form-control" id="login_password" placeholder="Password" required>
                         </div>
                         <button type="submit" id="login_btn" class="btn btn-primary" style="width: 80%; margin-top: 2rem;">Login</button>
                       </form>
