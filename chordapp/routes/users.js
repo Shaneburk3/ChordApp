@@ -33,63 +33,56 @@ router.post('/register', [
 )
 
 router.post('/login', [
-    body('login_email').escape().isEmail(),
-    body('login_password').escape().isLength({ max: 20 }).withMessage('Must be less then 20 characters in length'),
-    body('login_password').escape().isLength({max: 30}).withMessage('password too long')
+    body('login_email').isEmail(),
+    body('login_password').isLength({ min: 8})
 ], async (req, res) => {
     //First validate user input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const msg = errors.array().map(e => e.msg);
-        return res.render("index", { title: "Login", error_message: msg });
+        return res.render("index", { title: "Homepage", error_message: msg });
     }
     try {
         //After validation, Login user.
         await userController.loginUser(req, res);
     } catch (error) {
         console.log("Cant log in damn: ", error.message);
-        return res.render("index", { title: "Login", error_message: ["Could not log user in"] });  
+        return res.render("index", { title: "Homepage", error_message: ["Could not log user in"] });  
     }
     } 
 );
 
+/*
 router.get("/profile", (req, res) => {
     res.render("profile", { title: "Profile", user: [], error_message: [], details: []});
 });
-
-router.get("/api/users/:user_id", async (req, res) => {
-    const user_ID = req.params.user_id;
-    console.log(user_ID);
+*/
+router.get("/profile/:user_id", userController.getUserProfile);
+/*
+router.get("/profile/:user_id", async (req, res) => {
+    const user_id = req.params.user_id;
     try {
-        //const userInfo = await User.findById(user_ID);
-        //const userDetails = await Detail.findById(user_ID);
-        const allUserDetails = await User.getUserWithDetails(user_ID);
-
-        if(!allUserDetails) {
-            console.log("Could not get users information.")
+        const userProfile = await userController.getUserProfile(user_id);
+        if(!userProfile) {
+            console.log("Could not get users profile.")
             return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
         }
-        //console.log("All the deets: ", allUserDetails)
-        res.render("update", { title: "Profile", user: allUserDetails, error_message: [] });
-    } catch (error) {
-        console.log(error);
-        res.render("login", { title: "Login", error_message: [] });
-    }
+        return res.render('profile', { user: userProfile, title: userProfile.user_id})
+        } catch (error) {
+            console.log(error)
+            return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
+        }
 });
+*/
+
+router.get("/update/:user_id", userController.getUpdatePage);
 
 router.get("/update", (req, res) => {
     res.render("update", { header: "Update", title: "Update", user: [], details: [] });
 });
-router.put("/api/users/:user_id", userController.updateUser);
 
-/*
+router.post("/update/:user_id", userController.updateUser);
 
-router.put("/users/:user_id", (req, res) => {
-    const details = req.body;
-    console.log("All user details to update: ", details);
-    userController.updateUser(req, res);
-});
-*/
 router.get("/audio", (req, res) => {
     res.render("audio", { header: "audio page", title: "audio", user: null, error_message: []});
 });

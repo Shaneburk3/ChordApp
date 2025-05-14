@@ -46,6 +46,7 @@ const User = {
                 console.log("didnt find the email.")
                 return false;
             } else {
+                console.log("user updated")
                 return response.rows[0];
             }
         } catch (error) {
@@ -64,6 +65,7 @@ const User = {
                 console.log("didnt find the email.")
                 return false;
             } else {
+                console.log("usersModel, 68: ", response.rows[0])
                 return response.rows[0];
             }
         } catch (error) {

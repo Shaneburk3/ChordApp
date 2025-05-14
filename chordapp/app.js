@@ -5,20 +5,22 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const port = 3000;
+const userRoutes = require('./routes/users')
 
 
+//EJS set up
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname,'views'))
 
-//app.use(express.static(__dirname + '/'));
-
+//static public folders
 app.use(express.static(path.join(__dirname, 'public')));
 
+//middleware
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const userRoutes = require('./routes/users')
-app.use(userRoutes);
+//Routes
+app.use('/api/users/', userRoutes);
 
 //Connect to database.
 const { Client } = require('pg');
@@ -63,6 +65,9 @@ app.get("/about", (req, res) => {
 
 app.get("/contact", (req, res) => {
     res.render("contact", { header: "Contact", title: "Contact" });
+});
+app.get("/profile", (req, res) => {
+    res.render("contact", { user: [], title: "profile" });
 });
 
 app.get("/404", (req, res) => {

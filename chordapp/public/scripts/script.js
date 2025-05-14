@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
             user_bio: user_bio
         };
 
-        console.log('USER!', user_id)
+        console.log('USER!', user_id, "Updates: ", updates)
 
         try {
-            const response = await fetch(`/api/users/${user_id}`, {
+            const response = await fetch(`/api/userss/${user_id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(updates)
