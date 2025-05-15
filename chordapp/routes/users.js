@@ -81,7 +81,7 @@ router.get("/update", (req, res) => {
     res.render("update", { header: "Update", title: "Update", user: [], details: [] });
 });
 
-router.post("/update/:user_id", userController.updateUser);
+router.put("/update/:user_id", userController.updateUser);
 
 router.get("/audio", (req, res) => {
     res.render("audio", { header: "audio page", title: "audio", user: null, error_message: []});

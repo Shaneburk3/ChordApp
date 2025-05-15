@@ -40,7 +40,7 @@ exports.loginUser = async (req, res) => {
     try {
         //check if user exists
         const { login_email, login_password } = req.body;
-        const foundUser = await User.findByEmail(login_email);
+        const foundUser = await User.findOne(login_email);
         if (!foundUser) {
             var msg = ['No associated account with that email'];
             return res.render('index', { title: "Login", error_message: msg })
@@ -52,63 +52,58 @@ exports.loginUser = async (req, res) => {
             return res.render('index', { title: "Login", error_message: msg })
         }
         const result = await User.getUserWithDetails(foundUser.user_ID)
-        return res.render("profile", { user: result, title: foundUser.user_ID })
+        return res.render("profile", { user: result, title: "Profile" })
     } catch (error) {
         console.log(error)
-        const msg = error.array().map(e => e.msg);
+        const msg = error.message || "Unexpected error";
         return res.render('index', { title: "Login", error_message: msg })
     }
 };
 
 exports.updateUser = async (req, res) => {
-    console.log("Updateing user...")
+    console.log("Updating user...")
     const user_id = req.params.user_id;
     const { user_dob, user_country, user_city, user_bio } =  req.body
-    const data = { user_id, user_dob, user_country, user_city, user_bio }
-    console.log(data)
-    if (!user_dob || !user_country || !user_city || !user_bio) {
+    const data = req.body
+        if (!user_id) {
         return res.status(404).render('404', { title: "404", error_message: ["User updates not found!"] })
     } 
     try { 
-        console.log("Updates sent to model", data) 
+        //console.log("Updates sent to model", data) 
         const updated = await Details.update(data)
         if (!updated) {
-        res.status(404).render('404', { title: "404", error_message: ["User updates not completed"] })
+        res.status(404).json({message: "No updates recieved."})
         }
         console.log("Updated: ", updated)
-        return res.redirect(`/profile/${user_id}`)
+        return res.status(200).json({message: "User update successful.", user: updated})
     } catch (error) {
         console.log(error.message);
-        res.status(500).render("404", { title: "404", error_message: ["user data not found"] })
+        res.status(500).json({message: "Failed to update user."})
     }
 };
 exports.getUserProfile = async (req, res) => {
     try {
-        const id = JSON.stringify(req)
-        const allUserDetails = await User.getUserWithDetails(id);
-        console.log("allUserDetails ",allUserDetails)
-        if(!allUserDetails) {
+        const id = await req.params.user_id
+        const UserDetails = await User.getUserWithDetails(id);
+        console.log("all user details: ",UserDetails)
+        if(!UserDetails) {
             console.log("Could not get users profile.")
-            return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
+            return res.status(404).render('404', { title: "404", error_message: ["User details found!"] });
         }
-            return res.render('profile', { user: allUserDetails, title: userProfile.user_id})
-            //return allUserDetails;
+            return res.render("profile", { user: UserDetails, title: "Profile"});
     } catch (error) {
         console.log(error);
     }     
 };
 exports.getUpdatePage = async (req, res) => {
         try {
-        //const userInfo = await User.findById(user_ID);
-        //const userDetails = await Detail.findById(user_ID);
         const userDetails = await User.getUserWithDetails(req.params.user_id);
 
         if(!userDetails) {
             console.log("Could not get users information.")
             return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
         }
-        //console.log("All the deets: ", allUserDetails)
-        res.render("update", { title: "Profile", user: userDetails, error_message: [] });
+        return res.render("update", { title: "Profile", user: userDetails, error_message: [] });
     } catch (error) {
         console.log(error);
         res.render("index", { title: "Login", error_message: [] });

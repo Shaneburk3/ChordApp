@@ -14,7 +14,8 @@
                 class="card-img-top rounded-top" alt="Profile piture" style=" height: 10rem;">
 
               <div class="card-body">
-                <form id="update_form" method="POST" action="/api/users/update/<%= user.user_ID %>">
+                <form id="update_form">
+                  <input type="hidden" name="user_id" id="user_id" value="<%= user.user_ID %>">
                   <div class="mb-3">
                     <label for="user_dob" class="form-label"><strong>Date of Birth</strong></label>
                     <input type="date" id="user_dob" name="user_dob" class="form-control" value="<%= user.user_dob %>">
@@ -38,7 +39,8 @@
                       rows="3" placeholder="<%= user.user_bio %>"></textarea>
                   </div>
 
-                  <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+                  <button type="submit" id="update_form" class="btn btn-primary w-100">Update Profile</button>
+
                 </form>
               </div>
             </div>

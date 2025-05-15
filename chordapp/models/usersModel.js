@@ -23,7 +23,7 @@ const User = {
             throw error;
         }
     },
-    findByEmail: async (email) => {
+    findOne: async (email) => {
         console.log(`Searching for: ${email}`);
         try {
             const response = await client.query('SELECT * FROM users WHERE "email" = ($1)', [email]);
@@ -65,7 +65,7 @@ const User = {
                 console.log("didnt find the email.")
                 return false;
             } else {
-                console.log("usersModel, 68: ", response.rows[0])
+                //console.log("usersModel, 68: ", response.rows[0])
                 return response.rows[0];
             }
         } catch (error) {
