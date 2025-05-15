@@ -41,21 +41,18 @@ exports.loginUser = async (req, res) => {
         //check if user exists
         const { login_email, login_password } = req.body;
         const foundUser = await User.findByEmail(login_email);
-        //const foundDetails = await Details.findById(foundUser.user_ID);
-        const isMatch = await Cipher.compare(login_password, foundUser.password)
-
         if (!foundUser) {
             var msg = ['No associated account with that email'];
-            console.log(`User ${login_email} does not exist`)
             return res.render('index', { title: "Login", error_message: msg })
-        } else if (!isMatch) {
-            console.log("Invalid email or password.")
+        
+        }
+        const isMatch = await Cipher.compare(login_password, foundUser.password)
+         if (!isMatch) {
             const msg = ["Invalid email or password."];
             return res.render('index', { title: "Login", error_message: msg })
         }
-        const allDetails = User.getUserWithDetails(foundUser.user_ID)
-        console.log("USERR ", allDetails);
-        return res.render("profile", { user: allDetails, title: foundUser.user_ID })
+        const result = await User.getUserWithDetails(foundUser.user_ID)
+        return res.render("profile", { user: result, title: foundUser.user_ID })
     } catch (error) {
         console.log(error)
         const msg = error.array().map(e => e.msg);
