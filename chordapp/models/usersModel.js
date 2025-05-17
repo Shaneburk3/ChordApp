@@ -1,14 +1,16 @@
 const client = require('../postgresDB')
 
 const User = {
-    create: async (first_name, last_name, email, creation_date, password, callback) => {
-            console.log(`[INFO]: Creating user:  ${first_name}`)
-            try {
-                client.query('INSERT INTO users (first_name, last_name, email, created_at, password) VALUES ($1,$2,$3,$4,$5) ', [first_name, last_name, email, creation_date, password], callback);
-                console.log("User Created: ", email)
-            } catch (error) {
-                console.log(error.message);
-            }
+    create: async (first_name, last_name, email, creation_date, password) => {
+        console.log(`[INFO]: Creating user:  ${first_name}`)
+        try {
+            const role = "BASIC";
+            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role) VALUES ($1,$2,$3,$4,$5,$6) RETURNING "user_ID"', [first_name, last_name, email, creation_date, password, role]);
+            console.log("User Created: ", email)
+            return response.rows[0]
+        } catch (error) {
+            console.log(error.message)
+        }
     },
     findById: async (user_id) => {
         try {
@@ -19,7 +21,7 @@ const User = {
                 return response.rows[0];
             }
         } catch (error) {
-            console.log("FindByID ERROR :(",error.message);
+            console.log("FindByID ERROR :(", error.message);
             throw error;
         }
     },
@@ -38,7 +40,7 @@ const User = {
             return false;
         }
     },
-    updateUser: async (user_id) => {
+    update: async (user_id) => {
         console.log(`Updating user ID: ${user_id}`);
         try {
             const response = await client.query('UPDATE users.*, user_details.* FROM users INNER JOIN user_details ON users."user_ID" = user_details."user_id" WHERE users."user_ID" = ($1)', [user_id]);
@@ -54,10 +56,10 @@ const User = {
             return false;
         }
     },
-    deleteUser: async (data) => {
+    delete: async (data) => {
 
     },
-    getUserWithDetails: async(user_id) => {
+    getUserWithDetails: async (user_id) => {
         console.log(`Searching for user ID: ${user_id}`);
         try {
             const response = await client.query('SELECT users.*, user_details.* FROM users INNER JOIN user_details ON users."user_ID" = user_details."user_id" WHERE users."user_ID" = ($1)', [user_id]);
@@ -72,8 +74,8 @@ const User = {
             console.log("ERROR:", error.message);
             return false;
         }
-    }    
-
     }
+
+}
 
 module.exports = User;

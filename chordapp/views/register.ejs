@@ -39,15 +39,20 @@
               </span>
             </div>
             <div class="text-start">
-              <label for="register_password2">Confirm password</label>
+              <label for="register_password2">Confirm Password</label>
               <input type="password" name="register_password2" class="form-control" id="register_password2"
                 placeholder="Password" required>
+            </div>
+            <div class="text-start">
+              <label for="user_DOB">Date Of Birth</label>
+              <input type="date" name="user_DOB" class="form-control" id="user_DOB" required>
             </div>
             <div class="text-start" style="margin: 1rem;">
               <input type="checkbox" name="terms_check" class="form-check-input" id="terms_check">
               <label class="form-check-label" for="terms_check" required>Agree to terms and conditions</label>
             </div>
-            <button type="submit" id="register_btn" class="btn btn-primary" style="width: 80%; margin-top: 2rem;">Register</button>
+            <button type="submit" id="register_btn" class="btn btn-primary"
+              style="width: 80%; margin-top: 2rem;">Register</button>
           </form>
 
           <% if (formErrors && formErrors.length> 0) { %>

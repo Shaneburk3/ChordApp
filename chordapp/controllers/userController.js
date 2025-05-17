@@ -40,9 +40,9 @@ exports.registerUser = async (req, res) => {
         const hashed_password = await Cipher.createHash(register_password1)
         const creation_date = getDate();
         //create user
-        await User.create(first_name, last_name, register_email, creation_date, hashed_password);
-        const userID = userExists.user_ID;
-        await Details.create(userID);
+        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password);
+        console.log('user created ID: ', user.user_ID)
+        await Details.create(user.user_ID);
         return res.redirect('/');
     } catch (error) {
         console.log(error.message)

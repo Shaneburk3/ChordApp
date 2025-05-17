@@ -7,6 +7,7 @@ const validateRegister = [
     body('register_password1').escape().isLength({ min: 8 }).withMessage("Password is not long enough").matches(/^[A-Za-z0-9 .,'!&]+$/),
     body('register_password2').escape().isLength({ min: 8 }).withMessage(" "),
     body('terms_check').equals('on').withMessage('Please agree to T&Cs'),
+    body('user_DOB').isDate().withMessage('DOB must be a date.'),
     (req, res, next) => {
         const errors = validationResult(req);
         //If validation fails, set errors in response.

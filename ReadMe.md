@@ -34,14 +34,15 @@ npm install dotenv
 ## SECURITY FEATURES
 npm install express-validator
 npm install crypto
-npm install express-session
 
 # TESTING
-npm install playwright??
-npx playwright install??
+Install playwright?? E2E UI Testing
+
+Install jest?? unit and integration testing
 
 ## Start ChordExplorer
 
+Command line: cd/chordexplorer
 Command line: node app.js
 
 Open web browser, enter: http://localhost:3000/
@@ -60,11 +61,11 @@ npx playwright test tests/createBlog.spec.js
 1 - Navigate to register page from the dropdown menu in the nab bar.
 2 - Register a new user. Example:
 
-first_name: admin
-last_name: admin
-email: admin@email.com
-password: Password12
-Retype password: Password12
+first_name: 
+last_name: 
+email: 
+password: 
+Retype password: 
 
 3 - redirected to blogs page, views blogs or either create, update or delete blogs.
 
