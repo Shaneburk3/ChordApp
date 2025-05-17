@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//Routes
+//Routes for users and audios
 app.use('/api/users/', userRoutes);
 app.use('/api/audios/', audioRoutes);
 

@@ -4,8 +4,8 @@ const router = express.Router();
 const audioController = require('../controllers/audioController');
 const { validateRegister, validateLogin } = require('../middleware/validator');
 
-router.get("/translater", (req, res) => {
-    res.render("translater", { header: "translater page", title: "translater", user: null, error_message: []});
+router.get("/translator", (req, res) => {
+    res.render("translator", { header: "translator page", title: "translator", user: null, error_message: []});
 });
 
 router.get("/audio", (req, res) => {
