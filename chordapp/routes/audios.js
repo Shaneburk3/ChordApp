@@ -19,5 +19,7 @@ router.get("/:user_id/:audio_id", (req, res) => {
 
 router.get("/:user_id/:audio_id", audioController.findOne);
 
+router.post("/translator/translate", audioController.translate);
+
 
 module.exports = router;

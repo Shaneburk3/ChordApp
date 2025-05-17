@@ -15,7 +15,8 @@ exports.delete = async (req, res) => {
 
 };
 
-exports.create = async (req, res) => {
+//create
+exports.translator = async (req, res) => {
 
 };
 
