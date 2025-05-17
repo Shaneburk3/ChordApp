@@ -2,65 +2,68 @@
 <html lang="en">
 <%- include("partials/head") %>
 
-    <body>
+  <body>
 
-        <%- include("partials/nav") %>
+    <%- include("partials/nav") %>
 
-            <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
-                  <h1 class="display-4">ChordExplorer</h1>
-                  <h4 class="text-muted">Register with us</h4>
-              
-                    <div class="card-body">
-                      <form id="login_form" action="/api/users/Register" method="POST">
-                        <div class="text-start">
-                            <label for="first_name">First Name</label>
-                            <input type="text" name="first_name" class="form-control" id="first_name" aria-describedby="firstName"
-                              required placeholder="First Name">
-                          </div>
-                          <div class="text-start">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" name="last_name" class="form-control" id="last_name" aria-describedby="lastName"
-                              required placeholder="last Name">
-                          </div>
-                          <div class="text-start">
-                            <label for="register_email">Email address</label>
-                            <input type="email" name="register_email" class="form-control" id="register_email"
-                              aria-describedby="emailHelp" required placeholder="Email@email.com">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                              else.</small>
-                          </div>
-                          <div class="text-start">
-                            <label for="register_password">Password</label>
-                            <input type="password" name="register_password1" class="form-control" id="register_password1"
-                              placeholder="Password" required>
-                              <span id="passwordHelpInline" class="form-text">
-                                Must be 8-20 characters long.
-                              </span>
-                          </div>
-                          <div class="text-start">
-                            <label for="register_password2">Confirm password</label>
-                            <input type="password" name="register_password2" class="form-control" id="register_password2"
-                              placeholder="Password" required>
-                          </div>
-                          <div class="text-start" style="margin: 1rem;">
-                            <input type="checkbox" name="terms_check" class="form-check-input" id="terms_check">
-                            <label class="form-check-label" for="terms_check" required>Agree to terms and conditions</label>
-                          </div>
-                          <button type="submit" id="register_btn" class="btn btn-primary">Register</button>
-                      </form>
-              
-                      <% if (error_message && error_message.length > 0) { %>
-                        <div class="mt-3">
-                          <% for (var i = 0; i < error_message.length; i++) { %>
-                            <p class="text-danger"><%= error_message[i] %></p>
-                          <% } %>
-                        </div>
-                      <% } %>
-              
-                      <p class="mt-3">Already have an account? <a href="/">Login</a></p>
-                    </div>
-              </div>
-              <%- include("partials/footer") %>
-    </body>
+      <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
+        <h1 class="display-4">ChordExplorer</h1>
+        <h4 class="text-muted">Audio translation made easy</h4>
+
+        <div class="card-body">
+          <h5 class="card-title">Register</h5>
+          <form id="login_form" action="/api/users/Register" method="POST">
+            <div class="text-start">
+              <label for="first_name">First Name</label>
+              <input value="<%= formData.first_name || '' %>" type="text" name="first_name" class="form-control"
+                id="first_name" aria-describedby="firstName" required placeholder="First Name">
+            </div>
+            <div class="text-start">
+              <label for="last_name">Last Name</label>
+              <input value="<%= formData.last_name || '' %>" type="text" name="last_name" class="form-control"
+                id="last_name" aria-describedby="lastName" required placeholder="last Name">
+            </div>
+            <div class="text-start">
+              <label for="register_email">Email address</label>
+              <input value="<%= formData.email || '' %>" type="email" name="register_email" class="form-control"
+                id="register_email" aria-describedby="emailHelp" required placeholder="Email@email.com">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+            </div>
+            <div class="text-start">
+              <label for="register_password">Password</label>
+              <input type="password" name="register_password1" class="form-control" id="register_password1"
+                placeholder="Password" required>
+              <span id="passwordHelpInline" class="form-text">
+                Must be 8-20 characters long.
+              </span>
+            </div>
+            <div class="text-start">
+              <label for="register_password2">Confirm password</label>
+              <input type="password" name="register_password2" class="form-control" id="register_password2"
+                placeholder="Password" required>
+            </div>
+            <div class="text-start" style="margin: 1rem;">
+              <input type="checkbox" name="terms_check" class="form-check-input" id="terms_check">
+              <label class="form-check-label" for="terms_check" required>Agree to terms and conditions</label>
+            </div>
+            <button type="submit" id="register_btn" class="btn btn-primary" style="width: 80%; margin-top: 2rem;">Register</button>
+          </form>
+
+          <% if (formErrors && formErrors.length> 0) { %>
+            <div class="mt-3">
+              <% formErrors.forEach(error=> { %>
+                <p class="text-danger">
+                  <%= error.msg %>
+                </p>
+                <% }) %>
+            </div>
+            <% } %>
+
+              <p class="mt-3">Already have an account? <a href="/">Login</a></p>
+        </div>
+      </div>
+      <%- include("partials/footer") %>
+  </body>
 
 </html>

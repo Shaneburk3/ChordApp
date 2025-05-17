@@ -29,6 +29,7 @@ npm install ejs
 npm install express-session
 #npm install knex
 npm install nodemailer
+npm install dotenv
 
 ## SECURITY FEATURES
 npm install express-validator

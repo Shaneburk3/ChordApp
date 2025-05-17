@@ -5,12 +5,16 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const port = 3000;
-const userRoutes = require('./routes/users')
+const userRoutes = require('./routes/users');
+const audioRoutes = require('./routes/audios');
+require('dotenv').config()
 
+
+const session = require('express-session');
 
 //EJS set up
 app.set("view engine", "ejs");
-app.set('views', path.join(__dirname,'views'))
+app.set('views', path.join(__dirname, 'views'))
 
 //static public folders
 app.use(express.static(path.join(__dirname, 'public')));
@@ -21,16 +25,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Routes
 app.use('/api/users/', userRoutes);
+app.use('/api/audios/', audioRoutes);
+
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
 
 //Connect to database.
-const { Client } = require('pg');
+const { Client, escapeLiteral } = require('pg');
+const { clear } = require("console");
 
 const client = new Client({
-    user: "postgres",
+    user: process.env.DB_USERNAME,
     host: "localhost",
-    password: "F7d4rbhwkab3",
-    database: "chordExplorer",
-    port: 5432
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_USERNAME,
+    port: process.env.DB_PORT
 });
 
 try {
@@ -48,15 +62,28 @@ app.listen(port, () => {
 });
 
 app.get("/", (req, res) => {
-    res.render("index", { header: "index", title: "Index", user: null, error_message: []});
+    const formErrors = req.session.formErrors || [];
+    const formData = req.session.formData || {};
+    const user = [];
+    res.render("index", { header: "index", title: "Index", user, formErrors, formData });
 });
 
 app.get("/login", (req, res) => {
-    res.render("login", { title: "Login", error_message: [] });
+    const formErrors = req.session.formErrors || [];
+    const formData = req.session.formData || {};
+    //clear old data
+    req.session.formErrors = null;
+    req.session.formData = null;
+    res.render("login", { title: "Login", formErrors, formData });
 });
 
 app.get("/register", (req, res) => {
-    res.render("register", { title: "Register", error_message: [] });
+    const formErrors = req.session.formErrors || [];
+    const formData = req.session.formData || {};
+    //clear old data
+    req.session.formErrors = null;
+    req.session.formData = null;
+    res.render("register", { title: "Register", formErrors, formData });
 });
 
 app.get("/about", (req, res) => {
@@ -67,7 +94,8 @@ app.get("/contact", (req, res) => {
     res.render("contact", { header: "Contact", title: "Contact" });
 });
 app.get("/profile", (req, res) => {
-    res.render("contact", { user: [], title: "profile" });
+    const audios = []
+    res.render("profile", { user: [], title: "profile", audios: [] });
 });
 
 app.get("/404", (req, res) => {

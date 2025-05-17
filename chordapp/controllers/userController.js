@@ -16,28 +16,39 @@ exports.registerUser = async (req, res) => {
 
     try {
         //Check if user exists
-        const userExists = await User.findByEmail(register_email);
+        const userExists = await User.findOne(register_email);
         if (userExists) {
-            var msg = ["Account already associated with that email."];
-            return res.status(400).render('register', { title: "Register", error_message: msg });
-        } 
+            const formData = {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+            }
+            var formErrors = [{ msg: "Account already associated with that email." }];
+            return res.status(400).render("register", { title: "Register", formErrors, formData });
+        }
         //check if passwords match
         if (register_password1 != register_password2) {
-            var msg = ["Passwords are not the same."];
-            return res.status(400).render('register', { title: "Register", error_message: msg });
+            var formErrors = [{ msg: "Passwords are not the same." }];
+            const formData = {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                email: req.body.email
+            }
+
+            return res.status(400).render("register", { title: "Register", formErrors, formData });
         }
         //Hashing password
         const hashed_password = await Cipher.createHash(register_password1)
         const creation_date = getDate();
         //create user
         await User.create(first_name, last_name, register_email, creation_date, hashed_password);
-        const foundUser = await User.findByEmail(register_email);
-        const userID = foundUser.user_ID;
+        const userID = userExists.user_ID;
         await Details.create(userID);
         return res.redirect('/');
     } catch (error) {
-        var msg = ['Error creating user'];
-        return res.status(400).render('/', { title: "Login", error_message: msg })
+        console.log(error.message)
+        var formErrors = [{ msg: "Error creating user." }];
+        const formData = req.body;
+        return res.status(400).render("register", { title: "Register", formErrors, formData });
     }
 };
 
@@ -47,23 +58,27 @@ exports.loginUser = async (req, res) => {
         //Search for user
         const foundUser = await User.findOne(login_email);
         if (!foundUser) {
-            var msg = ['No associated account with that email'];
-            return res.render('index', { title: "Login", error_message: msg })
+            const formData = [];
+            //Email not found, do not state this as is poses security risk.
+            var formErrors = [{ msg: "Invalid credentials, please try again." }];
+            return res.render('index', { title: "Login", formErrors, formData })
 
         }
         //Check password
         const isMatch = await Cipher.compare(login_password, foundUser.password)
         if (!isMatch) {
-            const msg = ["Invalid email or password."];
-            return res.render('index', { title: "Login", error_message: msg })
+            const formErrors = [{ msg: "Invalid email or password" }];
+            const formData = [];
+            return res.render('index', { title: "Login", formErrors, formData })
         }
         //Get user details, return their profile.
         const result = await User.getUserWithDetails(foundUser.user_ID)
-        return res.render("profile", { user: result, title: "Profile" })
+        const audios = [];
+        return res.render("profile", { user: result, title: "Profile", audios})
     } catch (error) {
         console.log(error)
-        const msg = error.message || "Unexpected error";
-        return res.render('index', { title: "Login", error_message: msg })
+        const formErrors = [{ msg: error.message }];
+        return res.render('index', { title: "Login", formErrors, formData: [] })
     }
 };
 
@@ -71,8 +86,9 @@ exports.updateUser = async (req, res) => {
     console.log("Updating user...")
     const user_id = req.params.user_id;
     const data = req.body
+    console.log("UPDATES:", req.body)
     if (!user_id) {
-        return res.status(404).render('404', { title: "404", error_message: ["User updates not found!"] })
+        return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] })
     }
     try {
         const updated = await Details.update(data)
@@ -93,9 +109,11 @@ exports.getUserProfile = async (req, res) => {
         console.log("all user details: ", UserDetails)
         if (!UserDetails) {
             console.log("Could not get users profile.")
-            return res.status(404).render('404', { title: "404", error_message: ["User details found!"] });
+            const formErrors = [{ msg: "Details not found" }];
+            return res.status(404).render('404', { title: "404", formErrors });
         }
-        return res.render("profile", { user: UserDetails, title: "Profile" });
+        const audios = [];
+        return res.render("profile", { user: UserDetails, title: "Profile", audios});
     } catch (error) {
         console.log(error);
     }
@@ -106,12 +124,12 @@ exports.getUpdatePage = async (req, res) => {
 
         if (!userDetails) {
             console.log("Could not get users information.")
-            return res.status(404).render('404', { title: "404", error_message: ["User details found!"] })
+            return res.status(404).render('404', { title: "404", formErrors: "User details found!" })
         }
-        return res.render("update", { title: "Profile", user: userDetails, error_message: [] });
+        return res.render("update", { title: "Profile", user: userDetails, formErrors: [] });
     } catch (error) {
         console.log(error);
-        res.render("index", { title: "Login", error_message: [] });
+        res.render("index", { title: "Login", formErrors: [] });
     }
 }
 exports.logoutUser = async (req, res) => {

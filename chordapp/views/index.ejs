@@ -15,7 +15,7 @@
                       <form id="login_form" action="/api/users/login" method="POST">
                         <div class="text-start">
                           <label for="login_email" class="form-label">Email address</label>
-                          <input type="email" autocomplete="email" name="login_email" class="form-control" id="login_email" placeholder="Enter email" required>
+                          <input value="<%= formData.email || ''%>" type="email" autocomplete="email" name="login_email" class="form-control" id="login_email" placeholder="Enter email" required>
                           <small class="form-text text-muted">We won't share your email with anyone else.</small>
                         </div>
                         <div class="text-start">
@@ -25,11 +25,11 @@
                         <button type="submit" id="login_btn" class="btn btn-primary" style="width: 80%; margin-top: 2rem;">Login</button>
                       </form>
               
-                      <% if (error_message && error_message.length > 0) { %>
+                      <% if (formErrors && formErrors.length > 0) { %>
                         <div class="mt-3">
-                          <% for (var i = 0; i < error_message.length; i++) { %>
-                            <p class="text-danger"><%= error_message[i] %></p>
-                          <% } %>
+                          <% formErrors.forEach(error => { %>
+                            <p class="text-danger"><%= error.msg %></p>
+                          <% }) %>
                         </div>
                       <% } %>
               

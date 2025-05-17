@@ -34,6 +34,10 @@ body, html {
     height: 200px;
     background: #aaa;
 }
+#profile_image {
+    width: 2rem;
+    height: 2rem;
+}
 
 label {
     text-align: center;

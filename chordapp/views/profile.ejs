@@ -3,72 +3,107 @@
 
 <%- include("partials/head") %>
 
-<body>
+  <body>
     <%- include("partials/nav") %>
 
-    <div class="container py-4">
-        
-        <%- include("partials/header") %>
-      
-        <div class="row g-4 mb-4">
-          <!--  user image and info -->
-          <div class="col-md-4">
-            <div class="card shadow-sm">
-              <img class="card-img-top" src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop" alt="User Image">
-              <div class="card-body">
-                <p><strong>Age:</strong> <%= user.user_age %></p>
-                <p><strong>Country:</strong> <%= user.user_country %></p>
-                <p><strong>City:</strong> <%= user.user_city %></p>
-              </div>
-            </div>
-          </div>
-      
-          <!-- column with user_details -->
-          <div class="col-md-8">
-            <div class="card shadow-sm mb-3">
-              <div class="card-body">
-                <h5 class="card-title">Profile</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Contact Information</h6>
-                <p><strong>Email:</strong> <%= user.email %></p>
-                <p><strong>Phone:</strong> </p>
-                <h5 class="mt-4">User Bio</h5>
-                <p><%= user.user_bio %></p>
-              </div>
-            </div>
-            <a href="/api/users/update/<%= user.user_ID %>" class="btn btn-dark">Edit Profile</a>
-          </div>
-        </div>
-      
-        <!-- Audio logs -->
-        <div class="mb-4">
-          <a href="/audio" class="btn btn-dark mb-3">Audio Translator</a>
-          <h2>Audio Files</h2>
-          <p>Below is an assortment of your saved audio files. Select and review as needed. Have fun!</p>
-        </div>
-      
+      <div class="container py-4">
 
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-4">
-            <div class="card bg-dark text-light h-100">
-              <div class="card-body">
-                <h4 class="card-title">Title: [audio.title]</h4>
-                <h5>Chord: Audio.Result</h5>
-                <h6>Heading</h6>
-                <p>
-                  The words nature and natural are used for all the things not made by humans: weather, organisms,
-                  landforms, celestial bodies, and more...
-                </p>
-                <a href="/audios/:audio_id" class="btn btn-light">Select Audio</a>
+        <%- include("partials/header") %>
+
+          <div class="row g-4 mb-4">
+            <!--  user image and info -->
+            <div class="col-md-4">
+              <div class="card shadow-sm">
+                <img class="card-img-top"
+                  src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop"
+                  alt="User Image">
+                <div class="card-body">
+                  <p><strong>Age:</strong>
+                    <%= user.user_age %>
+                  </p>
+                  <p><strong>Country:</strong>
+                    <%= user.user_country %>
+                  </p>
+                  <p><strong>City:</strong>
+                    <%= user.user_city %>
+                  </p>
+                </div>
               </div>
             </div>
+
+            <!-- column with user_details -->
+            <div class="col-md-8">
+              <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Profile</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Contact Information</h6>
+                  <p><strong>Email:</strong>
+                    <%= user.email %>
+                  </p>
+                  <p><strong>Phone:</strong> </p>
+                  <h5 class="mt-4">User Bio</h5>
+                  <p>
+                    <%= user.user_bio %>
+                  </p>
+                </div>
+              </div>
+              <a href="/api/users/update/<%= user.user_ID %>" class="btn btn-dark">Edit Profile</a>
+            </div>
           </div>
-          <!-- You can loop more audio cards here -->
-        </div>
-      
-        <%- include("partials/footer") %>
+
+          <!-- Audio logs -->
+          <div class="mb-4">
+            <a href="/api/audios/translater" class="btn btn-dark mb-3">Audio Translator</a>
+            <h2>Audio Files</h2>
+            <p>Below is an assortment of your saved audio files. Select and review as needed. Have fun!</p>
+          </div>
+
+          <% if (audios && audios.length> 0) { %>
+            <div class="mt-3">
+              <% audios.forEach(audio=> { %>
+              <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                  <div class="card bg-dark text-light h-100">
+                    <div class="card-body">
+                      <h4 class="card-title">Title: [audio.title]</h4>
+                      <h5>Chord: audio.Result</h5>
+                      <h6>Heading</h6>
+                      <p>
+                        The words nature and natural are used for all the things not made by humans: weather, organisms,
+                        landforms, celestial bodies, and more...
+                      </p>
+                      <a href="/api/audios/<% user.user_ID %>/<% audio.audio_id%>"
+                        class="btn btn-light">Select Audio</a>
+                    </div>
+                  </div>
+                </div>
+                <% }) %>
+            </div>
+            <% } %>
+
+
+              <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                  <div class="card bg-dark text-light h-100">
+                    <div class="card-body">
+                      <h4 class="card-title">Title: [audio.title]</h4>
+                      <h5>Chord: Audio.Result</h5>
+                      <h6>Heading</h6>
+                      <p>
+                        This is an example section for a singular audio file
+                      </p>
+                      <a href="/api/audios/148/1"
+                        class="btn btn-light">Select Audio</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- You can loop more audio cards here -->
+              </div>
+
+              <%- include("partials/footer") %>
       </div>
 
 
-</body>
+  </body>
 
 </html>
