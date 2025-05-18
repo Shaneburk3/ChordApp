@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("partials/head") %>
+
+    <body>
+        <%- include("partials/nav") %>
+            <%- include("partials/header") %>
+                <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
+                    <h1 class="display-4">ChordExplorer</h1>
+                    <h4 class="text-muted">Audio translation page</h4>
+                    <h2>This will be the admin page</h2>
+                </div>
+                <h1>Admin Dashboard</h1>
+<table>
+  <tr>
+    <th>ID</th><th>Email</th><th>Status</th><th>Actions</th>
+  </tr>
+    <% if (users) { %>
+        <% users.forEach(user => { %>
+            <tr>
+            <td><%= user.user_id %></td>
+            <td><%= user.email %></td>
+            <td><%= user.status %></td>
+            <td>
+                <form action="/api/users/admin/delete/<%= user.user_id %>" method="POST"><button>Delete</button></form>
+                <% if (user.status === 'suspended') { %>
+                <form action="/api/users/admin/unsuspend/<%= user.user_id %>" method="POST"><button>Unsuspend</button></form>
+                <% } else { %>
+                <form action="/api/users/admin/suspend/<%= user.user_id %>" method="POST"><button>Suspend</button></form>
+                <% } %>
+                <form action="/api/users/admin/update/<%= user.user_id %>" method="POST">
+                <input name="email" value="<%= user.email %>" />
+                <input name="first_name" value="<%= user.first_name %>" />
+                <input name="last_name" value="<%= user.last_name %>" />
+                <button>Update</button>
+                </form>
+            </td>
+            </tr>
+              <% }) %>
+        <% } %>
+</table>
+
+
+                <%- include("partials/footer") %>
+    </body>
+
+</html>

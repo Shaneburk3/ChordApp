@@ -4,6 +4,7 @@ const Cipher = require('../middleware/encryption');
 const Session = require('../utils/express-session.js');
 const { getDate } = require('../public/scripts/functions.js');
 const { json } = require('body-parser');
+const jwt = require('jsonwebtoken');
 
 exports.registerUser = async (req, res) => {
 
@@ -69,16 +70,19 @@ exports.loginUser = async (req, res) => {
         if (!isMatch) {
             const formErrors = [{ msg: "Invalid email or password" }];
             const formData = [];
-            return res.render('index', { title: "Login", formErrors, formData })
+            //return res.redirect(`/profile/${foundUser.user_ID}`)
+            return res.render('index', { title: "Login again", formErrors, formData })
         }
-        //Get user details, return their profile.
-        const result = await User.getUserWithDetails(foundUser.user_ID)
-        const audios = [];
-        return res.render("profile", { user: result, title: "Profile", audios})
+        //sign jsonwebtoken
+        const payload = { id: foundUser.user_ID, email: foundUser.email}
+
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'})
+
+        res.cookie('token', accessToken, {httpOnly: true, maxAge: 30 * 60 * 1000 });
+        res.redirect(`/api/users/profile/${foundUser.user_ID}`)
     } catch (error) {
-        console.log(error)
-        const formErrors = [{ msg: error.message }];
-        return res.render('index', { title: "Login", formErrors, formData: [] })
+        console.log(error);
+        res.status(500).json({ error: "Error logging in user."})
     }
 };
 
@@ -132,6 +136,22 @@ exports.getUpdatePage = async (req, res) => {
         res.render("index", { title: "Login", formErrors: [] });
     }
 }
-exports.logoutUser = async (req, res) => {
+exports.sendMessage = async (req, res) => {
 
+}
+exports.logoutUser = async (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/')
 };
+exports.adminPage = async (req, res) => {
+    return res.render("admin", { title: "Profile", header: "Admin page", user: null, users: null });
+}
+exports.deleteUser =  async (req, res) => {
+
+}
+exports.suspendUser =  async (req, res) => {
+    
+}
+exports.updateUser =  async (req, res) => {
+    
+}

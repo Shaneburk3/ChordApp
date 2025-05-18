@@ -30,10 +30,14 @@ npm install express-session
 #npm install knex
 npm install nodemailer
 npm install dotenv
+npm install nodemon / npm run devStart
 
 ## SECURITY FEATURES
 npm install express-validator
 npm install crypto
+npm install jsonwebtoken
+npm install cookie-parser
+
 
 # TESTING
 Install playwright?? E2E UI Testing
