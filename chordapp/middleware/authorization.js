@@ -20,8 +20,10 @@ function authenticateToken(req, res, next) {
 };
 
 function checkAdmin(req, res, next) {
+    console.log(req.user, req.user.role)
     if (req.user && req.user.role === 'ADMIN') {
         return next();
+        //return res.status(400).json({ error: "Header required."});
     }
     return res.status(403).send('Access Forbidden.')
 }

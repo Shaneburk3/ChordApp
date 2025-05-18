@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 //const audioController = require('../controllers/audioController');
 const { validateRegister, validateLogin } = require('../middleware/validation');
-const { authenticateToken } = require('../middleware/authorization')
+const { authenticateToken, checkAdmin } = require('../middleware/authorization')
 require('dotenv').config()
 
 
@@ -62,7 +62,9 @@ router.put("/update/:user_id", authenticateToken, userController.updateUser);
 
 //ADMIN SECTION START
 
-router.get("/admin", authenticateToken, userController.adminPage /*, checkAdmin, userController.adminPage */);
+router.get("/admin", authenticateToken, checkAdmin), (req, res) => {
+    res.render('admin', {user: req.user, title: "Admin Dashboard", users: users });
+};
 
 router.post('/admin/delete/:user_id', authenticateToken /*, checkAdmin, userController.deleteUser */);
 

@@ -6,6 +6,7 @@ const { getDate } = require('../public/scripts/functions.js');
 const { json } = require('body-parser');
 const jwt = require('jsonwebtoken');
 
+
 exports.registerUser = async (req, res) => {
 
     const {
@@ -74,12 +75,15 @@ exports.loginUser = async (req, res) => {
             return res.render('index', { title: "Login again", formErrors, formData })
         }
         //sign jsonwebtoken
-        const payload = { id: foundUser.user_ID, email: foundUser.email}
+        const payload = { id: foundUser.user_ID, email: foundUser.email, role: foundUser.role}
 
-        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'})
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
 
         res.cookie('token', accessToken, {httpOnly: true, maxAge: 30 * 60 * 1000 });
-        res.redirect(`/api/users/profile/${foundUser.user_ID}`)
+        if(foundUser.role === "ADMIN") {
+            return res.redirect('/api/users/admin')
+        }
+        return res.redirect(`/api/users/profile/${foundUser.user_ID}`)
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error logging in user."})
@@ -143,7 +147,7 @@ exports.logoutUser = async (req, res) => {
     res.clearCookie('token');
     res.redirect('/')
 };
-exports.adminPage = async (req, res) => {
+exports.getAdminPage = async (req, res) => {
     return res.render("admin", { title: "Profile", header: "Admin page", user: null, users: null });
 }
 exports.deleteUser =  async (req, res) => {

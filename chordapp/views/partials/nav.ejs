@@ -22,7 +22,7 @@
     <% if (user) { %>
         <li class="nav-item"><a href="/api/users/logout">Logout</a></li>
         <li class="nav-item"><a href="/api/users/profile/:user_id">Profile</a></li>
-    <% } else { %>
+    <% } else if (!user) { %>
         <li class="nav-item"><a href="/">Login</a></li>
     <% } %>
       </form>
