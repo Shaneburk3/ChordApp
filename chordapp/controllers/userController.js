@@ -14,7 +14,9 @@ exports.registerUser = async (req, res) => {
         last_name,
         register_email,
         register_password1,
-        register_password2 } = req.body;
+        register_password2,
+        user_dob } = req.body;
+        console.log(req.body)
 
     try {
         //Check if user exists
@@ -33,18 +35,18 @@ exports.registerUser = async (req, res) => {
             const formData = {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
-                email: req.body.email
+                email: req.body.email,
+                user_dob: req.body.user_dob
             }
-
             return res.status(400).render("register", { title: "Register", formErrors, formData });
         }
         //Hashing password
         const hashed_password = await Cipher.createHash(register_password1);
         const creation_date = getDate();
         //create user
-        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password);
-        console.log('user created.', user.user_ID);
-        await Details.create(user.user_ID);
+        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password, user_dob);
+        console.log('user created.', user.user_id);
+        await Details.create(user.user_id);
         return res.redirect('/');
     } catch (error) {
         console.log(error.message);;
@@ -71,11 +73,10 @@ exports.loginUser = async (req, res) => {
         if (!isMatch) {
             const formErrors = [{ msg: "Invalid email or password" }];
             const formData = [];
-            //return res.redirect(`/profile/${foundUser.user_ID}`)
             return res.render('index', { title: "Login again", formErrors, formData })
         }
         //sign jsonwebtoken
-        const payload = { id: foundUser.user_ID, email: foundUser.email, role: foundUser.role}
+        const payload = { id: foundUser.user_id, email: foundUser.email, role: foundUser.role}
 
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
 
@@ -83,7 +84,7 @@ exports.loginUser = async (req, res) => {
         if(foundUser.role === "ADMIN") {
             return res.redirect('/api/users/admin')
         }
-        return res.redirect(`/api/users/profile/${foundUser.user_ID}`)
+        return res.redirect(`/api/users/profile/${foundUser.user_id}`)
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error logging in user."})

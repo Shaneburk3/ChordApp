@@ -3,7 +3,7 @@ const client = require("../postgresDB");
 const Details = {
     create: async (user_id, callback) => {
         try {
-            client.query("INSERT INTO user_details (user_id, user_bio, user_age, user_city, user_country, user_phone) VALUES ($1,$2,$3,$4,$5, $6) ", [user_id, "You can edit this in the update page!", 0, "Enter City", "Enter Country", null], callback);
+            client.query("INSERT INTO user_details (user_id, user_bio, user_age, user_city, user_country) VALUES ($1,$2,$3,$4,$5) ", [user_id, "You can edit this in the update page!", 0, "City", "Country"], callback);
             console.log("User details created for user: ", user_id)
         } catch (error) {
             console.log(error.message)
@@ -26,7 +26,7 @@ const Details = {
         console.log("UPDATE::", data)
         try {
             console.log('Lets update this user...')
-            const result = await client.query(`UPDATE user_details SET user_age = $1, user_country =  $2, user_city = $3, user_bio = $4 WHERE user_id = $5 RETURNING user_id`, [user_age, user_country, user_city, user_bio, user_id]).then();
+            const result = await client.query(`UPDATE user_details SET user_age = $1, user_country =  $2, user_city = $3, user_bio = $4 WHERE user_id = $5 RETURNING user_id`, [user_age, user_country, user_city, user_bio, user_id]);
             if(!result) {
                 console.log('No updates recieved');
             }

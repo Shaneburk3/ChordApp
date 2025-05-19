@@ -5,7 +5,7 @@ const User = {
         console.log(`[INFO]: Creating user:  ${first_name}`)
         try {
             const role = "BASIC";
-            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role) VALUES ($1,$2,$3,$4,$5,$6) RETURNING "user_ID"', [first_name, last_name, email, creation_date, password, role]);
+            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role) VALUES ($1,$2,$3,$4,$5,$6) RETURNING "user_id"', [first_name, last_name, email, creation_date, password, role]);
             console.log("User Created: ", email)
             return response.rows[0]
         } catch (error) {
@@ -14,7 +14,7 @@ const User = {
     },
     findById: async (user_id) => {
         try {
-            const response = await client.query('SELECT * FROM users WHERE "user_ID" = ($1)', [user_id]);
+            const response = await client.query('SELECT * FROM users WHERE "user_id" = ($1)', [user_id]);
             if (response.rows.length === 0) {
                 return false;
             } else {
@@ -43,7 +43,7 @@ const User = {
     update: async (user_id) => {
         console.log(`Updating user ID: ${user_id}`);
         try {
-            const response = await client.query('UPDATE users.*, user_details.* FROM users INNER JOIN user_details ON users."user_ID" = user_details."user_id" WHERE users."user_ID" = ($1)', [user_id]);
+            const response = await client.query('UPDATE users.*, user_details.* FROM users INNER JOIN user_details ON users."user_id" = user_details."user_id" WHERE users."user_id" = ($1)', [user_id]);
             if (response.rows.length == 0) {
                 console.log("didnt find the email.")
                 return false;
@@ -62,7 +62,7 @@ const User = {
     getUserWithDetails: async (user_id) => {
         console.log(`Searching for user ID: ${user_id}`);
         try {
-            const response = await client.query('SELECT users.*, user_details.* FROM users INNER JOIN user_details ON users."user_ID" = user_details."user_id" WHERE users."user_ID" = ($1)', [user_id]);
+            const response = await client.query('SELECT users.*, user_details.* FROM users JOIN user_details ON users.user_id = user_details.user_id WHERE users.user_id = ($1)', [user_id]);
             if (response.rows.length == 0) {
                 console.log("didnt find the email.")
                 return false;
@@ -79,3 +79,8 @@ const User = {
 }
 
 module.exports = User;
+
+/*
+'SELECT users.*, user_details.user.ino_id, user_details.user.user_id AS u_id, user_details.user_bio, user_details.user_city, user_details.user_country, user_details.user_age FROM users JOIN user_details ON users.user_id = user_details.user_id WHERE users.user_id = ($1)'
+*/
+
