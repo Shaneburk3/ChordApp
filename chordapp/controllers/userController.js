@@ -24,12 +24,12 @@ exports.registerUser = async (req, res) => {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
             }
-            var formErrors = [{ msg: "Account already associated with that email." }];
+            var formErrors = [{ msg: "Error please try again." }];
             return res.status(400).render("register", { title: "Register", formErrors, formData });
         }
         //check if passwords match
         if (register_password1 != register_password2) {
-            var formErrors = [{ msg: "Passwords are not the same." }];
+            var formErrors = [{ msg: "ERROR: Passwords are not the same." }];
             const formData = {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
@@ -39,15 +39,15 @@ exports.registerUser = async (req, res) => {
             return res.status(400).render("register", { title: "Register", formErrors, formData });
         }
         //Hashing password
-        const hashed_password = await Cipher.createHash(register_password1)
+        const hashed_password = await Cipher.createHash(register_password1);
         const creation_date = getDate();
         //create user
         const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password);
-        console.log('user created ID: ', user.user_ID)
+        console.log('user created.', user.user_ID);
         await Details.create(user.user_ID);
         return res.redirect('/');
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);;
         var formErrors = [{ msg: "Error creating user." }];
         const formData = req.body;
         return res.status(400).render("register", { title: "Register", formErrors, formData });

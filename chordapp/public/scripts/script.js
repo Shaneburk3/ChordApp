@@ -28,11 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(updates)
                 });
-                let result = null;
-                if(response.status === 404 || response.status === 500) {
-                    console.log("No Update received", response)
+                if (!response.ok) {
+                    console.log("No Update received, status:", response.status)
                 } else if (response.status === 200){                    
-                    console.log("Response: ", result)
+                    console.log("Response: ", response.json())
                     window.location.href = `/api/users/profile/${updates.user_id}`;                  
                 }
             } catch (error) {

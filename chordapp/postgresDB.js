@@ -9,15 +9,5 @@ const { Client } = require('pg');
     });
 
     client.connect();
-    /*
-    client.query('Select * from users', (err, res) =>{
-        if (!err) {
-            console.log(res.rows);
-        } else {
-            console.log("Error: ",err.messagge);
-        }
-        client.end;
-    })
-    */
-
-    module.exports = client;
+  
+module.exports = client;
