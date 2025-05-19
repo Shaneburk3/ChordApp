@@ -95,7 +95,7 @@ exports.updateUser = async (req, res) => {
     console.log("Updating user...")
     const user_id = req.params.user_id;
     const data = req.body
-    console.log("UPDATES:", req.body)
+    console.log("UPDATES:", data)
     if (!user_id) {
         return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] })
     }
@@ -107,17 +107,16 @@ exports.updateUser = async (req, res) => {
         console.log("Updated: ", updated)
         return res.status(200).json({ message: "User update successful.", user: updated })
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({ message: "Failed to update user." })
     }
 };
-exports.getUserProfile = async (req, res) => {
+exports.getProfile = async (req, res) => {
     try {
-        const id = await req.params.user_id
-        const UserDetails = await User.getUserWithDetails(id);
+        const UserDetails = await User.findById(req.params.user_id);
         console.log("all user details: ", UserDetails)
         if (!UserDetails) {
-            console.log("Could not get users profile.")
+            console.log("Could not get users information.")
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404", formErrors });
         }
@@ -125,20 +124,21 @@ exports.getUserProfile = async (req, res) => {
         return res.render("profile", { user: UserDetails, title: "Profile", audios});
     } catch (error) {
         console.log(error);
+        return res.render("index", { title: "Login", formErrors: [] });
     }
 };
-exports.getUpdatePage = async (req, res) => {
+exports.getUpdate = async (req, res) => {
     try {
-        const userDetails = await User.getUserWithDetails(req.params.user_id);
-
-        if (!userDetails) {
+        const user = await User.findById(req.params.user_id);
+        if (!user) {
             console.log("Could not get users information.")
-            return res.status(404).render('404', { title: "404", formErrors: "User details found!" })
+            const formErrors = [{ msg: "Details not found" }];
+            return res.status(404).render('404', { title: "404", formErrors })
         }
-        return res.render("update", { title: "Profile", user: userDetails, formErrors: [] });
+        return res.render("update", { title: "Profile", user: user });
     } catch (error) {
-        console.log(error);
-        res.render("index", { title: "Login", formErrors: [] });
+        console.log(error); 
+        return res.render("index", { title: "Login", formErrors: [] });
     }
 }
 exports.sendMessage = async (req, res) => {

@@ -29,10 +29,12 @@ const Details = {
             const result = await client.query(`UPDATE user_details SET user_age = $1, user_country =  $2, user_city = $3, user_bio = $4 WHERE user_id = $5 RETURNING user_id`, [user_age, user_country, user_city, user_bio, user_id]);
             if(!result) {
                 console.log('No updates recieved');
+                return result.status(400).json({ message: "No updates received." });
             }
-            return result.rows[0];
+            return result.status(200).json({ message: "User update successful" , user: result })
         } catch (error) {
             console.log("Error updating database:", error.message)
+            throw error;
         }
     },
     delete: async (data) => {

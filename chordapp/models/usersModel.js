@@ -13,8 +13,21 @@ const User = {
         }
     },
     findById: async (user_id) => {
+        console.log(`findByID: ${user_id}`);
+        const query = `SELECT 
+        users.user_id,
+        users.first_name,
+        users.last_name, 
+        users.email, 
+        users.created_at, 
+        users.role, 
+        user_details.user_bio, 
+        user_details.user_age, 
+        user_details.user_city, 
+        user_details.user_country 
+        FROM users JOIN user_details ON users.user_id = user_details.info_id WHERE users.user_id = ($1)`;
         try {
-            const response = await client.query('SELECT * FROM users WHERE "user_id" = ($1)', [user_id]);
+            const response = await client.query(query, [user_id]);
             if (response.rows.length === 0) {
                 return false;
             } else {
@@ -30,7 +43,7 @@ const User = {
         try {
             const response = await client.query('SELECT * FROM users WHERE "email" = ($1)', [email]);
             if (response.rows.length == 0) {
-                console.log("didnt find the email.")
+                console.log("User not found.")
                 return false;
             } else {
                 return response.rows[0];
@@ -43,7 +56,7 @@ const User = {
     update: async (user_id) => {
         console.log(`Updating user ID: ${user_id}`);
         try {
-            const response = await client.query('UPDATE users.*, user_details.* FROM users INNER JOIN user_details ON users."user_id" = user_details."user_id" WHERE users."user_id" = ($1)', [user_id]);
+            const response = await client.query('UPDATE users.*, user_details.* FROM users INNER JOIN user_details ON users."user_id" = user_details."info_id" WHERE users."user_id" = ($1)', [user_id]);
             if (response.rows.length == 0) {
                 console.log("didnt find the email.")
                 return false;
@@ -58,24 +71,7 @@ const User = {
     },
     delete: async (data) => {
 
-    },
-    getUserWithDetails: async (user_id) => {
-        console.log(`Searching for user ID: ${user_id}`);
-        try {
-            const response = await client.query('SELECT users.*, user_details.* FROM users JOIN user_details ON users.user_id = user_details.user_id WHERE users.user_id = ($1)', [user_id]);
-            if (response.rows.length == 0) {
-                console.log("didnt find the email.")
-                return false;
-            } else {
-                //console.log("usersModel, 68: ", response.rows[0])
-                return response.rows[0];
-            }
-        } catch (error) {
-            console.log("ERROR:", error.message);
-            return false;
-        }
     }
-
 }
 
 module.exports = User;

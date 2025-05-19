@@ -9,7 +9,7 @@ const userController = require('../controllers/userController');
 // const audioController = require('../controllers/audioController'); // Uncomment if used
 
 const { validateRegister, validateLogin } = require('../middleware/validation');
-const { authenticateToken, checkAdmin } = require('../middleware/authorization');
+const { authenticateToken, checkAdmin } = require('../middleware/authentication');
 
 // Session Setup
 router.use(session({
@@ -42,8 +42,8 @@ router.post('/login', validateLogin, userController.loginUser);
 router.get('/logout', userController.logoutUser);
 
 // Protected Routes
-router.get('/profile/:user_id', authenticateToken, userController.getUserProfile);
-router.get('/update/:user_id', authenticateToken, userController.getUpdatePage);
+router.get('/profile/:user_id', authenticateToken, userController.getProfile);
+router.get('/update/:user_id', authenticateToken, userController.getUpdate);
 router.put('/update/:user_id', authenticateToken, userController.updateUser);
 
 // Optionally remove this unless needed

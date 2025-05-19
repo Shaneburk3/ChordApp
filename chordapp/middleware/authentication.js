@@ -12,16 +12,17 @@ function authenticateToken(req, res, next) {
         if (!err && user) {
             res.locals.user = user;
             req.user = user;
+            console.log("AUTHENTICATED")
             return next();
         }
         res.clearCookie('token');
-        return res.status(400).redirect('/');
+        return res.status(401).redirect('/');
     });
 };
 
 function checkAdmin(req, res, next) {
     console.log(req.user, req.user.role)
-    if (req.user && req.user.role === 'ADMIN') {
+    if (req.user && req.user.role === 'ADMIN') { 
         return next();
         //return res.status(400).json({ error: "Header required."});
     }

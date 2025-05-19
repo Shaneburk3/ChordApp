@@ -6,7 +6,7 @@ const app = express();
 const cookieParser = require("cookie-parser")
 
 
-const { authenticateToken }  = require('../chordapp/middleware/authorization')
+const { authenticateToken }  = require('../chordapp/middleware/authentication')
 
 const bodyParser = require("body-parser");
 
@@ -24,6 +24,7 @@ const basicRoutes = require('./routes/basics')
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname, 'views'))
 
+
 //static public folders
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 
 //To allow the use cookie sending cookies to the client
 app.use(authenticateToken);
