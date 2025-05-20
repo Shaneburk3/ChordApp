@@ -4,11 +4,10 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 
-
 const userController = require('../controllers/userController');
 // const audioController = require('../controllers/audioController'); // Uncomment if used
 
-const { validateRegister, validateLogin } = require('../middleware/validation');
+const { validateRegister, validateLogin, validateUpdate } = require('../middleware/validation');
 const { authenticateToken, checkAdmin } = require('../middleware/authentication');
 
 // Session Setup
@@ -21,30 +20,36 @@ router.use(session({
 
 // Unprotected Routes
 router.get('/register', (req, res) => {
+    res.render('register', { title: 'Register', formData: {}});
+});
+/*
+router.get('/register', (req, res) => {
     const formErrors = req.session.formErrors || [];
     const formData = req.session.formData || {};
     req.session.formErrors = null;
     req.session.formData = null;
     res.render('register', { title: 'Register', formErrors, formData });
 });
-
+*/
 router.post('/register', validateRegister, userController.registerUser);
-
-router.get('/login', (req, res) => {
-    const formErrors = req.session.formErrors || [];
-    const formData = req.session.formData || {};
-    req.session.formErrors = null;
-    req.session.formData = null;
-    res.render('login', { title: 'Login', formErrors, formData });
-});
 
 router.post('/login', validateLogin, userController.loginUser);
 router.get('/logout', userController.logoutUser);
-
+/*
+router.get("/", authenticateToken, (req, res) => {
+    if(req.user){
+        return res.redirect(`/api/users/profile/${user.user_id}`)
+    }
+    const formErrors = req.session.formErrors || [];
+    const formData = req.session.formData || {};
+    const user = req.user;
+    res.render("index", { header: "index", title: "Index", user: res.locals.user, formErrors, formData });
+});
+*/
 // Protected Routes
-router.get('/profile/:user_id', authenticateToken, userController.getProfile);
-router.get('/update/:user_id', authenticateToken, userController.getUpdate);
-router.put('/update/:user_id', authenticateToken, userController.updateUser);
+router.get('/profile/:user_id', authenticateToken, userController.renderProfilePage);
+router.get('/update/:user_id', authenticateToken, userController.renderUpdatePage);
+router.put('/update/:user_id', authenticateToken, validateUpdate, userController.updateUser);
 
 // Optionally remove this unless needed
 //router.get('/update', (req, res) => {

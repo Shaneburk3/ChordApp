@@ -75,8 +75,3 @@ const User = {
 }
 
 module.exports = User;
-
-/*
-'SELECT users.*, user_details.user.ino_id, user_details.user.user_id AS u_id, user_details.user_bio, user_details.user_city, user_details.user_country, user_details.user_age FROM users JOIN user_details ON users.user_id = user_details.user_id WHERE users.user_id = ($1)'
-*/
-

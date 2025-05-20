@@ -12,7 +12,8 @@
               
                     <div class="card-body">
                       <h5 class="card-title">Login</h5>
-                      <form id="login_form" action="/api/users/login" method="POST">
+                      <!-- action="/api/users/login method="POST" -->
+                      <form id="login_form">
                         <div class="text-start">
                           <label for="login_email" class="form-label">Email address</label>
                           <input value="<%= formData.email || ''%>" type="email" autocomplete="email" name="login_email" class="form-control" id="login_email" placeholder="Enter email" required>
@@ -24,6 +25,10 @@
                         </div>
                         <button type="submit" id="login_btn" class="btn btn-primary" style="width: 80%; margin-top: 2rem;">Login</button>
                       </form>
+
+                      <div class="alert alert-danger" id="loginErrorDiv" style="display: none;">
+    
+                      </div>
               
                       <% if (formErrors && formErrors.length > 0) { %>
                         <div class="mt-3">

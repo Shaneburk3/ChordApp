@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 //const userController = require('../controllers/userController');
 const audioController = require('../controllers/audioController');
-const { validateRegister, validateLogin } = require('../middleware/validation');
+const { authenticateToken, checkAdmin } = require('../middleware/authentication');
 
-router.get("/translator", (req, res) => {
+router.get("/translator", authenticateToken, (req, res) => {
     res.render("translator", { header: "translator page", title: "translator", user: null, error_message: []});
 });
 
