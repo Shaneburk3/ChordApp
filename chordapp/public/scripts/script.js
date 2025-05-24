@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 user_dob: document.getElementById('user_dob').value,
                 terms_check: document.getElementById('terms_check').checked ? "on" : ""
             };
-            console.log("Data", data)
+            console.log("Data", data) 
             try {
                 const response = await fetch(`/api/users/register`, {
                     method: 'POST',

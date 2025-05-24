@@ -3,6 +3,8 @@ dotenv.config();
 const express = require('express');
 const router = express.Router();
 const session = require('express-session');
+const { optionalAuth } = require('../middleware/authentication');
+
 
 const userController = require('../controllers/userController');
 // const audioController = require('../controllers/audioController'); // Uncomment if used
@@ -25,6 +27,10 @@ router.get('/register', (req, res) => {
 router.post('/register', validateRegister, userController.registerUser);
 router.post('/login', validateLogin, userController.loginUser); 
 router.get('/logout', userController.logoutUser);
+
+router.get("/terms", optionalAuth, (req, res) => {
+    res.render("Terms", { header: "Terms and Conditions", title: "T&C's" });
+}); 
 
 // Protected Routes
 router.get('/profile/:user_id', authenticateToken, userController.renderProfilePage);

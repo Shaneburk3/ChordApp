@@ -105,6 +105,11 @@ app.get("/profile", (req, res) => {
 }); 
 
 
+app.get("/terms", (req, res) => {
+    res.render("terms", { title: "Terms and Conditions" });
+});
+
+
 
 
 
