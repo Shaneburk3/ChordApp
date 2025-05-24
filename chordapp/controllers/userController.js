@@ -2,9 +2,10 @@ const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js');
 const Cipher = require('../middleware/encryption');
 //const Session = require('../utils/express-session.js');
-const { getDate } = require('../public/scripts/functions.js');
+const { getAge, getDate } = require('../public/scripts/functions.js');
 //const { json } = require('body-parser');
 const jwt = require('jsonwebtoken');
+
 
 
 exports.registerUser = async (req, res) => {
@@ -45,7 +46,7 @@ exports.registerUser = async (req, res) => {
         const creation_date = getDate();
         //create user
         const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password, user_dob);
-        console.log('user created.', user.user_id);
+        console.log('user created.', user.user_id); 
         await Details.create(user.user_id);
         return res.status(200).json({ redirect: '/', formData: "User Registered!" });
     } catch (error) {
@@ -124,6 +125,14 @@ exports.renderProfilePage = async (req, res) => {
             const formErrors = req.session.formErrors || [];
             const formData = req.session.formData || {};
             console.log("Getting user profile...");
+            try{
+            const age = await getAge(UserDetails.user_dob);
+            console.log("Age: ", age.toString())
+            UserDetails.user_dob === await getAge(UserDetails.user_dob);
+            console.log(UserDetails.user_dob)
+            } catch(error) {
+                console.log(error.message)
+            }
             return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
         } catch (error) {
             console.log(error);

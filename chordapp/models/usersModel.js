@@ -1,11 +1,11 @@
 const client = require('../postgresDB')
 
 const User = {
-    create: async (first_name, last_name, email, creation_date, password) => {
+    create: async (first_name, last_name, email, creation_date, password, user_dob) => {
         console.log(`[INFO]: Creating user:  ${first_name}`)
         try {
             const role = "BASIC";
-            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role) VALUES ($1,$2,$3,$4,$5,$6) RETURNING "user_id"', [first_name, last_name, email, creation_date, password, role]);
+            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role, user_dob) VALUES ($1,$2,$3,$4,$5,$6, $7) RETURNING "user_id"', [first_name, last_name, email, creation_date, password, role, user_dob]);
             console.log("User Created: ", email)
             return response.rows[0]
         } catch (error) {
@@ -20,9 +20,9 @@ const User = {
         users.last_name, 
         users.email, 
         users.created_at, 
-        users.role, 
+        users.role,
+        users.user_dob, 
         user_details.user_bio, 
-        user_details.user_age, 
         user_details.user_city, 
         user_details.user_country 
         FROM users JOIN user_details ON users.user_id = user_details.info_id WHERE users.user_id = ($1)`;

@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 register_email: document.getElementById('register_email').value,
                 register_password1: document.getElementById('register_password1').value,
                 register_password2: document.getElementById('register_password2').value,
-                user_dob: document.getElementById('user_dob').value,
+                user_dob: document.getElementById('register_dob').value,
                 terms_check: document.getElementById('terms_check').checked ? "on" : ""
             };
             console.log("Data", data) 
