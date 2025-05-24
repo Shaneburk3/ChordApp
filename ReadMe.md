@@ -40,9 +40,11 @@ npm install cookie-parser
 
 
 # TESTING
-Install playwright?? E2E UI Testing
+## unit and integration testing
+npm install jest
 
-Install jest?? unit and integration testing
+## E2E UI Testing
+Install playwright?? E2E UI Testing
 
 ## Start ChordExplorer
 

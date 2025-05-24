@@ -10,7 +10,7 @@ const validateRegister = [
     body('user_dob').isDate().withMessage('DOB must be a date.'),
     (req, res, next) => {
         const errors = validationResult(req);
-        console.log("Validation...")
+        console.log("Validation...");
         //If validation fails, set errors in response.
         if (!errors.isEmpty()) {
             //send validated messages and user input back to user.
@@ -21,11 +21,11 @@ const validateRegister = [
                 email: req.body.register_email,
             }
             //response sent back will be status 400
-            console.log({ errors: formErrors, formData })
-            return res.status(400).json({ errors: formErrors, formData })
+            console.log({ errors: formErrors, formData });
+            return res.status(400).json({ errors: formErrors, formData });
         }
         //if no errors, continue with process in routes
-        console.log("Validate registration passed.")
+        console.log("Validate registration passed.");
         return next();
     }
 ]

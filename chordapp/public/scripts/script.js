@@ -36,10 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     loginErrorDiv.style.display = "block";
                 } else if (response.status === 200) {
                     const data = await response.json();
-                    loginErrorDiv.style.display == "none";
-                    console.log("Response redirecting to: ", data.redirect)
                     window.location.href = data.redirect;
-                    //window.location.href = `/api/users/profile/${updates.user_id}`;
                 }
             } catch (error) {
                 loginErrorDiv.textContent = "Error occured."
@@ -133,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     regErrorDiv.innerHTML = html;
                     regErrorDiv.style.display = "block";
                 } else if (response.status === 200) {
-                    regErrorDiv.style.display == "none";
                     const data = await response.json();
                     window.location.href = data.redirect;
                 }
