@@ -128,7 +128,7 @@ exports.renderProfilePage = async (req, res) => {
             try{
             const age = await getAge(UserDetails.user_dob);
             console.log("Age: ", age.toString())
-            UserDetails.user_dob === await getAge(UserDetails.user_dob);
+            UserDetails.user_dob = (await getAge(UserDetails.user_dob)).toString();
             console.log(UserDetails.user_dob)
             } catch(error) {
                 console.log(error.message)
