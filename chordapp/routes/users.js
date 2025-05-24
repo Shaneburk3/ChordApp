@@ -22,39 +22,14 @@ router.use(session({
 router.get('/register', (req, res) => {
     res.render('register', { title: 'Register', formData: {}});
 });
-/*
-router.get('/register', (req, res) => {
-    const formErrors = req.session.formErrors || [];
-    const formData = req.session.formData || {};
-    req.session.formErrors = null;
-    req.session.formData = null;
-    res.render('register', { title: 'Register', formErrors, formData });
-});
-*/
 router.post('/register', validateRegister, userController.registerUser);
-
-router.post('/login', validateLogin, userController.loginUser);
+router.post('/login', validateLogin, userController.loginUser); 
 router.get('/logout', userController.logoutUser);
-/*
-router.get("/", authenticateToken, (req, res) => {
-    if(req.user){
-        return res.redirect(`/api/users/profile/${user.user_id}`)
-    }
-    const formErrors = req.session.formErrors || [];
-    const formData = req.session.formData || {};
-    const user = req.user;
-    res.render("index", { header: "index", title: "Index", user: res.locals.user, formErrors, formData });
-});
-*/
+
 // Protected Routes
 router.get('/profile/:user_id', authenticateToken, userController.renderProfilePage);
 router.get('/update/:user_id', authenticateToken, userController.renderUpdatePage);
-router.put('/update/:user_id', authenticateToken, validateUpdate, userController.updateUser);
-
-// Optionally remove this unless needed
-//router.get('/update', (req, res) => {
-//    res.render('update', { header: 'Update', title: 'Update', user: [], details: [] });
-//});
+router.post('/update/:user_id', authenticateToken, validateUpdate, userController.updateUser);
 
 // Admin Section
 router.get('/admin', authenticateToken, checkAdmin, (req, res) => {

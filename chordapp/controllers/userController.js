@@ -1,9 +1,9 @@
 const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js');
 const Cipher = require('../middleware/encryption');
-const Session = require('../utils/express-session.js');
+//const Session = require('../utils/express-session.js');
 const { getDate } = require('../public/scripts/functions.js');
-const { json } = require('body-parser');
+//const { json } = require('body-parser');
 const jwt = require('jsonwebtoken');
 
 
@@ -110,25 +110,25 @@ exports.updateUser = async (req, res) => {
     }
 };
 exports.renderProfilePage = async (req, res) => {
-    try {
-        const user_id = req.user?.user_id
-        console.log("Getting profile: ", req.params.user_id)
-        const UserDetails = await User.findById(user_id);
-        console.log("all user details: ", UserDetails)
-        if (!UserDetails) {
-            console.log("Could not get users information.")
-            const formErrors = [{ msg: "Details not found" }];
-            return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: {} });
+        try {
+            const user_id = req.user?.user_id
+            console.log("Getting profile: ", req.params.user_id)
+            const UserDetails = await User.findById(user_id);
+            console.log("all user details: ", UserDetails)
+            if (!UserDetails) {
+                console.log("Could not get users information.")
+                const formErrors = [{ msg: "Details not found" }];
+                return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: null });
+            }
+            const audios = [];
+            const formErrors = req.session.formErrors || [];
+            const formData = req.session.formData || {};
+            console.log("Getting user profile...");
+            return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
+        } catch (error) {
+            console.log(error);
+            return res.render("index", { title: "Login", formErrors: [] });
         }
-        const audios = [];
-        const formErrors = req.session.formErrors || [];
-        const formData = req.session.formData || {};
-        console.log("Getting user profile...");
-        return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
-    } catch (error) {
-        console.log(error);
-        return res.render("index", { title: "Login", formErrors: [] });
-    }
 };
 exports.renderUpdatePage = async (req, res) => {
     try {

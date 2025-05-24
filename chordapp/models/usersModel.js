@@ -12,7 +12,7 @@ const User = {
             console.log(error.message)
         }
     },
-    findById: async (user_id) => {
+    findById: async (user_id) => { 
         console.log(`findByID: ${user_id}`);
         const query = `SELECT 
         users.user_id,

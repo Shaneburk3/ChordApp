@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const login_form = document.getElementById('login_form');
     const register_form = document.getElementById('register_form');
     const profileLink = document.getElementById('profileLink');
-    
+    const update_btn = document.getElementById('update_btn');
+
+
     if (login_form) {
         login_form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -45,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(error);
             }
 
-        })
-}
-if(update_form) {
+        });
+    }
+    if (update_form) {
         update_form.addEventListener('submit', async (e) => {
             e.preventDefault();
             console.log("fetch: update user")
@@ -66,16 +68,16 @@ if(update_form) {
                 user_bio: user_bio
             };
 
-            console.log('USER!', user_id, "Updates: ", updates)
+            console.log('User:', user_id, "Updates: ", updates)
 
             try {
                 const response = await fetch(`/api/users/update/${user_id}`, {
-                    method: 'PUT',
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updates)
                 });
                 if (!response.ok) {
-                    const updateErrorDiv = document.getElementById('updateErrorDiv')
+                    const updateErrorDiv = document.getElementById('updateErrorDiv');
                     const errorData = await response.json();
                     //got errors, now map them to the error div
                     let html = "<ul>";
@@ -85,11 +87,11 @@ if(update_form) {
                     html += "</ul>"
                     updateErrorDiv.innerHTML = html;
                     updateErrorDiv.style.display = "block";
-                    console.log("No Update received, status:", response.status)
+                    console.log("No Update received, status:", response.status);
                 } else if (response.status === 200) {
                     const data = await response.json();
                     updateErrorDiv.style.display == "none";
-                    console.log("Response redirecting to: ", data.redirect)
+                    console.log("Redirecting to: ", data.redirect);
                     window.location.href = data.redirect;
                     //window.location.href = `/api/users/profile/${updates.user_id}`;
                 }
@@ -97,8 +99,8 @@ if(update_form) {
                 console.log(error);
             }
         });
-}
-if(register_form) {
+    }
+    if (register_form) {
         register_form.addEventListener('submit', async (e) => {
             e.preventDefault();
             console.log("fetch: register user")
@@ -140,4 +142,4 @@ if(register_form) {
             }
         });
     }
-    });
+});

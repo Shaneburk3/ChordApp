@@ -3,7 +3,7 @@ const { body, validationResult } = require('express-validator');
 const validateRegister = [
     body('first_name').escape().trim().notEmpty().withMessage('First name required'),
     body('last_name').escape().trim().notEmpty().withMessage('Last name required'),
-    body('register_email').isEmail(),
+    body('register_email').isEmail().withMessage('Must be an email.'),
     body('register_password1').escape().isLength({ min: 8 }).withMessage("Password is not long enough").matches(/^[A-Za-z0-9 .,'!&]+$/),
     body('register_password2').escape().isLength({ min: 8 }).withMessage(" "),
     body('terms_check').equals("on").withMessage('Please agree to T&Cs'),
@@ -26,7 +26,7 @@ const validateRegister = [
         }
         //if no errors, continue with process in routes
         console.log("Validate registration passed.")
-        next();
+        return next();
     }
 ]
 
@@ -42,7 +42,7 @@ const validateLogin = [
             //send validated messages and user input back to user.
             const formErrors = errors.array()
             const formData = {
-                email: req.body.register_email,
+                email: req.body.login_email,
             }
             //response sent back will be status 400
             console.log({ errors: formErrors, formData })
@@ -60,10 +60,9 @@ const validateUpdate = [
     body('user_country').escape().isLength({max: 100}).withMessage("Enrty too long."),
     body('user_city').escape().isLength({max: 100}).withMessage("Enrty too long."),
     body('user_bio').escape().isLength({max: 1000}).withMessage("Enrty too long."),
-    body('user_country').escape().isLength({max: 100}).withMessage("Enrty too long."),
 
     (req, res, next) => {
-        const errors = validationResult(req);
+        let errors = validationResult(req);
         console.log("Validation...")
         //If validation fails, set errors in response.
         if (!errors.isEmpty()) {
@@ -74,7 +73,6 @@ const validateUpdate = [
                 user_country: req.body.user_country,
                 user_city: req.body.user_city,
                 user_bio: req.body.user_bio,
-                user_country: req.body.user_country,
                 user_id: req.body.user_id
             }
             //response sent back will be status 400

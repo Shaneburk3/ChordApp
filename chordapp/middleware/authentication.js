@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 function authenticateToken(req, res, next) {
     const token = req.cookies?.token;
     if (!token) {
-        console.log("No Token Present, acting as a non-signed in user.")
-        return next();
+        console.log("No Token Present, acting as a non-signed in user.");
+        return res.render("index", { title: "Login", formErrors: [], formData: {}, user: null });
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) {
@@ -14,7 +14,7 @@ function authenticateToken(req, res, next) {
             res.clearCookie('token');
             return next();
             //return res.status(401).json({ error: "Invalid Token." });
-        }  
+        }
         if (user) {
             console.log("User athenticated: ", user)
             res.locals.user = user;
@@ -31,6 +31,18 @@ function checkAdmin(req, res, next) {
         //return res.status(400).json({ error: "Header required."});
     }
     return res.status(403).send('Access Forbidden.')
+};
+function optionalAuth(req, res, next) {
+    const token = req.cookies?.token;
+    if (!token) {
+        return next();
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (!err) {
+            res.locals.user = user;
+        }
+        return next();
+    });
 }
 
-module.exports = { authenticateToken, checkAdmin }
+module.exports = { authenticateToken, checkAdmin, optionalAuth }

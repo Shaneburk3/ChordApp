@@ -6,7 +6,6 @@ const app = express();
 const cookieParser = require("cookie-parser")
 const { authenticateToken, checkAdmin } = require('./middleware/authentication');
 
-
 const bodyParser = require("body-parser");
 
 const session = require('express-session');
@@ -31,7 +30,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(authenticateToken);
+app.use('/profile', authenticateToken);
+app.use('/update', authenticateToken);
+app.use('/admin', authenticateToken);
+
+
 
 app.use((req, res, next) => {
     res.locals.user = req.user || null
@@ -99,7 +102,7 @@ app.get("/profile", (req, res) => {
     const user = req.user;
     const audios = []
     res.render("profile", { user, title: "profile", audios, formErrors, formData });
-});
+}); 
 
 
 
