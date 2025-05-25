@@ -44,6 +44,10 @@ npm install cookie-parser
 npm install jest
 
 ## E2E UI Testing
+npm install selenium-webdriver
+npm install chromedriver
+For firefox: geckodriver
+
 Install playwright?? E2E UI Testing
 
 ## Start ChordExplorer

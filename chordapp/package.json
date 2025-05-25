@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:jest": "jest tests/unit",
+    "test:selenium": "node tests/selenium/testLogin.test.js",
     "devStart": "nodemon app.js"
   },
   "keywords": [],
@@ -13,6 +15,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
+    "chromedriver": "^136.0.3",
     "cookie-parser": "^1.4.7",
     "crypto": "^1.0.1",
     "dotenv": "^16.5.0",
@@ -25,6 +28,7 @@
     "knex": "^3.1.0",
     "nodemailer": "^7.0.3",
     "postgresql": "^0.0.1",
+    "selenium-webdriver": "^4.33.0",
     "sqlite3": "^5.1.7"
   },
   "overrides": {

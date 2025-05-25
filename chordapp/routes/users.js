@@ -7,7 +7,6 @@ const { optionalAuth } = require('../middleware/authentication');
 
 
 const userController = require('../controllers/userController');
-// const audioController = require('../controllers/audioController'); // Uncomment if used
 
 const { validateRegister, validateLogin, validateUpdate } = require('../middleware/validation');
 const { authenticateToken, checkAdmin } = require('../middleware/authentication');
@@ -35,8 +34,8 @@ router.get("/terms", optionalAuth, (req, res) => {
 // Protected Routes
 router.get('/profile/:user_id', authenticateToken, userController.renderProfilePage);
 router.get('/update/:user_id', authenticateToken, userController.renderUpdatePage);
-router.post('/update/:user_id', authenticateToken, validateUpdate, userController.updateUser);
-
+router.post('/update/:user_id', /*authenticateToken, validateUpdate,*/ userController.updateUser);
+ 
 // Admin Section
 router.get('/admin', authenticateToken, checkAdmin, (req, res) => {
     // Ensure 'users' is defined or fetched before rendering
