@@ -1,25 +1,25 @@
 const express = require('express');
 const router = express.Router();
+const session = require('express-session');
 //const userController = require('../controllers/userController');
 const audioController = require('../controllers/audioController');
-const { authenticateToken, checkAdmin } = require('../middleware/authentication');
+const { validateAudio } = require('../middleware/validation');
+const { authenticateToken, checkAdmin, optionalAuth} = require('../middleware/authentication');
 
-router.get("/translator", authenticateToken, (req, res) => {
-    res.render("translator", { header: "translator page", title: "translator", user: null, error_message: []});
-});
+// Session Setup
+router.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
-router.get("/audio", (req, res) => {
-    res.render("audio", { header: "audio page", title: "audio", user: null, error_message: []});
-});
+router.get("/translator", optionalAuth, audioController.translatorPage);
 
 //route to a selected audio file, will be used to edit submission.
-router.get("/:user_id/:audio_id", (req, res) => {
-    res.render("audio", { header: "Audio file", title: "audio", user: null, error_message: []});
-});
+router.get("/:user_id/:audio_id", optionalAuth, audioController.singleAudioPage);
 
-router.get("/:user_id/:audio_id", audioController.findOne);
-
-router.post("/translator/translate", audioController.translate);
+router.post("/translator", optionalAuth, audioController.translate);
 
 
 module.exports = router;

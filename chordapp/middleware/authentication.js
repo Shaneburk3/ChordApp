@@ -24,7 +24,7 @@ function authenticateToken(req, res, next) {
     });
 };
 
-function checkAdmin(req, res, next) {
+function authAdmin(req, res, next) {
     console.log(req.user, req.user.role)
     if (req.user && req.user.role === 'ADMIN') {
         return next();
@@ -45,4 +45,4 @@ function optionalAuth(req, res, next) {
     });
 }
 
-module.exports = { authenticateToken, checkAdmin, optionalAuth }
+module.exports = { authenticateToken, authAdmin, optionalAuth }

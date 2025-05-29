@@ -1,32 +1,27 @@
 const { Builder, Browser, By, Key, until } = require('selenium-webdriver')
 const User = require('../../models/usersModel');
+const { ConsoleLogEntry } = require('selenium-webdriver/bidi/logEntries');
 //Integration test to ensure user account gets created is directed to login
-/*
-async function createTestUser() {
-    const res = await User.create({
-        first_name: "testUser",
-        last_name: "testUser",
-        email: "testUser@testUser.com",
-        register_password: "11111111",
-        register_password1: "11111111",
-        dob: "12/03/1995",
-        termsChecK: "on"
-    })
-    return res;
-};
-*/
 
-async function findTestUser(email) {
-    return await User.findOne({ email })
+async function findTestUserID(email) {
+    const user = await User.findOne(email)
+    return user ? user.user_id : null
 };
 
 async function deleteTestUser(user_id) {
     return await User.delete(user_id)
 }
-let user_email = "testUser@testUser.com"
-let testUser = findTestUser(user_email);
-if (testUser) {
-    deleteTestUser(testUser.user_id);
+
+async function deleteTestUserIfExist() {
+    const user_email = "testUser@testUser.com"
+    const testUser = await findTestUserID(user_email);
+    if (testUser) {
+        console.log(`Found user: ${testUser}`)
+        await deleteTestUser(testUser);
+        console.log(testUser, "Deleted.")
+    } else {
+        console.log("Test user account not found.")
+    }
 }
 
 async function testRegister() {
@@ -38,7 +33,7 @@ async function testRegister() {
         await driver.findElement(By.name('register_email')).sendKeys('testUser@testUser.com')
         await driver.findElement(By.name('register_password1')).sendKeys('F38djdn3Jdu3')
         await driver.findElement(By.name('register_password2')).sendKeys('F38djdn3Jdu3')
-        await driver.findElement(By.name('register_dob')).sendKeys('12/03/1995');
+        await driver.findElement(By.name('register_dob')).sendKeys('12-03-1995');
         // wait until checkbox is visible and enabled.
         const termsCheck = await driver.wait(until.elementLocated(By.id('terms_check')), 5000);
         await driver.executeScript("arguments[0].scrollIntoView(true);", termsCheck);
@@ -46,14 +41,14 @@ async function testRegister() {
         await driver.wait(until.elementIsEnabled(termsCheck), 5000);
         await termsCheck.submit();
         await driver.findElement(By.css('form')).submit();
-
-
-
         await driver.wait(until.urlContains('/'), 5000);
         console.log('register test passed')
     } finally {
         await driver.quit()
     }
 }
+(async () => {
+    await deleteTestUserIfExist()
+    await testRegister()
+})();
 
-testRegister()

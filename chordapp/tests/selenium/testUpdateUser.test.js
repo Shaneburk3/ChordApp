@@ -14,6 +14,8 @@ async function testUpdateUser() {
     await driver.findElement(By.id('login_btn')).submit();
     //direct to user profile
     await driver.wait(until.urlContains('api/users/profile'), 5000);
+    const edit_profile_btn = await driver.wait(until.elementLocated(By.id('edit_profile_btn')), 5000);
+    await driver.executeScript("arguments[0].scrollIntoView(true);", edit_profile_btn);
     await driver.findElement(By.id('edit_profile_btn')).click();
     await driver.wait(until.urlContains('api/users/update'), 5000);
     console.log('Made it to update page in test')

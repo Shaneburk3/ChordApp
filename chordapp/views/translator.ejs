@@ -9,6 +9,11 @@
 
             <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
                   <h1 class="display-4">ChordExplorer</h1>
+                  <% if (user) { %>
+                  <h3> welcome, <%= user.first_name %> </h3>
+                  <% } else { %>
+                    <h3>welcome, guest user!</h3>
+                    <% } %>
                   <h4 class="text-muted">Audio translation page</h4>
                   <h2>This will be the translation page</h2>
               </div>

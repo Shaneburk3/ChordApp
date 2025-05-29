@@ -44,11 +44,12 @@ exports.registerUser = async (req, res) => {
         const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password);
         console.log('user created.', user.user_id); 
         await Details.create(user.user_id, user_dob);
-        return res.status(200).json({ redirect: '/', formData: "User Registered!" });
+        var formData = [{ msg: "User registered succesfully." }];
+        return res.status(200).json({ redirect: '/', formData });
     } catch (error) {
         console.log(error.message);;
         var formErrors = [{ msg: "Error creating user." }];
-        const formData = req.body;
+        const formData = req.body; 
         return res.status(400).json({ errors: formErrors, formData });
     }
 };

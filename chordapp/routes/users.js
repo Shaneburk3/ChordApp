@@ -3,13 +3,11 @@ dotenv.config();
 const express = require('express');
 const router = express.Router();
 const session = require('express-session');
-const { optionalAuth } = require('../middleware/authentication');
-const { registerUser, updateUserInfo, loginUser, renderProfilePage, renderUpdatePage, logoutUser } = require('../controllers/userController')
+const { optionalAuth, authenticateToken, authAdmin } = require('../middleware/authentication');
 
 const userController = require('../controllers/userController');
 
 const { validateRegister, validateLogin, validateUpdate } = require('../middleware/validation');
-const { authenticateToken, checkAdmin } = require('../middleware/authentication');
 
 // Session Setup
 router.use(session({
@@ -23,21 +21,21 @@ router.use(session({
 router.get('/register', (req, res) => {
     res.render('register', { title: 'Register', formData: {}});
 });
-router.post('/register', validateRegister, registerUser);
-router.post('/login', validateLogin, loginUser); 
-router.get('/logout', logoutUser);
+router.post('/register', validateRegister, userController.registerUser);
+router.post('/login', validateLogin, userController.loginUser); 
+router.get('/logout', userController.logoutUser);
 
 router.get("/terms", optionalAuth, (req, res) => {
     res.render("Terms", { header: "Terms and Conditions", title: "T&C's" });
 }); 
 
 // Protected Routes
-router.get('/profile/:user_id', authenticateToken, renderProfilePage);
-router.get('/update/:user_id', authenticateToken, renderUpdatePage);
-router.post('/update/:user_id', authenticateToken, validateUpdate, updateUserInfo);
+router.get('/profile/:user_id', authenticateToken, userController.renderProfilePage);
+router.get('/update/:user_id', authenticateToken, userController.renderUpdatePage);
+router.post('/update/:user_id', authenticateToken, validateUpdate, userController.updateUserInfo);
  
 // Admin Section
-router.get('/admin', authenticateToken, checkAdmin, (req, res) => {
+router.get('/admin', authenticateToken, authAdmin, (req, res) => {
     // Ensure 'users' is defined or fetched before rendering
     const users = []; // Replace with actual user fetch logic if needed
     res.render('admin', { user: req.user, title: 'Admin Dashboard', users });
