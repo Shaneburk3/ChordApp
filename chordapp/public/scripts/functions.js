@@ -14,7 +14,9 @@ function getDate() {
 }
 async function getAge(dob) {
 
-    const [year, month, day] = dob.split('-').map(Number)
+    newDob = dob.toISOString().split('T')[0];
+    console.log(newDob)
+    const [year, month, day] = newDob.split('-').map(Number)
     const today = new Date();
     var age = today.getFullYear() - year;
 

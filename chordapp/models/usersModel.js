@@ -5,7 +5,7 @@ const User = {
         console.log(`[INFO]: Creating user:  ${first_name}`)
         try {
             const role = "BASIC";
-            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role ) VALUES ($1,$2,$3,$4,$5,$6) RETURNING "user_id"', [first_name, last_name, email, creation_date, password, role, user_dob]);
+            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role ) VALUES ($1,$2,$3,$4,$5,$6) RETURNING "user_id"', [first_name, last_name, email, creation_date, password, role]);
             console.log("User Created: ", email)
             return response.rows[0]
         } catch (error) {

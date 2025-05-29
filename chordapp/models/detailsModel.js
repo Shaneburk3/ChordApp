@@ -1,9 +1,9 @@
 const client = require("../postgresDB");
 
 const Details = {
-    create: async (user_id, callback) => {
+    create: async (user_id, user_dob, callback) => {
         try {
-            client.query("INSERT INTO user_details (info_id, user_bio, user_city, user_country) VALUES ($1,$2,$3,$4) ", [user_id, "You can edit this in the update page!", "City", "Country"], callback);
+            client.query("INSERT INTO user_details (info_id, user_bio, user_city, user_country, user_dob) VALUES ($1,$2,$3,$4,$5) ", [user_id, "You can edit this in the update page!", "City", "Country",user_dob], callback);
             console.log("User details created for user: ", user_id)
         } catch (error) {
             console.log(error.message)

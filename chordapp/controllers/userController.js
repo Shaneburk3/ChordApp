@@ -41,9 +41,9 @@ exports.registerUser = async (req, res) => {
         const hashed_password = await Cipher.createHash(register_password1);
         const creation_date = getDate();
         //create user
-        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password, user_dob);
+        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password);
         console.log('user created.', user.user_id); 
-        await Details.create(user.user_id);
+        await Details.create(user.user_id, user_dob);
         return res.status(200).json({ redirect: '/', formData: "User Registered!" });
     } catch (error) {
         console.log(error.message);;
@@ -121,12 +121,9 @@ exports.renderProfilePage = async (req, res) => {
             const formErrors = req.session.formErrors || [];
             const formData = req.session.formData || {};
             console.log("Getting user profile...");
-            if(!UserDetails.user_dob === null) {
             const age = await getAge(UserDetails.user_dob);
-            console.log("Users age:", age)
-            UserDetails.user_dob = (await getAge(UserDetails.user_dob)).toString();
-            console.log(UserDetails.user_dob)
-            } 
+            UserDetails.user_dob = age;
+            //console.log(UserDetails.user_dob)
             return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
         } catch (error) {
             console.log(error);
