@@ -5,14 +5,14 @@ const User = {
         console.log(`[INFO]: Creating user:  ${first_name}`)
         try {
             const role = "BASIC";
-            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role, user_dob) VALUES ($1,$2,$3,$4,$5,$6, $7) RETURNING "user_id"', [first_name, last_name, email, creation_date, password, role, user_dob]);
+            const response = await client.query('INSERT INTO users (first_name, last_name, email, created_at, password, role ) VALUES ($1,$2,$3,$4,$5,$6) RETURNING "user_id"', [first_name, last_name, email, creation_date, password, role, user_dob]);
             console.log("User Created: ", email)
             return response.rows[0]
         } catch (error) {
             console.log(error.message)
         }
     },
-    findById: async (user_id) => { 
+    findById: async (user_id) => {
         console.log(`findByID: ${user_id}`);
         const query = `SELECT 
         users.user_id,
@@ -21,7 +21,7 @@ const User = {
         users.email, 
         users.created_at, 
         users.role,
-        users.user_dob, 
+        user_details.user_dob, 
         user_details.user_bio, 
         user_details.user_city, 
         user_details.user_country 
@@ -43,7 +43,7 @@ const User = {
         try {
             const response = await client.query('SELECT * FROM users WHERE "email" = ($1)', [email]);
             if (response.rows.length == 0) {
-                console.log("User not found.")
+                console.log("User not found.");
                 return false;
             } else {
                 return response.rows[0];
@@ -53,25 +53,29 @@ const User = {
             return false;
         }
     },
-    update: async (user_id) => {
-        console.log(`Updating user ID: ${user_id}`);
+    update: async (data) => {
+        const { user_id, user_country, user_city, user_bio, user_dob } = data
+        const dob = new Date(user_dob)
+        user_dob = dob.toISOString().split('T')[0];
+        console.log(`new updated DOB: ${user_dob}`)
+        console.log("UPDATE::", data)
         try {
-            const response = await client.query('UPDATE users.*, user_details.* FROM users INNER JOIN user_details ON users."user_id" = user_details."info_id" WHERE users."user_id" = ($1)', [user_id]);
-            if (response.rows.length == 0) {
-                console.log("didnt find the email.")
-                return false;
-            } else {
-                console.log("user updated")
-                return response.rows[0];
-            }
-        } catch (error) {
-            console.log("ERROR:", error.message);
-            return false;
-        }
-    },
-    delete: async (data) => {
+            console.log('Lets update this user...')
+            const result = await client.query(`UPDATE user_details SET user_country =  $1, user_city = $2, user_bio = $3, user_dob = $4 WHERE info_id = $4 RETURNING info_id`, [user_country, user_city, user_bio, user_dob, user_id]);
 
+            if (result.rowCount === 0) {
+                console.log('No details updates recieved');
+                return null;
+            }
+            return result.rows[0];
+        } catch (error) {
+            console.log("Error updating database:", error.message)
+            throw error;
+        }
+        },
+        delete: async (data) => {
+
+        }
     }
-}
 
 module.exports = User;

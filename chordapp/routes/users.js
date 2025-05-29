@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const { optionalAuth } = require('../middleware/authentication');
-
+const { registerUser, updateUserInfo, loginUser, renderProfilePage, renderUpdatePage, logoutUser } = require('../controllers/userController')
 
 const userController = require('../controllers/userController');
 
@@ -23,18 +23,18 @@ router.use(session({
 router.get('/register', (req, res) => {
     res.render('register', { title: 'Register', formData: {}});
 });
-router.post('/register', validateRegister, userController.registerUser);
-router.post('/login', validateLogin, userController.loginUser); 
-router.get('/logout', userController.logoutUser);
+router.post('/register', validateRegister, registerUser);
+router.post('/login', validateLogin, loginUser); 
+router.get('/logout', logoutUser);
 
 router.get("/terms", optionalAuth, (req, res) => {
     res.render("Terms", { header: "Terms and Conditions", title: "T&C's" });
 }); 
 
 // Protected Routes
-router.get('/profile/:user_id', authenticateToken, userController.renderProfilePage);
-router.get('/update/:user_id', authenticateToken, userController.renderUpdatePage);
-router.post('/update/:user_id', /*authenticateToken, validateUpdate,*/ userController.updateUser);
+router.get('/profile/:user_id', authenticateToken, renderProfilePage);
+router.get('/update/:user_id', authenticateToken, renderUpdatePage);
+router.post('/update/:user_id', authenticateToken, validateUpdate, updateUserInfo);
  
 // Admin Section
 router.get('/admin', authenticateToken, checkAdmin, (req, res) => {

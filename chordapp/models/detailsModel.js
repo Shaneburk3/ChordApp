@@ -22,16 +22,16 @@ const Details = {
         }
     },
     update: async (data) => {
-        const { user_id, user_country, user_city, user_bio } = data
+        const { user_id, user_country, user_city, user_bio, user_dob } = data
         console.log("UPDATE::", data)
         try {
             console.log('Lets update this user...')
-            const result = await client.query(`UPDATE user_details SET user_country =  $1, user_city = $2, user_bio = $3 WHERE user_id = $4 RETURNING user_id`, [user_country, user_city, user_bio, user_id]);
-            if(!result) {
+            const result = await client.query(`UPDATE user_details SET user_country =  $1, user_city = $2, user_bio = $3, user_dob = $4 WHERE info_id = $5 RETURNING info_id`, [user_country, user_city, user_bio, user_dob, user_id]);
+            if(result.rowCount === 0) {
                 console.log('No updates recieved');
-                return result.status(400).json({ message: "No updates received." });
+                return null;
             }
-            return result.status(200).json({ message: "User update successful" , user: result })
+            return result.rows[0];
         } catch (error) {
             console.log("Error updating database:", error.message)
             throw error;

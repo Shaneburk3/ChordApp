@@ -1,12 +1,8 @@
 const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js');
 const Cipher = require('../middleware/encryption');
-//const Session = require('../utils/express-session.js');
 const { getAge, getDate } = require('../public/scripts/functions.js');
-//const { json } = require('body-parser');
 const jwt = require('jsonwebtoken');
-
-
 
 exports.registerUser = async (req, res) => {
 
@@ -88,7 +84,7 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-exports.updateUser = async (req, res) => {
+exports.updateUserInfo = async (req, res) => {
     console.log("Updating user: ", req.params.user_id)
     const user_id = req.params.user_id;
     const data = req.body
@@ -127,13 +123,14 @@ exports.renderProfilePage = async (req, res) => {
             console.log("Getting user profile...");
             if(!UserDetails.user_dob === null) {
             const age = await getAge(UserDetails.user_dob);
+            console.log("Users age:", age)
             UserDetails.user_dob = (await getAge(UserDetails.user_dob)).toString();
             console.log(UserDetails.user_dob)
             } 
             return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
         } catch (error) {
             console.log(error);
-            return res.render("index", { title: "Login", formErrors: [] });
+            return res.render("index", { title: "Login", formErrors: [], formData: [] });
         }
 };
 exports.renderUpdatePage = async (req, res) => {

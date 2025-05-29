@@ -57,9 +57,9 @@ const validateLogin = [
 const validateUpdate = [
 
     body('user_dob').isDate().withMessage("Must be a date."),
-    body('user_country').escape().isLength({max: 100}).withMessage("Enrty too long."),
-    body('user_city').escape().isLength({max: 100}).withMessage("Enrty too long."),
-    body('user_bio').escape().isLength({max: 1000}).withMessage("Enrty too long."),
+    body('user_country').escape().isLength({max: 100}).withMessage("Entry too long."),
+    body('user_city').escape().isLength({max: 100}).withMessage("Entry too long."),
+    body('user_bio').escape().isLength({max: 1000}).withMessage("Entry too long."),
 
     (req, res, next) => {
         let errors = validationResult(req);
@@ -80,7 +80,7 @@ const validateUpdate = [
             return res.status(400).json({ errors: formErrors, formData })
         }
         //if no errors, continue with process in routes
-        console.log("Validate update passed, moving to updateUser.")
+        console.log(`Validated ${JSON.stringify(req.body)}, moving to updateUser.`)
         next();
     }
 
