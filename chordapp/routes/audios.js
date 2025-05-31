@@ -14,7 +14,10 @@ router.use(session({
     cookie: { secure: false }
 }));
 
-router.get("/translator", optionalAuth, audioController.translatorPage);
+router.get("/translator", optionalAuth, audioController.translatorPage); 
+
+router.get('/translator/:user_id', authenticateToken, audioController.translatorPage);
+
 
 //route to a selected audio file, will be used to edit submission.
 router.get("/:user_id/:audio_id", optionalAuth, audioController.singleAudioPage);

@@ -42,14 +42,14 @@ exports.registerUser = async (req, res) => {
         const creation_date = getDate();
         //create user
         const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password);
-        console.log('user created.', user.user_id); 
+        console.log('user created.', user.user_id);
         await Details.create(user.user_id, user_dob);
         var formData = [{ msg: "User registered succesfully." }];
         return res.status(200).json({ redirect: '/', formData });
     } catch (error) {
         console.log(error.message);;
         var formErrors = [{ msg: "Error creating user." }];
-        const formData = req.body; 
+        const formData = req.body;
         return res.status(400).json({ errors: formErrors, formData });
     }
 };
@@ -108,28 +108,28 @@ exports.updateUserInfo = async (req, res) => {
     }
 };
 exports.renderProfilePage = async (req, res) => {
-        try {
-            const user_id = req.user?.user_id
-            console.log("Getting profile: ", req.params.user_id)
-            const UserDetails = await User.findById(user_id);
-            console.log("all user details: ", UserDetails)
-            if (!UserDetails) {
-                console.log("Could not get users information.")
-                const formErrors = [{ msg: "Details not found" }];
-                return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: null });
-            }
-            const audios = [];
-            const formErrors = req.session.formErrors || [];
-            const formData = req.session.formData || {};
-            console.log("Getting user profile...");
-            const age = await getAge(UserDetails.user_dob);
-            UserDetails.user_dob = age;
-            //console.log(UserDetails.user_dob)
-            return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
-        } catch (error) {
-            console.log(error);
-            return res.render("index", { title: "Login", formErrors: [], formData: [] });
+    try {
+        const user_id = req.user?.user_id
+        console.log("Getting profile: ", req.params.user_id)
+        const UserDetails = await User.findById(user_id);
+        console.log("all user details: ", UserDetails)
+        if (!UserDetails) {
+            console.log("Could not get users information.")
+            const formErrors = [{ msg: "Details not found" }];
+            return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: null });
         }
+        const audios = [];
+        const formErrors = req.session.formErrors || [];
+        const formData = req.session.formData || {};
+        console.log("Getting user profile...");
+        const age = await getAge(UserDetails.user_dob);
+        UserDetails.user_dob = age;
+        //console.log(UserDetails.user_dob)
+        return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
+    } catch (error) {
+        console.log(error);
+        return res.render("index", { title: "Login", formErrors: [], formData: [] });
+    }
 };
 exports.renderUpdatePage = async (req, res) => {
     try {
@@ -139,6 +139,8 @@ exports.renderUpdatePage = async (req, res) => {
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404", formErrors })
         }
+        const age = await getAge(user.user_dob);
+        user.user_dob = age;
         return res.render("update", { title: "Profile", user: user });
     } catch (error) {
         console.log(error);
