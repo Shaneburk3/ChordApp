@@ -12,6 +12,28 @@ const User = {
             console.log(error.message)
         }
     },
+    getAllUsers: async () => {
+        const query = `SELECT 
+        users.user_id,
+        users.first_name,
+        users.last_name, 
+        users.email, 
+        users.created_at, 
+        users.role,
+        user_details.user_dob 
+        FROM users JOIN user_details ON users.user_id = user_details.info_id ORDER BY user_id ASC`;
+        try {
+            const response = await client.query(query);
+            if (response.rows.length === 0) {
+                return false;
+            } else {
+                return response.rows;
+            }
+        } catch (error) {
+            console.log("get all users ERROR :(", error.message);
+            throw error;
+        }
+    },
     findById: async (user_id) => {
         console.log(`findByID: ${user_id}`);
         const query = `SELECT 

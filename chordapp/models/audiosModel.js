@@ -14,7 +14,7 @@ const Audios = {
     },
     findById: async (user_id) => {
         try {
-            const response = await client.query("SELECT * FROM user_details WHERE user_id = ($1)", [user_id]);
+            const response = await client.query("SELECT * FROM user_audios WHERE user_id = ($1)", [user_id]);
             if (response.rows.length == 0) {
                 return false;
             } else {

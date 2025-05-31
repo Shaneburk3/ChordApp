@@ -3,21 +3,41 @@
 <%- include("partials/head") %>
 
     <body>
-
         <%- include("partials/nav") %>
             <%- include("partials/header") %>
-
-            <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
-                  <h1 class="display-4">ChordExplorer</h1>
-                  <% if (user) { %>
-                  <h3> welcome, <%= user.first_name %> </h3>
-                  <% } else { %>
-                    <h3>welcome, guest user!</h3>
+                <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
+                    <!-- Title -->
+                    <h1 class="display-4">ChordExplorer</h1>
+                    <% if (user) { %>
+                        <h3> welcome, <%= user.first_name %>
+                        </h3>
+                    <% } else { %>
+                        <h3>welcome, guest user!</h3>
                     <% } %>
-                  <h4 class="text-muted">Audio translation page</h4>
-                  <h2>This will be the translation page</h2>
-              </div>
-              <%- include("partials/footer") %>
+                    <h4 class="text-muted">Start recording some audio!</h4>
+                    <h2></h2>
+                </div>
+
+                <div class="container py-4">
+                    <!-- Audio Function -->
+                    <div class="border p-4 mb-4">
+                        <div class="mb-3">
+                            <div class="border p-3">Audio function</div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2" id="audio_controls">
+                            <button class="btn btn-primary" id="record_btn">Record</button>
+                            <button class="btn btn-secondary" id="pause_btn">Pause</button>
+                            <button class="btn btn-warning" id="stop_btn">Stop</button>
+                            <button class="btn btn-danger" id="delete_btn">Delete</button>
+                        </div>
+                    </div>
+
+                    <!-- Result Section -->
+                    <div class="border p-4">
+                        <p class="text-center text-muted" id="result_section">Audio result section</p>
+                    </div>
+                </div>
+                <%- include("partials/footer") %>
 
     </body>
 

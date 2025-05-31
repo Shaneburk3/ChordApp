@@ -8,7 +8,7 @@ const { getAge, getDate } = require('../public/scripts/functions.js');
 exports.translatorPage = async (req, res) => {
             try {
             const user_id = req.params?.user_id
-            if (user_id) {
+            if (user_id) { 
             //const user_id = req.user?.user_id
             console.log("Getting translator page for: ", req.params.user_id)
             const UserDetails = await User.findById(user_id);
@@ -25,7 +25,7 @@ exports.translatorPage = async (req, res) => {
             const age = await getAge(UserDetails.user_dob);
             UserDetails.user_dob = age;
             //console.log(UserDetails.user_dob)
-            return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: req.user || null})
+            return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: UserDetails || null})
             } else {
             const audios = [];
             const formErrors = req.session.formErrors || [];

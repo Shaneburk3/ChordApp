@@ -6,6 +6,7 @@ const session = require('express-session');
 const { optionalAuth, authenticateToken, authAdmin } = require('../middleware/authentication');
 
 const userController = require('../controllers/userController');
+const adminController = require('../controllers/adminController');
 
 const { validateRegister, validateLogin, validateUpdate } = require('../middleware/validation');
 
@@ -35,14 +36,13 @@ router.get('/update/:user_id', authenticateToken, userController.renderUpdatePag
 router.post('/update/:user_id', authenticateToken, validateUpdate, userController.updateUserInfo);
  
 // Admin Section
-router.get('/admin', authenticateToken, authAdmin, (req, res) => {
-    // Ensure 'users' is defined or fetched before rendering
-    const users = []; // Replace with actual user fetch logic if needed
-    res.render('admin', { user: req.user, title: 'Admin Dashboard', users });
-});
+router.get('/admin', authenticateToken, authAdmin, adminController.getAdminPage);
 
-router.post('/admin/delete/:user_id', authenticateToken /*, checkAdmin, userController.deleteUser */);
-router.post('/admin/suspend/:user_id', authenticateToken /*, checkAdmin, userController.suspendUser */);
-router.post('/admin/update/:user_id', authenticateToken /*, checkAdmin, userController.updateUser */);
+router.post('/admin/delete/:user_id', authenticateToken, authAdmin, adminController.deleteUser);
+router.post('/admin/suspend/:user_id', authenticateToken, authAdmin, adminController.suspendUser);
+router.post('/admin/update/:user_id', authenticateToken, authAdmin, adminController.updateUser);
+
+router.post('/admin/delete_users', authenticateToken, authAdmin, adminController.bulkAction);
+
 
 module.exports = router;

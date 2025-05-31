@@ -1,47 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include("partials/head") %>
+  <%- include("partials/head") %>
+  <body>
+    <%- include("partials/nav") %>
+    <%- include("partials/header") %>
 
-    <body>
-        <%- include("partials/nav") %>
-            <%- include("partials/header") %>
-                <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
-                    <h1 class="display-4">ChordExplorer</h1>
-                    <h4 class="text-muted">Audio translation page</h4>
-                    <h2>This will be the admin page</h2>
-                </div>
-                <h1>Admin Dashboard</h1>
-<table>
-  <tr>
-    <th>ID</th><th>Email</th><th>Status</th><th>Actions</th>
-  </tr>
-    <% if (users) { %>
-        <% users.forEach(user => { %>
+    <div class="container text-center my-5" style="max-width: 600px;">
+      <h1 class="display-4">ChordExplorer</h1>
+      <h4 class="text-muted">Admin Page</h4>
+    </div>
+
+    <div class="container my-5" style="padding: 20px;">
+      <h1 class="mb-4">Admin Dashboard</h1>
+      <div id="adminErrorDiv"></div>
+
+      <% if (users && users.length > 0) { %>
+        <form id="bulk_form">
+        <table class="table table-striped table-bordered text-center">
             <tr>
-            <td><%= user.user_id %></td>
-            <td><%= user.email %></td>
-            <td><%= user.status %></td>
-            <td>
-                <form action="/api/users/admin/delete/<%= user.user_id %>" method="POST"><button>Delete</button></form>
-                <% if (user.status === 'suspended') { %>
-                <form action="/api/users/admin/unsuspend/<%= user.user_id %>" method="POST"><button>Unsuspend</button></form>
-                <% } else { %>
-                <form action="/api/users/admin/suspend/<%= user.user_id %>" method="POST"><button>Suspend</button></form>
-                <% } %>
-                <form action="/api/users/admin/update/<%= user.user_id %>" method="POST">
-                <input name="email" value="<%= user.email %>" />
-                <input name="first_name" value="<%= user.first_name %>" />
-                <input name="last_name" value="<%= user.last_name %>" />
-                <button>Update</button>
-                </form>
-            </td>
+              <th>Select</th>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-              <% }) %>
-        <% } %>
-</table>
+            <% users.forEach(user => { %>
+              <tr>
+                <td><input type="checkbox" id="selected_users" name="selected_users" value="<%= user.user_id %>"></td>
+                <td><%= user.user_id %></td>
+                <td><%= user.email %></td>
+                <td><%= user.status || 'active' %></td>
+                <td>
+                  <form action="/api/users/admin/delete/<%= user.user_id %>" method="POST" style="display:inline;">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                  </form>
 
+                  <% if (user.status === 'suspended') { %>
+                    <form action="/api/users/admin/unsuspend/<%= user.user_id %>" method="POST" style="display:inline;">
+                      <button class="btn btn-sm">Unsuspend</button>
+                    </form>
+                  <% } else { %>
+                    <form action="/api/users/admin/suspend/<%= user.user_id %>" method="POST" style="display:inline;">
+                      <button class="btn btn-warning btn-sm">Suspend</button>
+                    </form>
+                  <% } %>
 
-                <%- include("partials/footer") %>
-    </body>
+                  <form action="/api/users/admin/update/<%= user.user_id %>" method="POST" style="display:inline;">
+                    <button class="btn-secondary btn-sm">Update</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+        </table>
+        <div class="row-lg-4 text-center">
+        <button type="submit" name="action" value="delete" class="btn btn-danger">Delete Selected Users</button>
+        </div>
+        </form>
+      <% } else { %>
+        <p class="text-muted">No users found.</p>
+      <% } %>
+    </div>
 
+    <%- include("partials/footer") %>
+  </body>
 </html>
