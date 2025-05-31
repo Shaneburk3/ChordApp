@@ -83,7 +83,7 @@ const User = {
         console.log("UPDATE::", data)
         try {
             console.log('Lets update this user...')
-            const result = await client.query(`UPDATE user_details SET user_country =  $1, user_city = $2, user_bio = $3, user_dob = $4 WHERE info_id = $4 RETURNING info_id`, [user_country, user_city, user_bio, user_dob, user_id]);
+            const result = await client.query(`UPDATE user_details SET user_country =  $1, user_city = $2, user_bio = $3, user_dob = $4 WHERE info_id = $5 RETURNING info_id`, [user_country, user_city, user_bio, user_dob, user_id]);
 
             if (result.rowCount === 0) {
                 console.log('No details updates recieved');
