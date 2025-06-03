@@ -1,6 +1,6 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
-  const client = new Client({
+  const pool = new Pool({
         host: "localhost",
         user: process.env.DB_USERNAME,
         database: process.env.DB_NAME,
@@ -8,6 +8,6 @@ const { Client } = require('pg');
         port: 5432,
     });
 
-    client.connect();
+    //client.connect();
   
-module.exports = client;
+module.exports = pool;

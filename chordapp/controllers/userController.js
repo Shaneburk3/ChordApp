@@ -13,8 +13,18 @@ exports.registerUser = async (req, res) => {
         register_password1,
         register_password2,
         user_dob } = req.body;
-    console.log(req.body)
-
+        console.log("Registering with DOB: ", user_dob)
+    //check if passwords match
+    if (register_password1 != register_password2) {
+        var formErrors = [{ msg: "ERROR: Passwords are not the same." }];
+        const formData = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            email: req.body.email,
+            user_dob: req.body.user_dob
+        }
+        return res.status(400).json({ errors: formErrors, formData });
+    }
     try {
         //Check if user exists
         const userExists = await User.findOne(register_email);
@@ -26,24 +36,17 @@ exports.registerUser = async (req, res) => {
             var formErrors = [{ msg: "Error please try again." }];
             return res.status(400).json({ errors: formErrors, formData });
         }
-        //check if passwords match
-        if (register_password1 != register_password2) {
-            var formErrors = [{ msg: "ERROR: Passwords are not the same." }];
-            const formData = {
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                email: req.body.email,
-                user_dob: req.body.user_dob
-            }
-            return res.status(400).json({ errors: formErrors, formData });
-        }
         //Hashing password
         const hashed_password = await Cipher.createHash(register_password1);
         const creation_date = getDate();
         //create user
-        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password);
+        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password,user_dob);
         console.log('user created.', user.user_id);
-        await Details.create(user.user_id, user_dob);
+        if (!user) {
+            var formErrors = [{ msg: "Error creating user." }];
+            return res.status(400).json({ errors: formErrors, formData });            
+        }
+        //await Details.create(user.user_id, user_dob);
         var formData = [{ msg: "User registered succesfully." }];
         return res.status(200).json({ redirect: '/', formData });
     } catch (error) {
