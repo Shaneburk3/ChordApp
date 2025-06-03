@@ -9,7 +9,7 @@ async function deleteTestUserIfExist() {
     const user = await User.findOne(user_email);
     if (user) {
         console.log(`Found user: ${user}`)
-        await deleteTestUser(user);
+        await User.delete(user);
         console.log(user, "Deleted.")
     } else {
         console.log("Test user account not found.")

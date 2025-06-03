@@ -156,8 +156,8 @@ const User = {
         const client = await pool.connect();
         try {
             await client.query('BEGIN');
-            await client.query('DELETE FROM user_details WHERE "info_id" = ($1)', [user_id]);
-            await client.query('DELETE FROM users WHERE "user_id" = ($1)', [user_id]);
+            await client.query('DELETE FROM user_details WHERE "info_id" = $1', [user_id]);
+            await client.query('DELETE FROM users WHERE "user_id" = $1', [user_id]);
             console.log(`User ${user_id} deleted.`);
             await client.query('COMMIT');
             return true;
