@@ -20,10 +20,14 @@ const Details = {
         const client = await pool.connect();
 
         try {
+            await client.query('BEGIN');
             const response = await client.query("SELECT * FROM user_details WHERE user_id = $1", [user_id]);
             if (response.rows.length == 0) {
+                await client.query('ROLLBACK');
                 return false;
             } else {
+                await client.query('COMMIT');
+
                 return response.rows[0];
             }
         } catch (error) {
@@ -50,6 +54,7 @@ const Details = {
             await client.query('COMMIT');
             return result.rows[0];
         } catch (error) {
+            await client.query('ROLLBACK');
             console.log("Error updating database:", error.message)
             throw error;
         } finally {
@@ -63,7 +68,7 @@ const Details = {
         } catch (error) {
 
         } finally {
-
+            client.release();
         }
 
     },

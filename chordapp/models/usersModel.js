@@ -11,15 +11,17 @@ const User = {
             await client.query('BEGIN');
 
             const role = "BASIC";
+            const userStatus = "ACTIVE"
+
             const userBio = "Edit this page!";
             const userCity = "City";
             const userCountry = "Country"
 
             const response = await client.query(
-                `INSERT INTO users (first_name, last_name, email, created_at, password, role)
-                 VALUES ($1,$2,$3,$4,$5,$6)
+                `INSERT INTO users (first_name, last_name, email, created_at, password, role, status)
+                 VALUES ($1,$2,$3,$4,$5,$6,$7)
                  RETURNING user_id`,
-                [first_name, last_name, email, creation_date, password, role]
+                [first_name, last_name, email, creation_date, password, role, userStatus]
             );
 
             const user_id = response.rows[0].user_id;
@@ -87,13 +89,13 @@ const User = {
         FROM users JOIN user_details ON users.user_id = user_details.info_id WHERE users.user_id = ($1)`;
         const client = await pool.connect();
         try {
-            //await client.query('BEGIN');
+            await client.query('BEGIN');
             const response = await client.query(query, [user_id]);
             if (response.rows.length === 0) {
-                //await client.query('ROLLBACK');
+                await client.query('ROLLBACK');
                 return false;
             } else {
-                //await client.query('COMMIT');
+                await client.query('COMMIT');
                 return response.rows[0];
             }
         } catch (error) {
@@ -107,14 +109,14 @@ const User = {
         console.log(`Searching for: ${email}`);
         const client = await pool.connect();
         try {
-            //await client.query('BEGIN');
+            await client.query('BEGIN');
             const response = await client.query('SELECT * FROM users WHERE "email" = ($1)', [email]);
             if (response.rows.length == 0) {
-                //await client.query('ROLLBACK');
+                await client.query('ROLLBACK');
                 console.log("User not found.");
                 return false;
             } else {
-                //await client.query('COMMIT');
+                await client.query('COMMIT');
                 return response.rows[0];
             }
         } catch (error) {
@@ -163,6 +165,8 @@ const User = {
             console.log("ERROR:", error.message);
             await client.query('ROLLBACK');
             return false;
+        } finally {
+            client.release();
         }
     }
 }

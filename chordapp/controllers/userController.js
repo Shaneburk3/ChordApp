@@ -40,7 +40,7 @@ exports.registerUser = async (req, res) => {
         const hashed_password = await Cipher.createHash(register_password1);
         const creation_date = getDate();
         //create user
-        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password,user_dob);
+        const user = await User.create(first_name, last_name, register_email, creation_date, hashed_password, user_dob);
         console.log('user created.', user.user_id);
         if (!user) {
             var formErrors = [{ msg: "Error creating user." }];

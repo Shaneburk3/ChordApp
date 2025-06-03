@@ -3,22 +3,14 @@ const User = require('../../models/usersModel');
 const { ConsoleLogEntry } = require('selenium-webdriver/bidi/logEntries');
 //Integration test to ensure user account gets created is directed to login
 
-async function findTestUserID(email) {
-    const user = await User.findOne(email)
-    return user ? user.user_id : null
-};
-
-async function deleteTestUser(user_id) {
-    return await User.delete(user_id)
-}
 
 async function deleteTestUserIfExist() {
     const user_email = "testUser@testUser.com"
-    const testUser = await findTestUserID(user_email);
-    if (testUser) {
-        console.log(`Found user: ${testUser}`)
-        await deleteTestUser(testUser);
-        console.log(testUser, "Deleted.")
+    const user = await User.findOne(user_email);
+    if (user) {
+        console.log(`Found user: ${user}`)
+        await deleteTestUser(user);
+        console.log(user, "Deleted.")
     } else {
         console.log("Test user account not found.")
     }
