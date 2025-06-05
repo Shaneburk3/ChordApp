@@ -36,8 +36,9 @@ exports.updateUser = async (req, res) => {
 }
 exports.suspendUser = async (req, res) => {
 }
-exports.bulkAction = async (req, res) => {
-            const  { user_ids } = req.body
-            console.log(`Want to delete these: ${user_ids}`)
+exports.selected_action = async (req, res) => {
+            const  { user_ids, action } = req.body
+
+            console.log(`Want to ${action} these: ${user_ids}`)
 
 }

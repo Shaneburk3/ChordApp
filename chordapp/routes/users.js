@@ -42,7 +42,7 @@ router.post('/admin/delete/:user_id', authenticateToken, authAdmin, adminControl
 router.post('/admin/suspend/:user_id', authenticateToken, authAdmin, adminController.suspendUser);
 router.post('/admin/update/:user_id', authenticateToken, authAdmin, adminController.updateUser);
 
-router.post('/admin/delete_users', authenticateToken, authAdmin, adminController.bulkAction);
+router.post('/admin/selected_action', authenticateToken, authAdmin, adminController.selected_action);
 
 
 module.exports = router;

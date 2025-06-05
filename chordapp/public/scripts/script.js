@@ -14,47 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const update_form = document.getElementById('update_form');
-    const bulk_form = document.getElementById('bulk_form');
     const login_form = document.getElementById('login_form');
     const register_form = document.getElementById('register_form');
     const profileLink = document.getElementById('profileLink');
     const update_btn = document.getElementById('update_btn');
 
-    if (bulk_form) {
-        bulk_form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const adminErrorDiv = document.getElementById('adminErrorDiv')
-            // <-- Must create and array, mapping from the selected user_ids in all checkboxs -->
-            const selected_ids = Array.from(document.querySelectorAll('input[name="selected_users"]:checked')).map(e => e.value);
-            console.log(selected_ids)
-
-            try {
-                const response = await fetch(`/api/users/admin/delete_users`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_ids: selected_ids })
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    //got errors, now map them to the error div
-                    let html = "<ul>";
-                    errorData.errors.forEach(e => {
-                        html += `<li>${e.msg}</li>`
-                    });
-                    html += "</ul>"
-                    adminErrorDiv.innerHTML = html;
-                    adminErrorDiv.style.display = "block";
-                } else if (response.status === 200) {
-                    const data = await response.json();
-                    window.location.href = data.redirect;
-                }
-            } catch (error) {
-                adminErrorDiv.textContent = "Error occured."
-                adminErrorDiv.style.display = "block";
-                console.log(error.message);
-            }
-        })
-    }
 
     if (login_form) {
         login_form.addEventListener('submit', async (e) => {

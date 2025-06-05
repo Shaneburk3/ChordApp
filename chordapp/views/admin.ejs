@@ -12,10 +12,9 @@
 
     <div class="container my-5" style="padding: 20px;">
       <h1 class="mb-4">Admin Dashboard</h1>
-      <div id="adminErrorDiv"></div>
 
       <% if (users && users.length > 0) { %>
-        <form id="bulk_form">
+        <form action="/api/users/admin/selected_action" method="POST" id="bulk_form">
         <table class="table table-striped table-bordered text-center">
             <tr>
               <th>Select</th>
@@ -26,7 +25,8 @@
             </tr>
             <% users.forEach(user => { %>
               <tr>
-                <td><input type="checkbox" id="selected_users" name="selected_users" value="<%= user.user_id %>"></td>
+                <!--add ids to an array when selected from checkboxes-->
+                <td><input type="checkbox" name="selected_users[]" value="<%= user.user_id %>"></td>
                 <td><%= user.user_id %></td>
                 <td><%= user.email %></td>
                 <td><%= user.status || 'active' %></td>
@@ -54,6 +54,8 @@
         </table>
         <div class="row-lg-4 text-center">
         <button type="submit" name="action" value="delete" class="btn btn-danger">Delete Selected Users</button>
+        <button type="submit" name="action" value="suspend" class="btn btn-danger">Suspend Selected Users</button>
+        <button type="submit" name="action" value="unsuspend" class="btn btn-danger">Unsuspend Selected Users</button>
         </div>
         </form>
       <% } else { %>
