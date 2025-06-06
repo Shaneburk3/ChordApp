@@ -30,15 +30,41 @@ exports.getAdminPage = async (req, res) => {
         return res.render("index", { title: "Login", formErrors: [], formData: [] });
     }
 }
+exports.renderUpdatePage = async (req, res) => {
+        try {
+        const user = await User.findById(req.params.user_id);
+        if (!user) {
+            console.log("Could not get users information.")
+            const formErrors = [{ msg: "Details not found" }];
+            return res.status(404).render('404', { title: "404", formErrors })
+        }
+        const age = await getAge(user.user_dob);
+        user.user_dob = age;
+        return res.render("updateUser", { title: "User upate", user: user });
+    } catch (error) {
+        console.log(error);
+        return res.render("index", { title: "Login", formErrors: [] });
+    }
+}
 exports.deleteUser = async (req, res) => {
+    console.log("Deleting single user");
 }
 exports.updateUser = async (req, res) => {
+    console.log("updating single user");
 }
 exports.suspendUser = async (req, res) => {
+    console.log("suspending single user");
+
 }
 exports.selected_action = async (req, res) => {
-            const  { user_ids, action } = req.body
+    const { user_ids, action } = req.body
+    console.log(`Want to ${action} these: ${user_ids}`)
+    if (action === "delete") {
 
-            console.log(`Want to ${action} these: ${user_ids}`)
+    } else if (action === "suspend") {
+
+    } else if (action === "unsuspend") {
+
+    }
 
 }

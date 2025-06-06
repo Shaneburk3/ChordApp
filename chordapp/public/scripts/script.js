@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const update_form = document.getElementById('update_form');
     const login_form = document.getElementById('login_form');
     const register_form = document.getElementById('register_form');
-    const profileLink = document.getElementById('profileLink');
-    const update_btn = document.getElementById('update_btn');
+    //const profileLink = document.getElementById('profileLink');
+    //const update_btn = document.getElementById('update_btn');
 
 
     if (login_form) {

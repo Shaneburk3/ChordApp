@@ -52,6 +52,7 @@ const User = {
         users.email, 
         users.created_at, 
         users.role,
+        users.status,
         user_details.user_dob 
         FROM users JOIN user_details ON users.user_id = user_details.info_id ORDER BY user_id ASC`;
         const client = await pool.connect();
@@ -82,6 +83,7 @@ const User = {
         users.email, 
         users.created_at, 
         users.role,
+        users.status,
         user_details.user_dob, 
         user_details.user_bio, 
         user_details.user_city, 

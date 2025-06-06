@@ -27,6 +27,28 @@ async function getAge(dob) {
 
     return age;
 }
+async function toggleStatus() {
+
+    const currentStatus = document.getElementById('user_status').value;
+
+    if (currentStatus === 'ACTIVE') {
+        document.getElementById('user_status').value = "SUSPENDED";
+    } else if (currentStatus === 'SUSPENDED') {
+        document.getElementById('user_status').value = "ACTIVE";
+    }
+
+}
+async function toggleRole() {
+
+    const currentStatus = document.getElementById('user_role').value;
+
+    if (currentStatus === 'ADMIN') {
+        document.getElementById('user_role').value = "BASIC";
+    } else if (currentStatus === 'BASIC') {
+        document.getElementById('user_role').value = "ADMIN";
+    }
+
+}
 module.exports = {
-    getDate, getAge
+    getDate, getAge, toggleStatus, toggleRole
 }
