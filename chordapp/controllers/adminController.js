@@ -50,7 +50,7 @@ exports.deleteUser = async (req, res) => {
     console.log("Deleting single user");
 }
 exports.updateUser = async (req, res) => {
-    console.log("updating single user");
+    console.log("updating single user with:", req.body);
 }
 exports.suspendUser = async (req, res) => {
     console.log("suspending single user");

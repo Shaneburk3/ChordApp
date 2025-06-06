@@ -13,7 +13,7 @@
                                 class="card-img-top rounded-top" alt="Profile piture" style=" height: 10rem;">
 
                             <div class="card-body">
-                                <form id="updateUser_form">
+                                <form id="updateUser_form" method="POST" action="/api/users/admin/updateUser">
                                     <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
 
                                     <div class="mb-3">
@@ -28,11 +28,11 @@
                                     </div>
                                     <div class="mb-3">
 
-                                    <input type="text" id="user_status" name="user_dob" class="form-control"
-                                        value="<%= user.status %>" disabled>
+                                    <input type="text" id="user_status" name="user_status" class="form-control"
+                                        value="<%= user.status %>" readonly>
                                     </div>
                                     <div class="mb-3">
-                                        <button onclick="toggleStatus()" class="btn btn-warning btn-sm">Change
+                                        <button type="button" onclick="toggleStatus()" class="btn btn-warning btn-sm">Change
                                             status</button>
                                     </div>
                                     <div class="mb-3">
@@ -47,10 +47,10 @@
                                     <div class="mb-3">
 
                                     <input type="text" id="user_role" name="user_role" class="form-control"
-                                        value="<%= user.role %>" disabled>
+                                        value="<%= user.role %>" readonly>
                                     </div>
                                     <div class="mb-3">
-                                        <button onclick="toggleRole()" class="btn btn-warning btn-sm">Change
+                                        <button type="button" onclick="toggleRole()" class="btn btn-warning btn-sm">Change
                                             role</button>
                                     </div>
                                     
@@ -72,11 +72,11 @@
                                             placeholder="<%= user.user_bio %>"></textarea>
                                     </div>
 
-                                    <button type="submit" id="update_btn" name="update_btn"
+                                    <button type="submit" id="updateUser_btn" name="updateUser_btn"
                                         class="btn btn-primary w-100">Update
                                         Profile</button>
 
-                                    <div class="alert alert-danger" id="updateErrorDiv" style="display: none;">
+                                    <div class="alert alert-danger" id="updateErrorDiv" style="display: none;"></div>
 
                                 </form>
                             </div>

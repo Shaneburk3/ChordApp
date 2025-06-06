@@ -40,7 +40,8 @@ router.get('/admin', authenticateToken, authAdmin, adminController.getAdminPage)
 
 router.post('/admin/delete/:user_id', authenticateToken, authAdmin, adminController.deleteUser);
 router.post('/admin/suspend/:user_id', authenticateToken, authAdmin, adminController.suspendUser);
-router.post('/admin/update/:user_id', authenticateToken, authAdmin, adminController.renderUpdatePage);
+router.post('/admin/updateUser/:user_id', authenticateToken, authAdmin, adminController.updateUser);
+router.get('/admin/updateUser/:user_id', authenticateToken, authAdmin, adminController.renderUpdatePage)
 
 router.post('/admin/selected_action', authenticateToken, authAdmin, adminController.selected_action);
 

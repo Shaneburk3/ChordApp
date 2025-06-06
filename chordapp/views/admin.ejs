@@ -21,7 +21,7 @@
               <th>ID</th>
               <th>Email</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th>Action</th>
             </tr>
             <% users.forEach(user => { %>
               <tr>
@@ -31,23 +31,7 @@
                 <td><%= user.email %></td>
                 <td><%= user.status || 'active' %></td>
                 <td>
-                  <form action="/api/users/admin/delete/<%= user.user_id %>" method="POST" style="display:inline;">
-                    <button class="btn btn-danger btn-sm">Delete</button>
-                  </form>
-
-                  <% if (user.status === 'SUSPENDED') { %>
-                    <form action="/api/users/admin/unsuspend/<%= user.user_id %>" method="POST" style="display:inline;">
-                      <button class="btn btn-warning btn-sm">Unsuspend</button>
-                    </form>
-                  <% } else  { %>
-                    <form action="/api/users/admin/suspend/<%= user.user_id %>" method="POST" style="display:inline;">
-                      <button class="btn btn-warning btn-sm">Suspend</button>
-                    </form>
-                  <% } %>
-
-                  <form action="/api/users/admin/update/<%= user.user_id %>" method="POST" style="display:inline;">
-                    <button class="btn-secondary btn-sm">Update</button>
-                  </form>
+                  <a href="/api/users/admin/updateUser/<%= user.user_id%>" class="btn btn-secondary btn-sm">update</a>
                 </td>
               </tr>
             <% }) %>

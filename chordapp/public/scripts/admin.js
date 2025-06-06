@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const bulk_form = document.getElementById('bulk_form');
-    const updateUser_form = document.getElementById('updateUser_form');
+    
 
     if (bulk_form) {
         let selectedAction = null;
@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    if (updateUser_form) {
-        updateUser_form.addEventListener('submit', async (e) => {
+
+    document.getElementById('updateUser_form').addEventListener('submit', async (e) => {
             e.preventDefault();
             try {
 
@@ -91,8 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.log(error);
             }
+    })
 
-        });
-    }
 
 });
