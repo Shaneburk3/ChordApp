@@ -4,7 +4,7 @@ const Cipher = require('../middleware/encryption');
 const { getAge, getDate } = require('../public/scripts/functions.js');
 const jwt = require('jsonwebtoken');
 
-exports.getAdminPage = async (req, res) => {
+exports.renderAdmin = async (req, res) => {
     try {
         const user_id = req.user?.user_id
         const UserDetails = await User.findById(user_id);
@@ -56,7 +56,8 @@ exports.suspendUser = async (req, res) => {
     console.log("suspending single user");
 
 }
-exports.selected_action = async (req, res) => {
+
+exports.bulkUpdate = async (req, res) => {
     const { user_ids, action } = req.body
     console.log(`Want to ${action} these: ${user_ids}`)
     if (action === "delete") {

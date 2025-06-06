@@ -88,7 +88,7 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-exports.updateUserInfo = async (req, res) => {
+exports.updateUser = async (req, res) => {
     console.log("Updating user: ", req.params.user_id)
     const user_id = req.params.user_id;
     const data = req.body
@@ -110,7 +110,7 @@ exports.updateUserInfo = async (req, res) => {
         return res.status(500).json({ message: "Failed to update user." })
     }
 };
-exports.renderProfilePage = async (req, res) => {
+exports.renderProfile = async (req, res) => {
     try {
         const user_id = req.user?.user_id
         console.log("Getting profile: ", req.params.user_id)
@@ -134,7 +134,7 @@ exports.renderProfilePage = async (req, res) => {
         return res.render("index", { title: "Login", formErrors: [], formData: [] });
     }
 };
-exports.renderUpdatePage = async (req, res) => {
+exports.renderUpdate = async (req, res) => {
     try {
         const user = await User.findById(req.params.user_id);
         if (!user) {
@@ -157,15 +157,8 @@ exports.logoutUser = async (req, res) => {
     res.clearCookie('token');
     res.redirect('/')
 };
-exports.getAdminPage = async (req, res) => {
+/*
+exports.renderAdmin = async (req, res) => {
     return res.render("admin", { title: "Profile", header: "Admin page", user: null, users: null });
 }
-exports.deleteUser = async (req, res) => {
-
-}
-exports.suspendUser = async (req, res) => {
-
-}
-exports.updateUser = async (req, res) => {
-
-}
+*/

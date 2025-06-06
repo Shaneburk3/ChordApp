@@ -4,7 +4,7 @@ const session = require('express-session');
 //const userController = require('../controllers/userController');
 const audioController = require('../controllers/audioController');
 const { validateAudio } = require('../middleware/validation');
-const { authenticateToken, checkAdmin, optionalAuth} = require('../middleware/authentication');
+const { authToken, checkAdmin, optionalAuth} = require('../middleware/authentication');
 
 // Session Setup
 router.use(session({
@@ -14,13 +14,13 @@ router.use(session({
     cookie: { secure: false }
 }));
 
-router.get("/translator", optionalAuth, audioController.translatorPage); 
+router.get("/translator", optionalAuth, audioController.renderTranslate); 
 
-router.get('/translator/:user_id', authenticateToken, audioController.translatorPage);
+router.get('/translator/:user_id', authToken, audioController.renderTranslate);
 
 
 //route to a selected audio file, will be used to edit submission.
-router.get("/:user_id/:audio_id", optionalAuth, audioController.singleAudioPage);
+router.get("/:user_id/:audio_id", optionalAuth, audioController.singleAudio);
 
 router.post("/translator", optionalAuth, audioController.translate);
 

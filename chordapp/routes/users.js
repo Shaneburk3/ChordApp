@@ -3,7 +3,7 @@ dotenv.config();
 const express = require('express');
 const router = express.Router();
 const session = require('express-session');
-const { optionalAuth, authenticateToken, authAdmin } = require('../middleware/authentication');
+const { optionalAuth, authToken, authAdmin } = require('../middleware/authentication');
 
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
@@ -31,19 +31,19 @@ router.get("/terms", optionalAuth, (req, res) => {
 }); 
 
 // Protected Routes
-router.get('/profile/:user_id', authenticateToken, userController.renderProfilePage);
-router.get('/update/:user_id', authenticateToken, userController.renderUpdatePage);
-router.post('/update/:user_id', authenticateToken, validateUpdate, userController.updateUserInfo);
+router.get('/profile/:user_id', authToken, userController.renderProfile);
+router.get('/update/:user_id', authToken, userController.renderUpdate);
+router.post('/update/:user_id', authToken, validateUpdate, userController.updateUser);
  
 // Admin Section
-router.get('/admin', authenticateToken, authAdmin, adminController.getAdminPage);
+router.get('/admin', authToken, authAdmin, adminController.renderAdmin);
 
-router.post('/admin/delete/:user_id', authenticateToken, authAdmin, adminController.deleteUser);
-router.post('/admin/suspend/:user_id', authenticateToken, authAdmin, adminController.suspendUser);
-router.post('/admin/updateUser/:user_id', authenticateToken, authAdmin, adminController.updateUser);
-router.get('/admin/updateUser/:user_id', authenticateToken, authAdmin, adminController.renderUpdatePage)
+router.post('/admin/delete/:user_id', authToken, authAdmin, adminController.deleteUser);
+router.post('/admin/suspend/:user_id', authToken, authAdmin, adminController.suspendUser);
+router.post('/admin/update/:user_id', authToken, authAdmin, adminController.updateUser);
+router.get('/admin/update/:user_id', authToken, authAdmin, adminController.renderUpdatePage);
 
-router.post('/admin/selected_action', authenticateToken, authAdmin, adminController.selected_action);
+router.post('/admin/selected_action', authToken, authAdmin, adminController.bulkUpdate);
 
 
 module.exports = router;

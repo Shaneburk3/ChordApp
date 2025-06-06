@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 //will need to add function to refresh ACCESS TOKEN regularly
 
-function authenticateToken(req, res, next) {
+function authToken(req, res, next) {
     const token = req.cookies?.token;
     if (!token) {
         console.log("No Token Present, acting as a non-signed in user.");
@@ -46,4 +46,4 @@ function optionalAuth(req, res, next) {
     });
 }
 
-module.exports = { authenticateToken, authAdmin, optionalAuth }
+module.exports = { authToken, authAdmin, optionalAuth }

@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const bodyParser = require("body-parser");
 
-const { authenticateToken, authAdmin, optionalAuth } = require('./middleware/authentication');
+const { authToken, authAdmin, optionalAuth } = require('./middleware/authentication');
 
 const userRoutes = require('./routes/users');
 const audioRoutes = require('./routes/audios');
@@ -45,7 +45,7 @@ app.use('/api/audios/', audioRoutes);
 app.use('/', basicRoutes);
 
 app.use('/translator', optionalAuth, audioRoutes);
-app.use('/profile', authenticateToken, userRoutes);
+app.use('/profile', authToken, userRoutes);
 //app.use('/', basicsRoutes)
 
 

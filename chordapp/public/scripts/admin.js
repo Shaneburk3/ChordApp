@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     user_role: user_role,
                     user_status: user_status
                 };
-                const response = await fetch(`/api/users/admin/updateUser`, {
+                const response = await fetch(`/api/users/admin/update/${user_id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ updates: updates })

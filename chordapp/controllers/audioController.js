@@ -5,7 +5,7 @@ const User = require('../models/usersModel.js');
 const { getAge, getDate } = require('../public/scripts/functions.js');
 
 
-exports.translatorPage = async (req, res) => {
+exports.renderTranslate = async (req, res) => {
             try {
             const user_id = req.params?.user_id
             if (user_id) { 
@@ -38,7 +38,7 @@ exports.translatorPage = async (req, res) => {
             return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: req.user || null})
         }
 }
-exports.singleAudioPage = async (req, res) => {
+exports.singleAudio = async (req, res) => {
     
     const audio_id = req.params.audio_id;
     const single_audio = audioModel.findOne(audio_id)
