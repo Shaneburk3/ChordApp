@@ -42,8 +42,10 @@ router.post('/admin/delete/:user_id', authToken, authAdmin, adminController.dele
 router.post('/admin/suspend/:user_id', authToken, authAdmin, adminController.suspendUser);
 router.post('/admin/update/:user_id', authToken, authAdmin, adminController.updateUser);
 router.get('/admin/update/:user_id', authToken, authAdmin, adminController.renderUpdatePage);
-
 router.post('/admin/selected_action', authToken, authAdmin, adminController.bulkUpdate);
+
+router.get('/logs', authToken, authAdmin, adminController.renderLogPage);
+
 
 
 module.exports = router;

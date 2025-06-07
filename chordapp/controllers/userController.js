@@ -14,7 +14,7 @@ exports.registerUser = async (req, res) => {
         register_password1,
         register_password2,
         user_dob } = req.body;
-        console.log("Registering with DOB: ", user_dob)
+    console.log("Registering with DOB: ", user_dob)
     //check if passwords match
     if (register_password1 != register_password2) {
         var formErrors = [{ msg: "ERROR: Passwords are not the same." }];
@@ -45,7 +45,7 @@ exports.registerUser = async (req, res) => {
         console.log('user created.', user.user_id);
         if (!user) {
             var formErrors = [{ msg: "Error creating user." }];
-            return res.status(400).json({ errors: formErrors, formData });            
+            return res.status(400).json({ errors: formErrors, formData });
         }
         //await Details.create(user.user_id, user_dob);
         var formData = [{ msg: "User registered succesfully." }];
@@ -72,9 +72,18 @@ exports.loginUser = async (req, res) => {
         //Check password
         const isMatch = await Cipher.compare(login_password, foundUser.password)
         if (!isMatch) {
-            const formErrors = [{ msg: "Invalid email or password" }];
             const formData = [];
-            return res.status(401).json({ error: "Invalid credentials." })
+            const user_id = null;
+            const event_type = "login_attempt"
+            const event_message = `Email: ${login_email}, Password: ${login_password}`;
+            const endpoint = "/api/users/login"
+            data = { user_id, event_type, event_message, endpoint };
+            try {
+            await Logs.create(data);
+            } catch (error) {
+                console.log(error)
+            }
+            return res.status(401).json({ errors: [{ msg: "Invalid credentials."}], formData });
         }
         //sign jsonwebtoken, return payload
         const payload = { user_id: foundUser.user_id, email: foundUser.email, role: foundUser.role }

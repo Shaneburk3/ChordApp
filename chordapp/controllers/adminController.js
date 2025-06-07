@@ -1,7 +1,7 @@
 const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js');
 const Admin = require('../models/adminsModel.js');
-const Logs = require('../models/logsModel.js');
+const Log = require('../models/logsModel.js');
 const Cipher = require('../middleware/encryption');
 const { getAge, getDate } = require('../public/scripts/functions.js');
 const jwt = require('jsonwebtoken');
@@ -27,6 +27,31 @@ exports.renderAdmin = async (req, res) => {
         const formData = req.session.formData || {};
         console.log("Getting admin page data...");
         return res.render("admin", { user: UserDetails, title: "Profile", formData, formMessage, users: allUserDetails });
+    } catch (error) {
+        console.log(error);
+        return res.render("index", { title: "Login", formErrors: [], formData: [] });
+    }
+}
+exports.renderLogPage = async (req, res) => {
+    try {
+        const user_id = req.user?.user_id
+        if(!user_id) {
+            console.log("Unauthenticated.");
+        const redirect = "/";
+        return res.status(200).json({ redirect: redirect, formData: {} });        }
+        const UserDetails = await User.findById(user_id);
+        const allLogs = await Log.getAllLogs()
+        //console.log("All user details: ",allUserDetails)
+        // GET ALL USER DATA.
+        if (!allLogs) {
+            console.log("Could not get users information.")
+            const formErrors = [{ msg: "Details not found" }];
+            return res.status(404).render('404', { title: "404" , formErrors: formErrors});
+        }
+        const formMessage = req.session.formErrors || [];
+        const formData = req.session.formData || {};
+        console.log("Getting admin page data...");
+        return res.render("logs", { logs: allLogs, title: "Profile", formData, formMessage, users: UserDetails });
     } catch (error) {
         console.log(error);
         return res.render("index", { title: "Login", formErrors: [], formData: [] });

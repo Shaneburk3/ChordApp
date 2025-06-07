@@ -12,6 +12,13 @@ function getDate() {
     console.log("Got Current Date:", currentDate)
     return currentDate
 }
+function logDate(date) {
+
+    newdate = date.toISOString().split('GMT')[0];
+
+    console.log("Got Current Date:", newdate)
+    return newdate
+}
 async function getAge(dob) {
 
     newDob = dob.toISOString().split('T')[0];
@@ -50,5 +57,5 @@ async function toggleRole() {
 
 }
 module.exports = {
-    getDate, getAge, toggleStatus, toggleRole
+    getDate, getAge, toggleStatus, toggleRole, logDate
 }

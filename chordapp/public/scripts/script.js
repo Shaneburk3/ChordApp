@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.location.href = data.redirect;
                 }
             } catch (error) {
-                loginErrorDiv.textContent = "Error occured."
+                loginErrorDiv.textContent = "Error occured.";
                 loginErrorDiv.style.display = "block";
                 console.log(error);
             }

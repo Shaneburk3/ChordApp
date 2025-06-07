@@ -2,6 +2,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const bulk_form = document.getElementById('bulk_form');
     const updateUser_form = document.getElementById('updateUser_form');
+    const filter_form = document.getElementById('filter_form');
+
+
+    if(filter_form) {
+        let selected_filter = null;
+        // <-- create and listener, to selecte chosen action of all buttons -->
+        selected_filter = document.getElementById('event_type').value;
+
+        filter_form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+        })
+            
+    }
+
 
 
     if (bulk_form) {
@@ -10,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('#bulk_form button[type="submit"]').forEach(button => {
             button.addEventListener('click', function () {
                 selectedAction = this.value;
-            })
-        })
+            });
+        });
         // #
 
         bulk_form.addEventListener('submit', async (e) => {
