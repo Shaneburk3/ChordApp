@@ -82,9 +82,39 @@ exports.bulkUpdate = async (req, res) => {
     if (action === "delete") {
 
     } else if (action === "suspend") {
-
+    console.log("Suspending users:", user_ids);
+    if (!user_ids) {
+        const redirect = "/api/users/admin";
+        return res.status(400).json({ redirect: redirect, formData: "No users selected" });    }
+    try {
+        const suspended = await Admin.suspend(user_ids)
+        if (!suspended) {
+            return res.status(404).json({ message: "No users suspended." });
+        }
+        console.log("Users suspended")
+        const redirect = "/api/users/admin";
+        return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to update user." });
+    }
     } else if (action === "unsuspend") {
-
+    console.log("unsuspend users:", user_ids);
+    if (!user_ids) {
+        const redirect = "/api/users/admin";
+        return res.status(400).json({ redirect: redirect, formData: "No users selected" });    }
+    try {
+        const unsuspend = await Admin.unsuspend(user_ids)
+        if (!unsuspend) {
+            return res.status(404).json({ message: "No users unsuspend." });
+        }
+        console.log("Users unsuspend")
+        const redirect = "/api/users/admin";
+        return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to update user." });
+    }
     }
 
 }

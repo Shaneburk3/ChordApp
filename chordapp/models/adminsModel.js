@@ -50,6 +50,58 @@ const Admins = {
         }
 
     },
+    suspend: async (data) => {
+        const client = await pool.connect();
+        try {
+            console.log('Suspending these users as admin.');
+            await client.query('BEGIN');
+            const user_status = "SUSPENDED"
+            let suspend_result;
+            for (let i = 0; i < data.length; i++) {
+                suspend_result = await client.query(`UPDATE users SET status = $1 WHERE user_id = $2 RETURNING user_id`, [user_status, data[i]]);
+                if (suspend_result.rowCount === 0) {
+                    await client.query('ROLLBACK');
+                    console.log('Could not suspend user.');
+                    return null;
+                }
+            }
+            await client.query('COMMIT');
+            console.log(suspend_result, " suspended")
+            return suspend_result.rows;
+        } catch (error) {
+            await client.query('ROLLBACK');
+            console.log("Error updating database:", error.message)
+            throw error;
+        } finally {
+            client.release();
+        }
+    },
+    unsuspend: async (data) => {
+        const client = await pool.connect();
+        try {
+            console.log('unsuspending these users as admin.');
+            await client.query('BEGIN');
+            const user_status = "ACTIVE"
+            let unsuspend_result;
+            for (let i = 0; i < data.length; i++) {
+                unsuspend_result = await client.query(`UPDATE users SET status = $1 WHERE user_id = $2 RETURNING user_id`, [user_status, data[i]]);
+                if (unsuspend_result.rowCount === 0) {
+                    await client.query('ROLLBACK');
+                    console.log('Could not unsuspend user.');
+                    return null;
+                }
+            }
+            await client.query('COMMIT');
+            console.log(unsuspend_result, " unsuspend")
+            return unsuspend_result.rows;
+        } catch (error) {
+            await client.query('ROLLBACK');
+            console.log("Error updating database:", error.message)
+            throw error;
+        } finally {
+            client.release();
+        }
+    }
 }
 
 module.exports = Admins;
