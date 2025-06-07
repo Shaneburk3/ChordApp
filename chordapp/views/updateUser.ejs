@@ -13,6 +13,17 @@
                                 class="card-img-top rounded-top" alt="Profile piture" style=" height: 10rem;">
 
                             <div class="card-body">
+                                <div id="message_div">
+                                    <% if (formMessage && formMessage.length> 0) { %>
+                                        <div class="mt-3">
+                                            <% formMessage.forEach(message=> { %>
+                                                <p class="text-danger">
+                                                    <%= message %>
+                                                </p>
+                                                <% }) %>
+                                        </div>
+                                        <% } %>
+                                </div>
                                 <form id="updateUser_form">
                                     <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
                                     <!-- 
@@ -28,11 +39,12 @@
                                     </div>
                                     <div class="mb-3">
 
-                                    <input type="text" id="user_status" name="user_status" class="form-control"
-                                        value="<%= user.status %>" readonly>
+                                        <input type="text" id="user_status" name="user_status" class="form-control"
+                                            value="<%= user.status %>" readonly>
                                     </div>
                                     <div class="mb-3">
-                                        <button type="button" onclick="toggleStatus()" class="btn btn-warning btn-sm">Change
+                                        <button type="button" onclick="toggleStatus()"
+                                            class="btn btn-warning btn-sm">Change
                                             status</button>
                                     </div>
                                     <div class="mb-3">
@@ -46,14 +58,15 @@
                                     </div>
                                     <div class="mb-3">
 
-                                    <input type="text" id="user_role" name="user_role" class="form-control"
-                                        value="<%= user.role %>" readonly>
+                                        <input type="text" id="user_role" name="user_role" class="form-control"
+                                            value="<%= user.role %>" readonly>
                                     </div>
                                     <div class="mb-3">
-                                        <button type="button" onclick="toggleRole()" class="btn btn-warning btn-sm">Change
+                                        <button type="button" onclick="toggleRole()"
+                                            class="btn btn-warning btn-sm">Change
                                             role</button>
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label for="user_country" class="form-label"><strong>Country</strong></label>
                                         <input type="text" id="user_country" name="user_country" class="form-control"
@@ -68,14 +81,16 @@
 
                                     <div class="mb-3">
                                         <label for="user_bio" class="form-label"><strong>Bio</strong></label>
-                                        <textarea id="user_bio" name="user_bio" class="form-control" rows="3"><%= user.user_bio %></textarea>
+                                        <textarea id="user_bio" name="user_bio" class="form-control"
+                                            rows="3"><%= user.user_bio %></textarea>
                                     </div>
 
                                     <button type="submit" id="updateUser_btn" name="updateUser_btn"
                                         class="btn btn-primary w-100">Update
                                         Profile</button>
 
-                                    <div class="alert alert-danger" id="updateErrorDiv" style="display: none;"></div>
+                                    <div class="alert alert-danger" id="updateErrorDiv" style="display: none;">
+                                    </div>
 
                                 </form>
                             </div>

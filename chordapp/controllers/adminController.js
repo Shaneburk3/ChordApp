@@ -22,10 +22,10 @@ exports.renderAdmin = async (req, res) => {
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404" });
         }
-        const formErrors = req.session.formErrors || [];
+        const formMessage = req.session.formErrors || [];
         const formData = req.session.formData || {};
         console.log("Getting admin page data...");
-        return res.render("admin", { user: UserDetails, title: "Profile", formData, formErrors, users: allUserDetails });
+        return res.render("admin", { user: UserDetails, title: "Profile", formData, formMessage, users: allUserDetails });
     } catch (error) {
         console.log(error);
         return res.render("index", { title: "Login", formErrors: [], formData: [] });
@@ -37,14 +37,14 @@ exports.renderUpdatePage = async (req, res) => {
         if (!user) {
             console.log("Could not get users information.")
             const formErrors = [{ msg: "Details not found" }];
-            return res.status(404).render('404', { title: "404", formErrors })
+            return res.status(404).render('404', { title: "404", formMessage: msg })
         }
         const age = await getAge(user.user_dob);
         user.user_dob = age;
-        return res.render("updateUser", { title: "Update user", user: user });
+        return res.render("updateUser", { title: "Update user", user: user, formMessage: ["Lets get updating"] });
     } catch (error) {
         console.log(error);
-        return res.render("index", { title: "Login", formErrors: [] });
+        return res.render("index", { title: "Login", formMessage: [error.msg] });
     }
 }
 exports.deleteUser = async (req, res) => {
