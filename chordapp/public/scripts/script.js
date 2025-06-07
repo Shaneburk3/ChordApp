@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const data = await response.json();
                     window.location.href = data.redirect;
                 }
-            } catch (error) {
+            } catch (error) { 
                 console.log(error);
             }
         });

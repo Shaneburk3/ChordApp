@@ -3,7 +3,7 @@ const Details = require('../models/detailsModel.js');
 const Admin = require('../models/adminsModel.js');
 const Log = require('../models/logsModel.js');
 const Cipher = require('../middleware/encryption');
-const { getAge, getDate } = require('../public/scripts/functions.js');
+const { getAge } = require('../public/scripts/backend/functions.js');
 const jwt = require('jsonwebtoken');
 
 exports.renderAdmin = async (req, res) => {
@@ -126,7 +126,7 @@ exports.bulkUpdate = async (req, res) => {
     } else if (action === "suspend") {
         console.log("Suspending users:", user_ids);
         try {
-            const suspended = await Admin.suspend(user_ids)
+            const suspended = await Admin.suspend(user_ids); 
             if (!suspended) {
                 return res.status(404).json({ message: "No users suspended." });
             }
@@ -152,5 +152,7 @@ exports.bulkUpdate = async (req, res) => {
             return res.status(500).json({ message: "Failed to update user." });
         }
     }
-
+}
+exports.filterLogs = async (req, res) => {
+    console.log("Filter logs by: ", req)
 }

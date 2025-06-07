@@ -12,13 +12,6 @@ function getDate() {
     console.log("Got Current Date:", currentDate)
     return currentDate
 }
-function logDate(date) {
-
-    newdate = date.toISOString().split('GMT')[0];
-
-    console.log("Got Current Date:", newdate)
-    return newdate
-}
 async function getAge(dob) {
 
     newDob = dob.toISOString().split('T')[0];
@@ -34,6 +27,7 @@ async function getAge(dob) {
 
     return age;
 }
+/*
 async function toggleStatus() {
 
     const currentStatus = document.getElementById('user_status').value;
@@ -45,6 +39,7 @@ async function toggleStatus() {
     }
 
 }
+
 async function toggleRole() {
 
     const currentStatus = document.getElementById('user_role').value;
@@ -56,6 +51,7 @@ async function toggleRole() {
     }
 
 }
+*/
 module.exports = {
-    getDate, getAge, toggleStatus, toggleRole, logDate
-}
+    getDate, getAge
+};

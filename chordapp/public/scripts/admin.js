@@ -5,16 +5,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const filter_form = document.getElementById('filter_form');
 
 
-    if(filter_form) {
-        let selected_filter = null;
-        // <-- create and listener, to selecte chosen action of all buttons -->
-        selected_filter = document.getElementById('event_type').value;
+    if (filter_form) {
 
         filter_form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            let selected_filter = null;
+            // <-- create and listener, to selecte chosen action of all buttons -->
+            selected_filter = document.getElementById('event_type').value;
+            console.log("Wants to filter by: ", selected_filter)
+
         })
-            
+
     }
 
 

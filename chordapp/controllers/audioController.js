@@ -3,7 +3,7 @@ const Logs = require('../models/logsModel.js');
 const Session = require('../utils/express-session.js');
 const audioModel = require('../models/audiosModel.js');
 const User = require('../models/usersModel.js');
-const { getAge, getDate } = require('../public/scripts/functions.js');
+const { getAge } = require('../public/scripts/backend/functions.js');
 
 
 exports.renderTranslate = async (req, res) => {
