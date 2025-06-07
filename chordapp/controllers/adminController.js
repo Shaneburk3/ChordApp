@@ -32,7 +32,7 @@ exports.renderAdmin = async (req, res) => {
     }
 }
 exports.renderUpdatePage = async (req, res) => {
-        try {
+    try {
         const user = await User.findById(req.params.user_id);
         if (!user) {
             console.log("Could not get users information.")
@@ -79,42 +79,52 @@ exports.suspendUser = async (req, res) => {
 exports.bulkUpdate = async (req, res) => {
     const { user_ids, action } = req.body
     console.log(`Want to ${action} these: ${user_ids}`)
+    if (!user_ids) {
+        const redirect = "/api/users/admin";
+        return res.status(400).json({ redirect: redirect, formData: "No users selected" });
+    }
     if (action === "delete") {
-
+        console.log("Deleting users:", user_ids);
+        try {
+            const deleted = await Admin.delete(user_ids)
+            if (!deleted) {
+                return res.status(404).json({ message: "No users deleted." });
+            }
+            console.log("Users deleted")
+            const redirect = "/api/users/admin";
+            return res.status(200).json({ redirect: redirect, formData: "User accounts deleted." });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Failed to deleted usera." });
+        }
     } else if (action === "suspend") {
-    console.log("Suspending users:", user_ids);
-    if (!user_ids) {
-        const redirect = "/api/users/admin";
-        return res.status(400).json({ redirect: redirect, formData: "No users selected" });    }
-    try {
-        const suspended = await Admin.suspend(user_ids)
-        if (!suspended) {
-            return res.status(404).json({ message: "No users suspended." });
+        console.log("Suspending users:", user_ids);
+        try {
+            const suspended = await Admin.suspend(user_ids)
+            if (!suspended) {
+                return res.status(404).json({ message: "No users suspended." });
+            }
+            console.log("Users suspended")
+            const redirect = "/api/users/admin";
+            return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Failed to update user." });
         }
-        console.log("Users suspended")
-        const redirect = "/api/users/admin";
-        return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Failed to update user." });
-    }
     } else if (action === "unsuspend") {
-    console.log("unsuspend users:", user_ids);
-    if (!user_ids) {
-        const redirect = "/api/users/admin";
-        return res.status(400).json({ redirect: redirect, formData: "No users selected" });    }
-    try {
-        const unsuspend = await Admin.unsuspend(user_ids)
-        if (!unsuspend) {
-            return res.status(404).json({ message: "No users unsuspend." });
+        console.log("unsuspend users:", user_ids);
+        try {
+            const unsuspend = await Admin.unsuspend(user_ids)
+            if (!unsuspend) {
+                return res.status(404).json({ message: "No users unsuspend." });
+            }
+            console.log("Users unsuspend")
+            const redirect = "/api/users/admin";
+            return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Failed to update user." });
         }
-        console.log("Users unsuspend")
-        const redirect = "/api/users/admin";
-        return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Failed to update user." });
-    }
     }
 
 }
