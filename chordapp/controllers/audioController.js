@@ -1,4 +1,5 @@
 const Audio = require('../models/audiosModel.js');
+const Logs = require('../models/logsModel.js');
 const Session = require('../utils/express-session.js');
 const audioModel = require('../models/audiosModel.js');
 const User = require('../models/usersModel.js');

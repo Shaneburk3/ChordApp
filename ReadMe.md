@@ -55,6 +55,12 @@ Install playwright?? E2E UI Testing
 - source venv/Scripts/activate
 - pip install jupyterlab
 Start lab run bash- jupyter lab
+
+- DIR: C:\Users\shane\Documents
+- Dependencies:
+    - pip install: tensorflow tensorflow_io matplotlob seaborn numpy 
+- CMD: jupyter notebook
+
 ## Jupyter Dependencies
 pip install jupyterlab tensorflow scikit-learn librosa seaborn matplotlib soundfile joblib
 ## Run

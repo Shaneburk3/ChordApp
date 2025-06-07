@@ -43,10 +43,13 @@
                   <li class="nav-item">
                     <a class="nav-link" href="/api/users/profile/<%= user.user_id%>">Profile</a>
                   </li>
-                  <% } else if (user && user.role ==='ADMIN' ) { %>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/api/users/logout">Logout</a>
-                  </li>
+                  <% } else if (user && user.role==='ADMIN' ) { %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/api/users/logout">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/api/users/admin/">Admin</a>
+                    </li>
                     <% } else if (!user) { %>
                       <li class="nav-item">
                         <a class="nav-link" href="/">Login</a>

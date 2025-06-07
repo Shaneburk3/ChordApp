@@ -1,6 +1,7 @@
 const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js');
-const Admin = require('../models/adminsModel.js')
+const Admin = require('../models/adminsModel.js');
+const Logs = require('../models/logsModel.js');
 const Cipher = require('../middleware/encryption');
 const { getAge, getDate } = require('../public/scripts/functions.js');
 const jwt = require('jsonwebtoken');
