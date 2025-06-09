@@ -24,7 +24,7 @@ router.get('/register', (req, res) => {
 });
 router.post('/register', validateRegister, userController.registerUser);
 router.post('/login', validateLogin, userController.loginUser); 
-router.get('/logout', userController.logoutUser);
+router.get('/logout/:user_id', userController.logoutUser);
 
 router.get("/terms", optionalAuth, (req, res) => {
     res.render("Terms", { header: "Terms and Conditions", title: "T&C's" });
@@ -45,7 +45,7 @@ router.get('/admin/update/:user_id', authToken, authAdmin, adminController.rende
 router.post('/admin/selected_action', authToken, authAdmin, adminController.bulkUpdate);
 
 router.get('/logs', authToken, authAdmin, adminController.renderLogPage);
-router.post('/logs/filter', authToken, authAdmin, adminController.filterLogs);
+router.post('/admin/logs/filter', authToken, authAdmin, adminController.filterLogs);
 
 
 

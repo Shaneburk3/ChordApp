@@ -23,7 +23,7 @@ exports.renderAdmin = async (req, res) => {
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404" });
         }
-        const formMessage = req.session.formErrors || [];
+        const formMessage = [];
         const formData = req.session.formData || {};
         console.log("Getting admin page data...");
         return res.render("admin", { user: UserDetails, title: "Profile", formData, formMessage, users: allUserDetails });
@@ -35,10 +35,11 @@ exports.renderAdmin = async (req, res) => {
 exports.renderLogPage = async (req, res) => {
     try {
         const user_id = req.user?.user_id
-        if(!user_id) {
+        if (!user_id) {
             console.log("Unauthenticated.");
-        const redirect = "/";
-        return res.status(200).json({ redirect: redirect, formData: {} });        }
+            const redirect = "/";
+            return res.status(200).json({ redirect: redirect, formData: {} });
+        }
         const UserDetails = await User.findById(user_id);
         const allLogs = await Log.getAllLogs()
         //console.log("All user details: ",allUserDetails)
@@ -46,7 +47,7 @@ exports.renderLogPage = async (req, res) => {
         if (!allLogs) {
             console.log("Could not get users information.")
             const formErrors = [{ msg: "Details not found" }];
-            return res.status(404).render('404', { title: "404" , formErrors: formErrors});
+            return res.status(404).render('404', { title: "404", formErrors: formErrors });
         }
         const formMessage = req.session.formErrors || [];
         const formData = req.session.formData || {};
@@ -67,14 +68,26 @@ exports.renderUpdatePage = async (req, res) => {
         }
         const age = await getAge(user.user_dob);
         user.user_dob = age;
-        return res.render("updateUser", { title: "Update user", user: user, formMessage: ["Lets get updating"] });
+        return res.render("updateUser", { title: "Update user", user: user });
     } catch (error) {
         console.log(error);
         return res.render("index", { title: "Login", formMessage: [error.msg] });
     }
 }
 exports.deleteUser = async (req, res) => {
-    console.log("Deleting single user");
+    console.log("Deleting single user: ", req.body);
+    try {
+        const deleted = await Admin.delete(req.body)
+        if (!deleted) {
+            return res.status(404).json({ message: "No user deleted." });
+        }
+        console.log("User deleted")
+        const redirect = "/api/users/admin";
+        return res.status(200).json({ redirect: redirect });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to delete user." });
+    }
 }
 exports.updateUser = async (req, res) => {
     console.log("updating single user with:", req.body);
@@ -91,7 +104,7 @@ exports.updateUser = async (req, res) => {
         }
         console.log("User updated")
         const redirect = "/api/users/admin";
-        return res.status(200).json({ redirect: redirect, formData: {} });
+        return res.status(200).json({ redirect: redirect });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to update user." });
@@ -99,7 +112,34 @@ exports.updateUser = async (req, res) => {
 }
 exports.suspendUser = async (req, res) => {
     console.log("suspending single user");
-
+    try {
+        const suspended = await Admin.suspend(user_ids);
+        if (!suspended) {
+            return res.status(404).json({ message: "No user suspended." });
+        }
+        console.log("User suspended")
+        const redirect = "/api/users/admin";
+        return res.status(200).json({ redirect: redirect });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to suspend user." });
+    }
+}
+exports.unsuspendUser = async (req, res) => {
+    console.log("Unsuspending single user");
+    try {
+        const user_id = req.body.user_id;
+        const suspended = await Admin.unsuspend(user_id);
+        if (!suspended) {
+            return res.status(404).json({ message: "No user Unsuspended." });
+        }
+        console.log("User unsuspended")
+        const redirect = "/api/users/admin";
+        return res.status(200).json({ redirect: redirect });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to suspend user." });
+    }
 }
 
 exports.bulkUpdate = async (req, res) => {
@@ -112,7 +152,7 @@ exports.bulkUpdate = async (req, res) => {
     if (action === "delete") {
         console.log("Deleting users:", user_ids);
         try {
-            const deleted = await Admin.delete(user_ids)
+            const deleted = await Admin.delete(user_ids);
             if (!deleted) {
                 return res.status(404).json({ message: "No users deleted." });
             }
@@ -121,12 +161,12 @@ exports.bulkUpdate = async (req, res) => {
             return res.status(200).json({ redirect: redirect, formData: "User accounts deleted." });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: "Failed to deleted usera." });
+            return res.status(500).json({ message: "Failed to deleted user." });
         }
     } else if (action === "suspend") {
         console.log("Suspending users:", user_ids);
         try {
-            const suspended = await Admin.suspend(user_ids); 
+            const suspended = await Admin.suspend(user_ids);
             if (!suspended) {
                 return res.status(404).json({ message: "No users suspended." });
             }
@@ -154,5 +194,5 @@ exports.bulkUpdate = async (req, res) => {
     }
 }
 exports.filterLogs = async (req, res) => {
-    console.log("Filter logs by: ", req)
+    console.log("Filter logs by: ", req.body)
 }

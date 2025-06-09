@@ -13,9 +13,35 @@ document.addEventListener('DOMContentLoaded', function () {
             let selected_filter = null;
             // <-- create and listener, to selecte chosen action of all buttons -->
             selected_filter = document.getElementById('event_type').value;
-            console.log("Wants to filter by: ", selected_filter)
+            selected_id = document.getElementById('user_id').value;
+            console.log(`Wants to filter user: ${selected_id} by: ${selected_filter}`);
 
-        })
+            try {
+                const response = await fetch(`/api/users/admin/logs/filter`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ selected_filter: selected_filter, selected_id: selected_id })
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    //got errors, now map them to the error div
+                    let html = "<ul>";
+                    errorData.errors.forEach(e => {
+                        html += `<li>${e.msg}</li>`
+                    });
+                    html += "</ul>"
+                    adminErrorDiv.innerHTML = html;
+                    adminErrorDiv.style.display = "block";
+                } else if (response.status === 200) {
+                    const data = await response.json();
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                adminErrorDiv.textContent = "Error occured."
+                adminErrorDiv.style.display = "block";
+                console.log(error.message);
+            }
+        });
 
     }
 

@@ -73,17 +73,29 @@ exports.loginUser = async (req, res) => {
         const isMatch = await Cipher.compare(login_password, foundUser.password)
         if (!isMatch) {
             const formData = [];
+            //Login Failure - Create log in database
             const user_id = null;
-            const event_type = "login_attempt"
-            const event_message = `Email: ${login_email}, Password: ${login_password}`;
+            const event_type = "login_failure"
+            const event_message = `Attempt made with Email: ${login_email}, Password: ${login_password}`;
             const endpoint = "/api/users/login"
             data = { user_id, event_type, event_message, endpoint };
             try {
-            await Logs.create(data);
+                await Logs.create(data);
             } catch (error) {
                 console.log(error)
             }
-            return res.status(401).json({ errors: [{ msg: "Invalid credentials."}], formData });
+            return res.status(401).json({ errors: [{ msg: "Invalid credentials." }], formData });
+        }
+        //Success Login - Create log in database.
+        const user_id = foundUser.user_id;
+        const event_type = "login_success"
+        const event_message = `Email: ${login_email}, logged in.`;
+        const endpoint = "/api/users/login"
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Logs.create(data);
+        } catch (error) {
+            console.log(error)
         }
         //sign jsonwebtoken, return payload
         const payload = { user_id: foundUser.user_id, email: foundUser.email, role: foundUser.role }
@@ -93,7 +105,7 @@ exports.loginUser = async (req, res) => {
         const redirect = foundUser.role === "ADMIN" ? "/api/users/admin" : `/api/users/profile/${foundUser.user_id}`;
         return res.cookie('token', accessToken, { httpOnly: true, maxAge: 30 * 60 * 1000 }).status(200).json({ redirect })
     } catch (error) {
-        console.log("Error loginUser: 91 ", error);
+        console.log("Error loginUser: ", error);
         res.status(500).json({ error: "Error logging in user." })
     }
 };
@@ -164,8 +176,18 @@ exports.sendMessage = async (req, res) => {
 
 }
 exports.logoutUser = async (req, res) => {
+    const user_id = req.params.user_id;
+    const event_type = "user_logout"
+    const event_message = `Logged out.`;
+    const endpoint = "/api/users/login"
+    data = { user_id, event_type, event_message, endpoint };
+    try {
+        await Logs.create(data);
+    } catch (error) {
+        console.log(error);
+    }
     res.clearCookie('token');
-    res.redirect('/')
+    res.redirect('/');
 };
 /*
 exports.renderAdmin = async (req, res) => {
