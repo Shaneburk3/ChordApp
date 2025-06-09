@@ -74,7 +74,7 @@ exports.loginUser = async (req, res) => {
         if (!isMatch) {
             const formData = [];
             //Login Failure - Create log in database
-            const user_id = null;
+            const user_id = foundUser.user_id;
             const event_type = "login_failure"
             const event_message = `Attempt made with Email: ${login_email}, Password: ${login_password}`;
             const endpoint = "/api/users/login"
@@ -85,6 +85,11 @@ exports.loginUser = async (req, res) => {
                 console.log(error)
             }
             return res.status(401).json({ errors: [{ msg: "Invalid credentials." }], formData });
+        }
+        if (foundUser.status === 'SUSPENDED') {
+            console.log("Accounted suspended.")
+            var formErrors = [{ msg: "Account Suspended." }];
+            return res.status(400).json({ errors: formErrors });
         }
         //Success Login - Create log in database.
         const user_id = foundUser.user_id;
