@@ -76,7 +76,7 @@ exports.loginUser = async (req, res) => {
             //Login Failure - Create log in database
             const user_id = foundUser.user_id;
             const event_type = "login_failure"
-            const event_message = `Attempt made with Email: ${login_email}, Password: ${login_password}`;
+            const event_message = `Email: ${login_email}, Password: ${login_password}`;
             const endpoint = "/api/users/login"
             data = { user_id, event_type, event_message, endpoint };
             try {
@@ -130,6 +130,15 @@ exports.updateUser = async (req, res) => {
         }
         const foundUser = await User.findById(user_id);
         console.log("Updated: ", updated)
+        const event_type = "update_success"
+        const event_message = `Updated ${user_id} successfull.`;
+        const endpoint = "/api/users/Update"
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Logs.create(data);
+        } catch (error) {
+            console.log(error)
+        }
         const redirect = foundUser.role === "ADMIN" ? "/api/users/admin" : `/api/users/profile/${foundUser.user_id}`;
         return res.status(200).json({ redirect: redirect, formData: {} })
     } catch (error) {
