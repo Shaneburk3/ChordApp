@@ -44,7 +44,7 @@ router.post('/admin/update/:user_id', authToken, authAdmin, adminController.upda
 router.get('/admin/update/:user_id', authToken, authAdmin, adminController.renderUpdatePage);
 router.post('/admin/selected_action', authToken, authAdmin, adminController.bulkUpdate);
 
-router.get('/logs', authToken, authAdmin, adminController.renderLogPage);
+router.get('/admin/logs', authToken, authAdmin, adminController.renderLogPage);
 router.post('/admin/logs/filter', authToken, authAdmin, adminController.filterLogs);
 
 

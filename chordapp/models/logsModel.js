@@ -44,6 +44,36 @@ const Logs = {
         } finally {
             client.release();
         }
+    },
+    Filter: async (selected_event, selected_id) => {
+        console.log(`Filtering log by ${selected_event} with ${selected_id}`);
+        const client = await pool.connect();
+        console.log("Filter:", selected_event)
+        try {
+            await client.query('BEGIN');
+            let response;
+            // all logs by ID
+            if (selected_event === 'all' && selected_id) {
+                response = await client.query("SELECT * FROM logs WHERE user_id = $1 ORDER BY created_at DESC", [selected_id]);
+            // Specific event by ID
+            } else if (selected_event !== 'all' && selected_id) {
+                response = await client.query("SELECT * FROM logs WHERE event_type = $1 AND user_id = $2 ORDER BY created_at DESC", [selected_event, selected_id]);
+            // All logs
+            } else if (selected_event === 'all' && !selected_id) {
+                response = await client.query("SELECT * FROM logs ORDER BY created_at DESC");
+            //Specific event with no ID
+            } else if (selected_event !== 'all' && !selected_id) {
+                response = await client.query("SELECT * FROM logs WHERE event_type = $1 ORDER BY created_at DESC", [selected_event]);
+            }
+            await client.query('COMMIT');
+            console.log("Logs found for user: ", response.rows);
+            return response.rows;
+        } catch (error) {
+            await client.query('ROLLBACK');
+            console.log(error.message)
+        } finally {
+            client.release();
+        }
     }
 }
 

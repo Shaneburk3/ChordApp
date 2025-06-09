@@ -51,5 +51,9 @@ async function getAge(dob) {
 
     return age;
 }
+async function renderLogs(logs) {
 
-window.utils = { toggleRole, toggleStatus, getDate, getAge }
+}
+
+
+window.utils = { toggleRole, toggleStatus, getDate, getAge, renderLogs }

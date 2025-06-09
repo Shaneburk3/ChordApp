@@ -24,20 +24,20 @@
                 <div class="container my-5" style="padding: 20px;">
                     <h1 class="mb-4">Log Dashboard</h1>
                     <!-- Form to select a filter of logs -->
-                    <form id="filter_form" class="row g-3 align-items-end">
+                    <form action="/api/users/admin/logs/filter" method="POST" id="filter_form" class="row g-3 align-items-end">
                         <div class="col-md-3">
                             <label for="event_type" class="form-label">Event_type</label>
-                            <select name="event_type" id="event_type" class="form-select">
+                            <select name="selected_event" id="event_type" class="form-select">
                                 <option value="all">All</option>
-                                <option value="login_attempt">login_success</option>
-                                <option value="login_attempt">login_failure</option>
-                                <option value="login_attempt">register_success</option>
-                                <option value="register_attempt">register_failure</option>
+                                <option value="login_success">login_success</option>
+                                <option value="login_failure">login_failure</option>
+                                <option value="register_success">register_success</option>
+                                <option value="register_failure">register_failure</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="user_id" class="form-label">User ID</label>
-                            <input type="text" class="form-control" name="user_id" id="user_id" placeholder="214">
+                            <input type="text" class="form-control" name="selected_id" id="user_id" placeholder="User ID">
                         </div>
                         <div class="col-md-3 col-sm-12 txt-end mt-3">
                             <button type="submit" class="btn btn-primary">Filter Logs</button>
@@ -45,7 +45,7 @@
                     </form>
                     <% if (logs && logs.length> 0) { %>
                         <form action="/api/users/admin/logs/bulk_view" method="GET" id="log_form">
-                            <table class="table table-striped table-bordered text-center">
+                            <table id="log_table" class="table table-striped table-bordered text-center">
                                 <tr>
                                     <th>Event ID</th>
                                     <th>User ID</th>

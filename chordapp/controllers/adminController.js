@@ -194,5 +194,16 @@ exports.bulkUpdate = async (req, res) => {
     }
 }
 exports.filterLogs = async (req, res) => {
-    console.log("Filter logs by: ", req.body)
+    const { selected_event, selected_id } = req.body
+    console.log("Filter logs by:", selected_event, "With:", selected_id);
+    formData = []
+    formMessage = []
+    try {
+        const filtered = await Log.Filter(selected_event, selected_id);
+        console.log("Filter these:", filtered);
+        return res.render("logs", { logs: filtered, title: "Filtered Logs", formData, formMessage });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to filter log." });
+    }
 }

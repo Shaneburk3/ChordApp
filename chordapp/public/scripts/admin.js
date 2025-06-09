@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const bulk_form = document.getElementById('bulk_form');
     const updateUser_form = document.getElementById('updateUser_form');
-    const filter_form = document.getElementById('filter_form');
+    //const filter_form = document.getElementById('filter_form');
 
-
+/*
     if (filter_form) {
 
         filter_form.addEventListener('submit', async (e) => {
@@ -33,18 +33,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     adminErrorDiv.innerHTML = html;
                     adminErrorDiv.style.display = "block";
                 } else if (response.status === 200) {
-                    const data = await response.json();
-                    window.location.href = data.redirect;
+                    const logs = await response.json();
+                    renderLogs(logs)
                 }
             } catch (error) {
-                adminErrorDiv.textContent = "Error occured."
-                adminErrorDiv.style.display = "block";
                 console.log(error.message);
             }
         });
 
     }
-
+*/
 
 
     if (bulk_form) {
