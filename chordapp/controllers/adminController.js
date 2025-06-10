@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 exports.renderAdmin = async (req, res) => {
     try {
         const user_id = req.user?.user_id
-        const UserDetails = await User.findById(user_id);
+        const adminDetails = await User.findById(user_id);
         const allUserDetails = await User.getAllUsers()
         //console.log("All user details: ",allUserDetails)
         // GET ALL USER DATA.
@@ -18,15 +18,15 @@ exports.renderAdmin = async (req, res) => {
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404" });
         }
-        if (!UserDetails) {
-            console.log("Could not get users information.")
+        if (!adminDetails) {
+            console.log("Could not get admins information.")
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404" });
         }
         const formMessage = [];
         const formData = req.session.formData || {};
         console.log("Getting admin page data...");
-        return res.render("admin", { user: UserDetails, title: "Profile", formData, formMessage, users: allUserDetails });
+        return res.render("admin", { title: "Profile", formData, formMessage, users: allUserDetails, user: adminDetails, });
     } catch (error) {
         console.log(error);
         return res.render("index", { title: "Login", formErrors: [], formData: [] });
@@ -41,6 +41,7 @@ exports.renderLogPage = async (req, res) => {
             return res.status(200).json({ redirect: redirect, formData: {} });
         }
         const UserDetails = await User.findById(user_id);
+        const adminDetails = await User.findById(user_id);
         const allLogs = await Log.getAllLogs()
         //console.log("All user details: ",allUserDetails)
         // GET ALL USER DATA.
@@ -52,7 +53,7 @@ exports.renderLogPage = async (req, res) => {
         const formMessage = req.session.formErrors || [];
         const formData = req.session.formData || {};
         console.log("Getting admin page data...");
-        return res.render("logs", { logs: allLogs, title: "Profile", formData, formMessage, users: UserDetails });
+        return res.render("logs", { logs: allLogs, title: "Profile", formData, formMessage, users: UserDetails, user: adminDetails });
     } catch (error) {
         console.log(error);
         return res.render("index", { title: "Login", formErrors: [], formData: [] });
@@ -81,7 +82,16 @@ exports.deleteUser = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "No user deleted." });
         }
-        console.log("User deleted")
+        const user_id = req.body;
+        const event_type = "admin_action"
+        const event_message = `${req.body} deleted.`;
+        const endpoint = "/api/users/admin/delete"
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Log.create(data);
+        } catch (error) {
+            console.log(error)
+        }
         const redirect = "/api/users/admin";
         return res.status(200).json({ redirect: redirect });
     } catch (error) {
@@ -102,8 +112,17 @@ exports.updateUser = async (req, res) => {
         if (!updated) {
             return res.status(404).json({ message: "No updates recieved." });
         }
-        console.log("User updated")
-        const redirect = "/api/users/admin";
+        const user_id = req.body;
+        const event_type = "admin_action"
+        const event_message = `${req.body} updated with: ${data}`;
+        const endpoint = "/api/users/admin/update";
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Log.create(data);
+        } catch (error) {
+            console.log(error)
+        }
+        const redirect = "/api/users/admin/update";
         return res.status(200).json({ redirect: redirect });
     } catch (error) {
         console.log(error);
@@ -117,7 +136,16 @@ exports.suspendUser = async (req, res) => {
         if (!suspended) {
             return res.status(404).json({ message: "No user suspended." });
         }
-        console.log("User suspended")
+        const user_id = req.body;
+        const event_type = "admin_action"
+        const event_message = `${req.body} suspended.`;
+        const endpoint = "/api/users/admin/suspend";
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Log.create(data);
+        } catch (error) {
+            console.log(error)
+        }
         const redirect = "/api/users/admin";
         return res.status(200).json({ redirect: redirect });
     } catch (error) {
@@ -133,7 +161,15 @@ exports.unsuspendUser = async (req, res) => {
         if (!suspended) {
             return res.status(404).json({ message: "No user Unsuspended." });
         }
-        console.log("User unsuspended")
+        const event_type = "admin_action"
+        const event_message = `${user_id} unsuspended.`;
+        const endpoint = "/api/users/admin/unsuspend";
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Log.create(data);
+        } catch (error) {
+            console.log(error)
+        }
         const redirect = "/api/users/admin";
         return res.status(200).json({ redirect: redirect });
     } catch (error) {
@@ -156,7 +192,16 @@ exports.bulkUpdate = async (req, res) => {
             if (!deleted) {
                 return res.status(404).json({ message: "No users deleted." });
             }
-            console.log("Users deleted")
+            // Log Admin bulk delete
+            const event_type = "admin_action"
+            const event_message = `${user_ids} deleted.`;
+            const endpoint = "/api/users/admin/selected_action";
+            data = { user_ids, event_type, event_message, endpoint };
+            try {
+                await Log.create(data);
+            } catch (error) {
+                console.log(error)
+            }
             const redirect = "/api/users/admin";
             return res.status(200).json({ redirect: redirect, formData: "User accounts deleted." });
         } catch (error) {
@@ -170,8 +215,16 @@ exports.bulkUpdate = async (req, res) => {
             if (!suspended) {
                 return res.status(404).json({ message: "No users suspended." });
             }
-            console.log("Users suspended")
-            const redirect = "/api/users/admin";
+            // Log Admin bulk delete
+            const event_type = "admin_action"
+            const event_message = `${user_ids} suspended.`;
+            const endpoint = "/api/users/admin/selected_action";
+            data = { user_ids, event_type, event_message, endpoint };
+            try {
+                await Log.create(data);
+            } catch (error) {
+                console.log(error)
+            } const redirect = "/api/users/admin";
             return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
         } catch (error) {
             console.log(error);
@@ -184,8 +237,16 @@ exports.bulkUpdate = async (req, res) => {
             if (!unsuspend) {
                 return res.status(404).json({ message: "No users unsuspend." });
             }
-            console.log("Users unsuspend")
-            const redirect = "/api/users/admin";
+            // Log Admin bulk delete
+            const event_type = "admin_action"
+            const event_message = `${user_ids} unsuspended.`;
+            const endpoint = "/api/users/admin/selected_action";
+            data = { user_ids, event_type, event_message, endpoint };
+            try {
+                await Log.create(data);
+            } catch (error) {
+                console.log(error)
+            } const redirect = "/api/users/admin";
             return res.status(200).json({ redirect: redirect, formData: "User accounts updated." });
         } catch (error) {
             console.log(error);

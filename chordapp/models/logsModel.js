@@ -6,7 +6,7 @@ const Logs = {
         console.log(`Creating log with ${data}`)
         const client = await pool.connect();
         const { user_id, event_type, event_message, endpoint } = data
-        console.log("LOG::", data)
+        console.log("LOG::", data);
         try {
             await client.query('BEGIN');
             await client.query("INSERT INTO logs (user_id, event_type, event_message, endpoint) VALUES ($1,$2,$3,$4) ", [user_id, event_type, event_message, endpoint]);

@@ -2,14 +2,14 @@ const { body, validationResult } = require('express-validator');
 const Logs = require('../models/logsModel');
 
 const validateRegister = [
-    body('first_name').trim().notEmpty().withMessage('First name required').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('No special characters'),
-    body('last_name').trim().notEmpty().withMessage('Last name required').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('No special characters'),
+    body('first_name').trim().notEmpty().withMessage('First name required').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('First Name: No special characters'),
+    body('last_name').trim().notEmpty().withMessage('Last name required').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('Last Name: No special characters'),
     body('register_email').trim().isEmail().withMessage('Must be an email.'),
     body('register_password1').trim().isLength({ min: 8 }).withMessage("Password is not long enough").matches(/^[A-Za-z0-9 .,'!&]+$/),
     body('register_password2').trim(),
     body('terms_check').equals("on").withMessage('Please agree to T&Cs'),
     body('user_dob').isDate().withMessage('DOB must be a date.'),
-    async (req, res, next) => {
+    async (req, res, next) => { 
         const errors = validationResult(req);
         console.log("Validation...");
         //If validation fails, set errors in response.
@@ -25,11 +25,10 @@ const validateRegister = [
             const errorMessages = formErrors.map(err =>
                 `Registration: "${err.msg}": Value ${err.value}`
             );
-            console.log(errorMessages);
             // Log error in database.
             const event_type = "validation_failure"
             const event_message = `${errorMessages}`;
-            const endpoint = "/api/users/Update"
+            const endpoint = "/api/users/register"
             data = { event_type, event_message, endpoint };
             try {
                 await Logs.create(data);
@@ -69,7 +68,7 @@ const validateLogin = [
             // Log error in database.
             const event_type = "validation_failure"
             const event_message = `${errorMessages}`;
-            const endpoint = "/api/users/Update"
+            const endpoint = "/api/users/login"
             data = { event_type, event_message, endpoint };
             try {
                 await Logs.create(data);

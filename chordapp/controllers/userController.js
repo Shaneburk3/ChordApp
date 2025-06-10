@@ -72,11 +72,11 @@ exports.loginUser = async (req, res) => {
         //Check password
         const isMatch = await Cipher.compare(login_password, foundUser.password)
         if (!isMatch) {
-            const formData = [];
+            const formData = [login_email];
             //Login Failure - Create log in database
             const user_id = foundUser.user_id;
             const event_type = "login_failure"
-            const event_message = `Email: ${login_email}, Password: ${login_password}`;
+            const event_message = `Email: ${login_email}, Incorrect Password: ${login_password}`;
             const endpoint = "/api/users/login"
             data = { user_id, event_type, event_message, endpoint };
             try {
@@ -121,18 +121,18 @@ exports.updateUser = async (req, res) => {
     const data = req.body
     console.log("UPDATES:", data)
     if (!user_id) {
-        return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] })
+        return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
     }
     try {
         const updated = await Details.update(data)
         if (!updated) {
-            return res.status(404).json({ message: "No updates recieved." })
+            return res.status(404).json({ message: "No updates recieved." });
         }
         const foundUser = await User.findById(user_id);
-        console.log("Updated: ", updated)
+        console.log("Updated: ", updated);
         const event_type = "update_success"
         const event_message = `Updated ${user_id} successfull.`;
-        const endpoint = "/api/users/Update"
+        const endpoint = "/api/users/update"
         data = { user_id, event_type, event_message, endpoint };
         try {
             await Logs.create(data);
@@ -140,20 +140,20 @@ exports.updateUser = async (req, res) => {
             console.log(error)
         }
         const redirect = foundUser.role === "ADMIN" ? "/api/users/admin" : `/api/users/profile/${foundUser.user_id}`;
-        return res.status(200).json({ redirect: redirect, formData: {} })
+        return res.status(200).json({ redirect: redirect, formData: {} });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Failed to update user." })
+        return res.status(500).json({ message: "Failed to update user." });
     }
 };
 exports.renderProfile = async (req, res) => {
     try {
-        const user_id = req.user?.user_id
-        console.log("Getting profile: ", req.params.user_id)
+        const user_id = req.user?.user_id;
+        console.log("Getting profile: ", req.params.user_id);
         const UserDetails = await User.findById(user_id);
-        console.log("all user details: ", UserDetails)
+        console.log("all user details: ", UserDetails);
         if (!UserDetails) {
-            console.log("Could not get users information.")
+            console.log("Could not get users information.");
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: null });
         }
@@ -174,9 +174,9 @@ exports.renderUpdate = async (req, res) => {
     try {
         const user = await User.findById(req.params.user_id);
         if (!user) {
-            console.log("Could not get users information.")
+            console.log("Could not get users information.");
             const formErrors = [{ msg: "Details not found" }];
-            return res.status(404).render('404', { title: "404", formErrors })
+            return res.status(404).render('404', { title: "404", formErrors });
         }
         const age = await getAge(user.user_dob);
         user.user_dob = age;
@@ -191,7 +191,7 @@ exports.sendMessage = async (req, res) => {
 }
 exports.logoutUser = async (req, res) => {
     const user_id = req.params.user_id;
-    const event_type = "user_logout"
+    const event_type = "user_logout";
     const event_message = `Logged out.`;
     const endpoint = "/api/users/login"
     data = { user_id, event_type, event_message, endpoint };
@@ -203,8 +203,3 @@ exports.logoutUser = async (req, res) => {
     res.clearCookie('token');
     res.redirect('/');
 };
-/*
-exports.renderAdmin = async (req, res) => {
-    return res.render("admin", { title: "Profile", header: "Admin page", user: null, users: null });
-}
-*/

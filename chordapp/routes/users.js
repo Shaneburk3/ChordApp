@@ -20,7 +20,7 @@ router.use(session({
 
 // Unprotected Routes
 router.get('/register', (req, res) => {
-    res.render('register', { title: 'Register', formData: {}});
+    res.render('register', { title: 'Register', formData: {}, formErrors: {}});
 });
 router.post('/register', validateRegister, userController.registerUser);
 router.post('/login', validateLogin, userController.loginUser); 
