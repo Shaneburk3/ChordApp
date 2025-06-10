@@ -11,6 +11,6 @@ async function testLogin() {
   } finally {
     await driver.quit()
   }
-}
+};
 
 testLogin()

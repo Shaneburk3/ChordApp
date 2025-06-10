@@ -48,7 +48,11 @@ npm install selenium-webdriver
 npm install chromedriver
 For firefox: geckodriver
 
-Install playwright?? E2E UI Testing
+# Run Tests
+
+node tests/selenium/testLogin.test.js 
+node tests/selenium/testRegister.test.js
+node tests/selenium/testUpdateUser.test.js
 
 ## Jupyter Setup
 - python -m venv venv

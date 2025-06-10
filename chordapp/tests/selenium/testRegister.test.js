@@ -8,7 +8,7 @@ async function deleteTestUserIfExist() {
     const user_email = "testUser@testUser.com"
     const user = await User.findOne(user_email);
     if (user) {
-        console.log(`Found user: ${user}`)
+        console.log(`Found user: ${JSON.stringify(user)}`)
         await User.delete(user);
         console.log(user, "Deleted.")
     } else {
@@ -39,6 +39,7 @@ async function testRegister() {
         await driver.quit()
     }
 }
+
 (async () => {
     await deleteTestUserIfExist()
     await testRegister()

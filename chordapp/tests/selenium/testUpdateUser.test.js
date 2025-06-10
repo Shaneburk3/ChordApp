@@ -1,6 +1,8 @@
 const { Builder, Browser, By, Key, until } = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome');
 
+// Integration Test - Test is user can update their profile, and be directed to their page.
+
 async function testUpdateUser() {
   //stop chrome password alert hindering test: 
   let options = new chrome.Options();
@@ -19,23 +21,27 @@ async function testUpdateUser() {
     await driver.findElement(By.id('edit_profile_btn')).click();
     await driver.wait(until.urlContains('api/users/update'), 5000);
     console.log('Made it to update page in test')
-    await driver.findElement(By.name('user_city')).clear();
-    await driver.findElement(By.name('user_city')).sendKeys('New test city');
-    await driver.wait(until.elementLocated(By.id('user_country')), 5000);
-    await driver.findElement(By.id('user_country')).clear();
-    await driver.findElement(By.id('user_country')).sendKeys('New test country');
-    await driver.wait(until.elementLocated(By.id('user_bio')), 5000);
-    await driver.findElement(By.id('user_bio')).clear();
-    await driver.findElement(By.id('user_bio')).sendKeys('New test bio');
+
     await driver.wait(until.elementLocated(By.id('user_dob')), 5000);
     await driver.findElement(By.name('user_dob')).clear();
     await driver.findElement(By.name('user_dob')).sendKeys('12-04-1995');
+
+    await driver.findElement(By.name('user_city')).clear();
+    await driver.findElement(By.name('user_city')).sendKeys('New test city');
+
+    await driver.wait(until.elementLocated(By.id('user_country')), 5000);
+    await driver.findElement(By.id('user_country')).clear();
+    await driver.findElement(By.id('user_country')).sendKeys('New test country');
+
+    await driver.wait(until.elementLocated(By.id('user_bio')), 5000);
+    await driver.findElement(By.id('user_bio')).clear();
+    await driver.findElement(By.id('user_bio')).sendKeys('New test bio');
+
     //Submit form, direct to profile
 
     const updateBtn = await driver.wait(until.elementLocated(By.id('update_btn')), 5000);
     await driver.executeScript("arguments[0].scrollIntoView(true);", updateBtn);
     await driver.wait(until.elementIsVisible(updateBtn), 5000);
-    await driver.wait(until.elementIsEnabled(updateBtn), 5000);
     await updateBtn.submit();
     await driver.wait(until.urlContains('/api/users/profile'), 8000);
 
@@ -45,8 +51,8 @@ async function testUpdateUser() {
     const bio = await driver.findElement(By.id('user_bio')).getText();
     const age = await driver.findElement(By.id('user_dob')).getText();
 
-    if (city === 'City: New test city' && country === 'Country: New test country' && bio == 'New test bio' && age === 30) {
-      console.log('profile Updated');
+    if (city === 'City: New test city' && country === 'Country: New test country' && bio == 'New test bio' && age === `Age: 30`) {
+      console.log('profile Updated, test passed.');
     } else {
       console.log('Update profile test failed.');
     }

@@ -118,13 +118,13 @@ exports.loginUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
     console.log("Updating user: ", req.params.user_id)
     const user_id = req.params.user_id;
-    const data = req.body
-    console.log("UPDATES:", data)
+    const updates = req.body
+    console.log("UPDATES:", updates)
     if (!user_id) {
         return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
     }
     try {
-        const updated = await Details.update(data)
+        const updated = await Details.update(updates)
         if (!updated) {
             return res.status(404).json({ message: "No updates recieved." });
         }
