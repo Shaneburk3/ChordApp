@@ -1,20 +1,8 @@
 const { Builder, Browser, By, Key, until } = require('selenium-webdriver')
-const User = require('../../models/usersModel');
-const { ConsoleLogEntry } = require('selenium-webdriver/bidi/logEntries');
+const Func = require('../../testFunction');
+//const { ConsoleLogEntry } = require('selenium-webdriver/bidi/logEntries');
 //Integration test to ensure user account gets created is directed to login
 
-
-async function deleteTestUserIfExist() {
-    const user_email = "testUser@testUser.com"
-    const user = await User.findOne(user_email);
-    if (user) {
-        console.log(`Found user: ${JSON.stringify(user)}`)
-        await User.delete(user);
-        console.log(user, "Deleted.")
-    } else {
-        console.log("Test user account not found.")
-    }
-}
 
 async function testRegister() {
     let driver = await new Builder().forBrowser(Browser.CHROME).build()
@@ -35,13 +23,16 @@ async function testRegister() {
         await driver.findElement(By.css('form')).submit();
         await driver.wait(until.urlContains('/'), 5000);
         console.log('register test passed')
+    } catch (error) {
+        console.log(error);
+        await driver.quit();
     } finally {
         await driver.quit()
     }
 }
 
 (async () => {
-    await deleteTestUserIfExist()
-    await testRegister()
+    await Func.deleteTestUserIfExist();
+    await testRegister();
 })();
 

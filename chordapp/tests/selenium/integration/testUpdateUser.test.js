@@ -1,7 +1,10 @@
 const { Builder, Browser, By, Key, until } = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome');
+const Func = require('../../testFunction');
+
 
 // Integration Test - Test is user can update their profile, and be directed to their page.
+
 
 async function testUpdateUser() {
   //stop chrome password alert hindering test: 
@@ -52,16 +55,19 @@ async function testUpdateUser() {
     const age = await driver.findElement(By.id('user_dob')).getText();
 
     if (city === 'City: New test city' && country === 'Country: New test country' && bio == 'New test bio' && age === `Age: 30`) {
-      console.log('profile Updated, test passed.');
+      console.log('testUpdateUser test passed: profile udpated.');
     } else {
-      console.log('Update profile test failed.');
+      console.log('testUpdateUser test failed.');
     }
 
   } catch (error) {
-    console.log("Test error: ", error)
+    console.log(error);
+    await driver.quit();
   } finally {
     await driver.quit()
   }
 }
-
-testUpdateUser();
+(async () => {
+  await Func.createTestUserIfNotExist()
+  await testUpdateUser();
+})();
