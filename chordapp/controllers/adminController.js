@@ -261,7 +261,6 @@ exports.filterLogs = async (req, res) => {
     formMessage = []
     try {
         const filtered = await Log.Filter(selected_event, selected_id);
-        console.log("Filter these:", filtered);
         return res.render("logs", { logs: filtered, title: "Filtered Logs", formData, formMessage });
     } catch (error) {
         console.log(error);
