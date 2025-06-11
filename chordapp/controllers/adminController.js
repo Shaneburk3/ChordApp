@@ -103,7 +103,7 @@ exports.updateUser = async (req, res) => {
     console.log("updating single user with:", req.body);
     console.log("Updating user: ", req.params.user_id);
     const user_id = req.params.user_id;
-    const data = req.body
+    let data = req.body
     if (!user_id) {
         return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
     }
@@ -112,7 +112,7 @@ exports.updateUser = async (req, res) => {
         if (!updated) {
             return res.status(404).json({ message: "No updates recieved." });
         }
-        const user_id = req.body;
+        const user_id = req.params.user_id;
         const event_type = "admin_action"
         const event_message = `${req.body} updated with: ${data}`;
         const endpoint = "/api/users/admin/update";
@@ -122,7 +122,7 @@ exports.updateUser = async (req, res) => {
         } catch (error) {
             console.log(error)
         }
-        const redirect = "/api/users/admin/update";
+        const redirect = "/api/users/admin/";
         return res.status(200).json({ redirect: redirect });
     } catch (error) {
         console.log(error);
