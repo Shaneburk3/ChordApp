@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:jest": "jest tests/unit",
+    "test:jest": "jest tests/jest/unit/testAge.test.js",
     "test:selenium": "node tests/selenium/testLogin.test.js && node tests/selenium/testRegister.test.js && node tests/selenium/testUpdateUser.test.js && node tests/selenium/testTermsCheck.test.js",
     "devStart": "nodemon app.js"
   },

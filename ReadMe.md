@@ -40,19 +40,27 @@ npm install cookie-parser
 
 
 # TESTING
-## unit and integration testing
-npm install jest
+## unit testing
+npm install --save-dev jest
 
-## E2E UI Testing
+## Integration testing
 npm install selenium-webdriver
 npm install chromedriver
 For firefox: geckodriver
 
 # Run Tests
 
+npm run test:jest
+npm run test:selenium
+
+## Run individual tests:
+
 node tests/selenium/testLogin.test.js 
 node tests/selenium/testRegister.test.js
 node tests/selenium/testUpdateUser.test.js
+node tests/selenium/testTermsCheck.test.js
+
+
 
 ## Jupyter Setup
 - python -m venv venv

@@ -143,7 +143,7 @@ exports.updateUser = async (req, res) => {
         return res.status(200).json({ redirect: redirect, formData: {} });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Failed to update user." });
+        return res.status(500).json({ message: "Failed to update user.", formData });
     }
 };
 exports.renderProfile = async (req, res) => {
@@ -183,7 +183,7 @@ exports.renderUpdate = async (req, res) => {
         return res.render("update", { title: "Profile", user: user });
     } catch (error) {
         console.log(error);
-        return res.render("index", { title: "Login", formErrors: [] });
+        return res.render("index", { title: "Login", formErrors: [], formData: []});
     }
 }
 exports.sendMessage = async (req, res) => {
