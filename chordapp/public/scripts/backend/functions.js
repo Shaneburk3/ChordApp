@@ -14,9 +14,7 @@ function getDate() {
 }
 async function getAge(dob) {
     const userDate = new Date(dob);
-    console.log(`Want to convert this ${userDate}`);
-    var isoString = userDate.toISOString();
-    console.log(isoString.split('T')[0])
+    var isoString = userDate.toISOString().split('T')[0];
     const [year, month, day] = isoString.split('-').map(Number)
     const today = new Date();
     var age = today.getFullYear() - year;
@@ -25,7 +23,6 @@ async function getAge(dob) {
     if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
         age--;
     }
-    console.log("Got age: ", age)
     return age;
 }
 /*
