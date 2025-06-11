@@ -114,6 +114,8 @@ app.get("/terms", (req, res) => {
     res.render("terms", { title: "Terms and Conditions" });
 });
 
+//Export for supertests in testing.
+module.exports = app;
 
 
 

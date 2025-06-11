@@ -8,5 +8,5 @@ describe('getAge()', () => {
         console.log(`Result:${age}`)
         expect(typeof age).toBe('number');
         expect(age).toBe(30)
-    })
-})
+    });
+});

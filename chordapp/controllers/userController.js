@@ -160,7 +160,6 @@ exports.renderProfile = async (req, res) => {
         const audios = [];
         const formErrors = req.session.formErrors || [];
         const formData = req.session.formData || {};
-        console.log("Getting user profile...");
         const age = await getAge(UserDetails.user_dob);
         UserDetails.user_dob = age;
         //console.log(UserDetails.user_dob)

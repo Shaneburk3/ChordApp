@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:jest": "jest tests/jest/unit/testAge.test.js",
+    "test:jest": "jest tests/jest/unit/testAge.test.js && jest tests/jest/unit/testPassword.test.js",
     "test:selenium": "node tests/selenium/integration/testLogin.test.js && node tests/selenium/integration/testRegister.test.js && node tests/selenium/integration/testUpdateUser.test.js && node tests/selenium/integration/testTermsCheck.test.js",
     "devStart": "nodemon app.js"
   },
@@ -34,6 +34,7 @@
     "bson": "^4.0.4"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.1"
   }
 }

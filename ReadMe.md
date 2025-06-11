@@ -40,10 +40,15 @@ npm install cookie-parser
 
 
 # TESTING
+
+npm install --save-dev supertest
+
 ## unit testing
+
 npm install --save-dev jest
 
 ## Integration testing
+
 npm install selenium-webdriver
 npm install chromedriver
 For firefox: geckodriver
