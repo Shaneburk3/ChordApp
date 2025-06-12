@@ -4,86 +4,88 @@ document.addEventListener('DOMContentLoaded', function () {
     const updateUser_form = document.getElementById('updateUser_form');
     //const filter_form = document.getElementById('filter_form');
 
-/*
-    if (filter_form) {
-
-        filter_form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            let selected_filter = null;
-            // <-- create and listener, to selecte chosen action of all buttons -->
-            selected_filter = document.getElementById('event_type').value;
-            selected_id = document.getElementById('user_id').value;
-            console.log(`Wants to filter user: ${selected_id} by: ${selected_filter}`);
-
-            try {
-                const response = await fetch(`/api/users/admin/logs/filter`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ selected_filter: selected_filter, selected_id: selected_id })
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    //got errors, now map them to the error div
-                    let html = "<ul>";
-                    errorData.errors.forEach(e => {
-                        html += `<li>${e.msg}</li>`
+    /*
+        if (filter_form) {
+    
+            filter_form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+    
+                let selected_filter = null;
+                // <-- create and listener, to selecte chosen action of all buttons -->
+                selected_filter = document.getElementById('event_type').value;
+                selected_id = document.getElementById('user_id').value;
+                console.log(`Wants to filter user: ${selected_id} by: ${selected_filter}`);
+    
+                try {
+                    const response = await fetch(`/api/users/admin/logs/filter`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ selected_filter: selected_filter, selected_id: selected_id })
                     });
-                    html += "</ul>"
-                    adminErrorDiv.innerHTML = html;
-                    adminErrorDiv.style.display = "block";
-                } else if (response.status === 200) {
-                    const logs = await response.json();
-                    renderLogs(logs)
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        //got errors, now map them to the error div
+                        let html = "<ul>";
+                        errorData.errors.forEach(e => {
+                            html += `<li>${e.msg}</li>`
+                        });
+                        html += "</ul>"
+                        adminErrorDiv.innerHTML = html;
+                        adminErrorDiv.style.display = "block";
+                    } else if (response.status === 200) {
+                        const logs = await response.json();
+                        renderLogs(logs)
+                    }
+                } catch (error) {
+                    console.log(error.message);
                 }
-            } catch (error) {
-                console.log(error.message);
-            }
-        });
-
-    }
-*/
+            });
+    
+        }
+    */
 
 
     if (bulk_form) {
-        let selectedAction = null;
-        // <-- create and listener, to selecte chosen action of all buttons -->
-        document.querySelectorAll('#bulk_form button[type="submit"]').forEach(button => {
-            button.addEventListener('click', function () {
-                selectedAction = this.value;
-            });
-        });
-        // #
 
         bulk_form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const adminErrorDiv = document.getElementById('adminErrorDiv')
+
+            const adminErrorDiv = document.getElementById('adminErrorDiv');
             // <-- Must create and array, mapping from the selected user_ids in all checkboxs -->
-            const selected_ids = Array.from(document.querySelectorAll('input[name="selected_users[]"]:checked')).map(e => e.value);
-            try {
-                const response = await fetch(`/api/users/admin/selected_action`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_ids: selected_ids, action: selectedAction })
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    //got errors, now map them to the error div
-                    let html = "<ul>";
-                    errorData.errors.forEach(e => {
-                        html += `<li>${e.msg}</li>`
+            const selected_action = e.submitter?.value;
+            const selected_ids = Array.from(bulk_form.querySelectorAll('input[name="selected_users[]"]:checked')).map(e => e.value);
+            console.log('selected_ids')
+            let text = `You are about to ${selected_action} users ${selected_ids}\nSelect OK or Cancel.`;
+
+            if (!confirm(text)) {
+                window.location.reload();
+                return;
+            } else {
+                try {
+                    const response = await fetch(`/api/users/admin/selected_action`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_ids: selected_ids, action: selected_action })
                     });
-                    html += "</ul>"
-                    adminErrorDiv.innerHTML = html;
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        //got errors, now map them to the error div
+                        let html = "<ul>";
+                        errorData.errors.forEach(e => {
+                            html += `<li>${e.msg}</li>`
+                        });
+                        html += "</ul>"
+                        adminErrorDiv.innerHTML = html;
+                        adminErrorDiv.style.display = "block";
+                    } else if (response.status === 200) {
+                        const data = await response.json();
+                        window.location.href = data.redirect;
+                    }
+                } catch (error) {
+                    adminErrorDiv.textContent = "Error occured."
                     adminErrorDiv.style.display = "block";
-                } else if (response.status === 200) {
-                    const data = await response.json();
-                    window.location.href = data.redirect;
+                    console.log(error.message);
                 }
-            } catch (error) {
-                adminErrorDiv.textContent = "Error occured."
-                adminErrorDiv.style.display = "block";
-                console.log(error.message);
             }
         });
     }

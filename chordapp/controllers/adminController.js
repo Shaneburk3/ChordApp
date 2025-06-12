@@ -103,6 +103,7 @@ exports.updateUser = async (req, res) => {
     console.log("updating single user with:", req.body);
     console.log("Updating user: ", req.params.user_id);
     const user_id = req.params.user_id;
+    const user_email = req.body.user_email;
     let data = req.body
     if (!user_id) {
         return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
@@ -114,7 +115,7 @@ exports.updateUser = async (req, res) => {
         }
         const user_id = req.params.user_id;
         const event_type = "admin_action"
-        const event_message = `${req.body} updated with: ${data}`;
+        const event_message = `${user_email} updated by admin.`;
         const endpoint = "/api/users/admin/update";
         data = { user_id, event_type, event_message, endpoint };
         try {
@@ -131,6 +132,7 @@ exports.updateUser = async (req, res) => {
 }
 exports.suspendUser = async (req, res) => {
     console.log("suspending single user");
+    const user_email = req.body.user_email;
     try {
         const suspended = await Admin.suspend(user_ids);
         if (!suspended) {
@@ -138,7 +140,7 @@ exports.suspendUser = async (req, res) => {
         }
         const user_id = req.body;
         const event_type = "admin_action"
-        const event_message = `${req.body} suspended.`;
+        const event_message = `${user_email} suspended by admin.`;
         const endpoint = "/api/users/admin/suspend";
         data = { user_id, event_type, event_message, endpoint };
         try {
@@ -162,7 +164,7 @@ exports.unsuspendUser = async (req, res) => {
             return res.status(404).json({ message: "No user Unsuspended." });
         }
         const event_type = "admin_action"
-        const event_message = `${user_id} unsuspended.`;
+        const event_message = `${user_email} unsuspended by admin.`;
         const endpoint = "/api/users/admin/unsuspend";
         data = { user_id, event_type, event_message, endpoint };
         try {
