@@ -68,20 +68,31 @@ node tests/selenium/testTermsCheck.test.js
 
 
 ## Jupyter Setup
-- python -m venv venv
-- source venv/Scripts/activate
-- pip install jupyterlab
-Start lab run bash- jupyter lab
+-  In C:\Users\shane\Documents, create the venv: 
+    - py -3.9 -m venv chordApp_venv
 
-- DIR: C:\Users\shane\Documents
-- Dependencies:
-    - pip install: tensorflow tensorflow_io matplotlob seaborn numpy 
-- CMD: jupyter notebook
+- Bypass script blocker and activate venv in powershell: 
+    - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass .\chordApp_venv\Scripts\Activate.ps1
+
+- install packages using Bash: 
+    - pip install matplotlib tensorflow librosa numpy scikit-learn ipykernel
+
+- Register the venv as a Jupyter Kernel in git bash chordApp_venv:
+    - python -m ipykernel install --user --name=chorApp_venv --display-name "Python (chordApp_venv)"
+
+- Launch notebook in project:
+    - C:\Users\shane\Documents\GitHub\Chord_App\notebooks> jupyter notebook
+
+- To open a notebook: 
+    - select kernel: Python (chordApp_venv)
+    - choose notebook ipynb file.
+
 
 ## Jupyter Dependencies
 pip install jupyterlab tensorflow scikit-learn librosa seaborn matplotlib soundfile joblib
+
 ## Run
-jupyterlab
+jupyter notebook
 
 ## Start ChordExplorer
 
