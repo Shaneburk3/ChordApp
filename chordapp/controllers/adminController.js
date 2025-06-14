@@ -235,7 +235,7 @@ exports.bulkUpdate = async (req, res) => {
     } else if (action === "unsuspend") {
         console.log("unsuspend users:", user_ids);
         try {
-            const unsuspend = await Admin.unsuspend(user_ids)
+            const unsuspend = await Admin.unsuspend(user_ids);
             if (!unsuspend) {
                 return res.status(404).json({ message: "No users unsuspend." });
             }
