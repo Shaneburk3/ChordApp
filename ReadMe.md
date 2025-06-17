@@ -27,7 +27,6 @@ npm install body-parser
 npm install express
 npm install ejs
 npm install express-session
-#npm install knex
 npm install nodemailer
 npm install dotenv
 npm install nodemon / npm run devStart
@@ -37,6 +36,14 @@ npm install express-validator
 npm install crypto
 npm install jsonwebtoken
 npm install cookie-parser
+
+## Machine Learning Model Dependencies
+
+Bash: pip install tensorflowjs
+
+## Machine Learning Model set up
+
+Chord_App/notebooks: tensorflowjs_converter --input_format=keras chord_model.keras ../chordapp/model
 
 
 # TESTING
@@ -69,27 +76,28 @@ node tests/selenium/testTermsCheck.test.js
 
 ## Jupyter Setup
 -  In C:\Users\shane\Documents, create the venv: 
-    - py -3.9 -m venv chordApp_venv
+    - py -3.11 -m venv chordApp_venv
 
 - Bypass script blocker and activate venv in powershell: 
-    - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass .\chordApp_venv\Scripts\Activate.ps1
+    - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass 
+    - .\chordApp_venv\Scripts\Activate.ps1
 
 - install packages using Bash: 
-    - pip install matplotlib tensorflow librosa numpy scikit-learn ipykernel
+    - pip install matplotlib tensorflow==2.19.0 librosa numpy scikit-learn ipykernel
 
 - Register the venv as a Jupyter Kernel in git bash chordApp_venv:
-    - python -m ipykernel install --user --name=chorApp_venv --display-name "Python (chordApp_venv)"
+    - python -m ipykernel install --user --name=chordexplorer_venv --display-name "Python (chordexplorer_venv)"
 
 - Launch notebook in project:
     - C:\Users\shane\Documents\GitHub\Chord_App\notebooks> jupyter notebook
 
 - To open a notebook: 
-    - select kernel: Python (chordApp_venv)
-    - choose notebook ipynb file.
+    - select kernel: Python (chordexplorer_venv)
+    - choose notebook .ipynb file.
 
 
 ## Jupyter Dependencies
-pip install jupyterlab tensorflow scikit-learn librosa seaborn matplotlib soundfile joblib
+pip install jupyterlab tensorflow==2.19.00 scikit-learn librosa seaborn matplotlib
 
 ## Run
 jupyter notebook
