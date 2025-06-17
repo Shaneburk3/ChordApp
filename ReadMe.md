@@ -30,6 +30,7 @@ npm install express-session
 npm install nodemailer
 npm install dotenv
 npm install nodemon / npm run devStart
+npm install multer
 
 ## SECURITY FEATURES
 npm install express-validator

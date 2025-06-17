@@ -66,7 +66,13 @@ exports.delete = async (req, res) => {
 };
 
 //create
-exports.translate = async (req, res) => {
+exports.predict = async (req, res) => {
+    console.log("Predicting chord...")
+    console.log(req.file)
+        console.log(req.file.path)
+
+    return res.status(200).json({chord: 'C Major'})
+
 
 };
 

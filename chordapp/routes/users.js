@@ -49,5 +49,4 @@ router.post('/admin/logs/filter', authToken, authAdmin, adminController.filterLo
 
 
 
-
 module.exports = router;

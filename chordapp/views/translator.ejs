@@ -9,18 +9,17 @@
                     <!-- Title -->
                     <h1 class="display-4">ChordExplorer</h1>
                     <% if (user) { %>
-                        <h3> welcome, <%= user.first_name %>
+                        <h3> Hello, <%= user.first_name %>
                         </h3>
                         <% } else { %>
-                            <h3>welcome, guest user!</h3>
+                            <h3>Hello!</h3>
                             <% } %>
-                                <h4 class="text-muted">Start recording some audio!</h4>
-                                <h2></h2>
+                                <h5 class="text-muted">Start recording some audio!</h5>
                 </div>
 
                 <div class="container py-4">
                     <!-- Audio Function -->
-                    <form action="">
+                    <form id="predict_form">
                         <div class="border p-4 mb-4">
                             <div class="mb-3">
                                 <div class="border p-3">
@@ -33,9 +32,10 @@
                                 <button class="btn btn-warning" id="stop_btn">Stop</button>
                                 <button class="btn btn-danger" id="delete_btn">Delete</button>
                                 <button class="btn btn-danger" id="play_btn">Play</button>
-                                <button class="btn btn-danger" id="predict_btn">Predict</button>
+                                <button class="btn btn-danger" type="submit" id="predict_btn">Predict chord</button>
                             </div>
                         </div>
+                        <!--Audio will be saved here for backend multer /upload to be given tp the controller-->
                         <input type="file" name="audio" id="audio_blob_input" hidden>
                     </form>
 
@@ -46,5 +46,4 @@
                 </div>
                 <%- include("partials/footer") %>
     </body>
-
 </html>

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     let mediaRecorder;
     let audio_chunks = [];
     let audioBlob;
+    let timeout;
 
     stopBtn.disabled = true;
     playAudioBtn.disabled = true;
@@ -36,19 +37,18 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     //When recording stops, new audioblobs is data array
     mediaRecorder.onstop = () => {
-        audioBlob = new Blob(audio_chunks, { type: 'audio/webm,' });
+        audioBlob = new Blob(audio_chunks, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
 
         //attach to audio player
         audioPlayer.src = audioUrl
 
-        const file = new File([audioBlob], 'recording.webm', {type: 'audio/webm'});
-
+        const file = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
         const dataTransfer = new DataTransfer()
-
         dataTransfer.items.add(file);
-
         audioInput.files = dataTransfer.files;
+
+        document.getElementById('audio_blob_input').files = dataTransfer.files;
 
         startBtn.disabled = false;
         deleteBtn.disabled = false;
@@ -57,31 +57,99 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Start event
     startBtn.addEventListener('click', function (e) {
+        e.preventDefault();
         audio_chunks = [];
         mediaRecorder.start();
         startBtn.disabled = true;
         stopBtn.disabled = false;
+        playAudioBtn.disabled = true;
+        deleteBtn.disabled = true;
+        predictBtn.disabled = true;
         console.log("Recording started.");
+        // set max time user can record.
+        timeout = setTimeout(() => {
+            if (mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+                console.log("Time limit reached.");
+                playAudioBtn.disabled = false;
+            }
+        }, 5000)
     });
 
     // Stop event
     stopBtn.addEventListener('click', function (e) {
-        mediaRecorder.stop();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        playAudioBtn.disabled = false;
-        console.log("Recording stopped.");
-    });    
+        e.preventDefault();
+        if (mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+            clearTimeout(timeout);
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            playAudioBtn.disabled = false;
+            console.log("Recording stopped.");
+        }
+    });
 
     // Play audio event
     playAudioBtn.addEventListener('click', function (e) {
-        audioBlob = null;
-        audioPlayer.src = '';
-        mediaRecorder.start();
+        e.preventDefault();
+        if (!audioBlob) {
+            console.log('No audio Blob.');
+            return;
+        }
+        console.log("Playing audio.");
+        const audioUrl = URL.createObjectURL(audioBlob);
+        audioPlayer.src = audioUrl;
+        audioPlayer.play();
         playAudioBtn.disabled = true;
-        deleteBtn.disabled = true;
-        console.log("Recording started");
+        startBtn.disabled = true;
+        deleteBtn.disabled = false;
+        predictBtn.disabled = false;
+        stopBtn.disabled = false;
+
+        audioPlayer.onended = function () {
+            console.log('Recording ended.')
+            playAudioBtn.disabled = false;
+            deleteBtn.disabled = false;
+            startBtn.disabled = false
+            predictBtn.disabled = false;
+            stopBtn.disabled = true;
+        };
     });
 
+    deleteBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        audioBlob = null;
+        audioPlayer.src = '';
+        audio_chunks = [];
+        audioInput.value = '';
+
+        playAudioBtn.disabled = true;
+        deleteBtn.disabled = true;
+        startBtn.disabled = false
+        predictBtn.disabled = true;
+        stopBtn.disabled = true;
+        console.log("Recording deleted.")
+    });
+
+    predictBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        //audioBlob = new Blob(audio_chunks, { type: 'audio/webm' });
+        //const audioUrl = URL.createObjectURL(audioBlob);
+        //audioPlayer.src = audioUrl
+
+        const file = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
+        const dataTransfer = new DataTransfer()
+        dataTransfer.items.add(file);
+        audioInput.files = dataTransfer.files;
+
+        playAudioBtn.disabled = true;
+        deleteBtn.disabled = true;
+        startBtn.disabled = true
+        predictBtn.disabled = true;
+        stopBtn.disabled = true;
+        console.log("Prediction being sent...");
+
+        document.getElementById('predict_form').requestSubmit();
+    });
 
 });

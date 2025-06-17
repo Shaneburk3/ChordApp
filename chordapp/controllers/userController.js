@@ -104,11 +104,11 @@ exports.loginUser = async (req, res) => {
         }
         //sign jsonwebtoken, return payload
         const payload = { user_id: foundUser.user_id, email: foundUser.email, role: foundUser.role }
-        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1hr' });
 
         //if user is ADMIN redirect to admin page, else user profile
         const redirect = foundUser.role === "ADMIN" ? "/api/users/admin" : `/api/users/profile/${foundUser.user_id}`;
-        return res.cookie('token', accessToken, { httpOnly: true, maxAge: 30 * 60 * 1000 }).status(200).json({ redirect })
+        return res.cookie('token', accessToken, { httpOnly: true, maxAge: 60 * 60 * 1000}).status(200).json({ redirect })
     } catch (error) {
         console.log("Error loginUser: ", error);
         res.status(500).json({ error: "Error logging in user." })

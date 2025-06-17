@@ -16,8 +16,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const update_form = document.getElementById('update_form');
     const login_form = document.getElementById('login_form');
     const register_form = document.getElementById('register_form');
+    const predict_form = document.getElementById('predict_form');
+    const result_section = document.getElementById('result_section')
+
     //const profileLink = document.getElementById('profileLink');
     //const update_btn = document.getElementById('update_btn');
+
+    if (predict_form) {
+        predict_form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('Fetch: Predicting chord');
+            const formData = new FormData(predict_form);
+            try {
+                const response = await fetch(`/api/audios/predict`, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    //got errors, now map them to the error div
+                    let html = "<ul>";
+                    errorData.errors.forEach(e => {
+                        html += `<li>${e.msg}</li>`
+                    });
+                    html += "</ul>"
+                    result_section.innerHTML = html;
+                    result_section.style.display = "block";
+                } else if (response.status === 200) {
+                    const result = await response.json();
+                    result_section.textContent = `Prediction chord: ${result.chord}`
+                    result_section.style.color = "green";
+                    //window.location.href = data.redirect;
+                }
+            } catch (error) {
+                result_section.textContent = "Error while predicting chord.";
+                result_section.style.display = "block";
+                console.log(error);
+            }
+        })
+    }
 
 
     if (login_form) {
@@ -145,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const data = await response.json();
                     window.location.href = data.redirect;
                 }
-            } catch (error) { 
+            } catch (error) {
                 console.log(error);
             }
         });
