@@ -9,7 +9,7 @@ const { authToken, checkAdmin, optionalAuth} = require('../middleware/authentica
 const multer = require('multer');
 //Give the absolute path to the project
 const path = require('path')
-const upload = multer({dest: path.join(__dirname, '../uploads')}) // save user audios to uploads file
+const upload = multer({dest: '/uploads'}) // save user audios to uploads file
 
 // Session Setup
 router.use(session({
