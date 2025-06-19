@@ -1,10 +1,17 @@
-const Audio = require('../models/audiosModel.js');
-const Logs = require('../models/logsModel.js');
-const Session = require('../utils/express-session.js');
+//const Audio = require('../models/audiosModel.js');
+//const Logs = require('../models/logsModel.js');
+//const Session = require('../utils/express-session.js');
 const audioModel = require('../models/audiosModel.js');
 const User = require('../models/usersModel.js');
 const { getAge } = require('../public/scripts/backend/functions.js');
+//const tf = require('@tensorflow/tfjs-node');
+const path = require('path');
+//const { pathToFileUrl } = require('url');
+//const modelPath = path.join(__dirname, '..', '..', 'notebooks', 'models', '')
+//const model = tf.loadLayersModel('File://C:/Users/shane/Documents/GitHub/Chord_App/notebooks/chord_model.keras');
 
+//child process to work with python script
+const { spawn } = require('child_process');
 
 exports.renderTranslate = async (req, res) => {
             try {
@@ -64,16 +71,46 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
 
 };
+exports.upload = async (req, res) => {
+
+};
 
 //create
 exports.predict = async (req, res) => {
     console.log("Predicting chord...")
     console.log(req.file)
-        console.log(req.file.path)
+    console.log(req.file.path)
 
-    return res.status(200).json({chord: 'C Major'})
+    //return res.status(200).json({chord: 'C Major'})
+    try {
+        const audioPath = req.file.path;
 
+        const python = spawn('python', [
+            path.join(__dirname, '/predict.py'),
+            audioPath
+        ]);
 
+        let output = '';
+        python.stdout.on('data', (data) => {
+            output += data.toString();
+        });
+
+        python.stderr.on('data', (err) => {
+            console.error(`Python error: ${err}`);
+        });
+
+        python.on('close', (code) => {
+            if (code !== 0) {
+                return res.status(500).json({ error: 'Model prediction failed.' });
+            }
+            const chordIndex = parseInt(output.trim());
+            const label = indexToChordLabel[chordIndex]; // map index back to label
+            return res.status(200).json({ chord: output.trim() });
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
 
 

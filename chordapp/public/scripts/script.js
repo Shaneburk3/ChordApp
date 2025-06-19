@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const login_form = document.getElementById('login_form');
     const register_form = document.getElementById('register_form');
     const predict_form = document.getElementById('predict_form');
-    const result_section = document.getElementById('result_section')
+    const result_section = document.getElementById('result_section');
 
     //const profileLink = document.getElementById('profileLink');
     //const update_btn = document.getElementById('update_btn');
@@ -25,10 +25,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (predict_form) {
         predict_form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log('Fetch: Predicting chord');
+            console.log('Sending audio server...')
+
+            const user_id = document.getElementById('user_id').value;
             const formData = new FormData(predict_form);
+            
+            console.log(formData)
             try {
-                const response = await fetch(`/api/audios/predict`, {
+                const response = await fetch(`/api/audios/${user_id}/predict`, {
                     method: 'POST',
                     body: formData
                 });

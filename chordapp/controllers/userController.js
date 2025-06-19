@@ -190,7 +190,7 @@ exports.sendMessage = async (req, res) => {
 }
 exports.logoutUser = async (req, res) => {
     const user_id = req.params.user_id;
-    const event_type = "user_logout";
+    const event_type = "logout";
     const event_message = `Logged out.`;
     const endpoint = "/api/users/login"
     data = { user_id, event_type, event_message, endpoint };

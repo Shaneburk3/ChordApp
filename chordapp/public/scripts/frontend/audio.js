@@ -131,25 +131,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.log("Recording deleted.")
     });
 
-    predictBtn.addEventListener('click', function (e) {
-        e.preventDefault();
+    //predictBtn.addEventListener('click', function (e) {
+        //e.preventDefault();
         //audioBlob = new Blob(audio_chunks, { type: 'audio/webm' });
         //const audioUrl = URL.createObjectURL(audioBlob);
         //audioPlayer.src = audioUrl
 
-        const file = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
-        const dataTransfer = new DataTransfer()
-        dataTransfer.items.add(file);
-        audioInput.files = dataTransfer.files;
+        //const file = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
+        //const dataTransfer = new DataTransfer()
+        //dataTransfer.items.add(file);
+        //audioInput.files = dataTransfer.files;
 
-        playAudioBtn.disabled = true;
-        deleteBtn.disabled = true;
-        startBtn.disabled = true
-        predictBtn.disabled = true;
-        stopBtn.disabled = true;
-        console.log("Prediction being sent...");
-
-        document.getElementById('predict_form').requestSubmit();
-    });
+      //  playAudioBtn.disabled = true;
+      //  deleteBtn.disabled = true;
+      //  startBtn.disabled = true
+      //  predictBtn.disabled = true;
+      //  stopBtn.disabled = true;
+        //console.log("Prediction being sent...");
+    //});
 
 });

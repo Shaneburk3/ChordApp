@@ -32,6 +32,24 @@ npm install dotenv
 npm install nodemon / npm run devStart
 npm install multer
 
+## venv setup, to create a python Flask Application to run python code, run the model and predict chords
+- .gitingore add: venv/
+- Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+- Powershell: .\venv\Scripts\Activate.ps1
+    - pip install flask librosa tensorflow numpy
+    - python predict_server.py
+    - Invoke-WebRequest -Uri http://127.0.0.1:5000/predict -Method POST -InFIle C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_003.wav -ContentType "multipart/form-data"
+
+
+
+- Bash: source venv/Scripts/activate
+    - pip install flask librosa tensorflow numpy
+    - python predict_server.py
+    - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_003.wav" http://127.0.0.1:5000/predict
+
+http://127.0.0.1:5000/predict
+
+
 ## SECURITY FEATURES
 npm install express-validator
 npm install crypto
@@ -41,6 +59,7 @@ npm install cookie-parser
 ## Machine Learning Model Dependencies
 
 Bash: pip install tensorflowjs
+npm install @tensorflow/tfjs-node
 
 ## Machine Learning Model set up
 

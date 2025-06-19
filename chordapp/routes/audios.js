@@ -5,8 +5,11 @@ const session = require('express-session');
 const audioController = require('../controllers/audioController');
 const { validateAudio } = require('../middleware/validation');
 const { authToken, checkAdmin, optionalAuth} = require('../middleware/authentication');
+// Used for working with audio files
 const multer = require('multer');
-const upload = multer({dest: '/uploads'}) // save user audios to uploads file
+//Give the absolute path to the project
+const path = require('path')
+const upload = multer({dest: path.join(__dirname, '../uploads')}) // save user audios to uploads file
 
 // Session Setup
 router.use(session({
@@ -30,7 +33,9 @@ router.get("/:user_id/:audio_id", optionalAuth, audioController.singleAudio);
 
 // /predict
 
-router.post("/predict", optionalAuth, upload.single('audio'), audioController.predict);
+router.post("/:user_id/predict", optionalAuth, upload.single('audio'), audioController.predict);
+
+router.post("/upload", optionalAuth, upload.single('audio'), audioController.upload);
 
 
 

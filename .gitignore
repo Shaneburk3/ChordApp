@@ -1,3 +1,8 @@
 audio_data/
 audio_data - Copy/
 data/
+chord_tfjs_env/
+trash/
+predict_server.py
+venv/
+predict_server.py/
