@@ -10,7 +10,7 @@ const path = require('path');
 //const modelPath = path.join(__dirname, '..', '..', 'notebooks', 'models', '')
 //const model = tf.loadLayersModel('File://C:/Users/shane/Documents/GitHub/Chord_App/notebooks/chord_model.keras');
 
-//child process to work with python script
+//child process to work with python script running in Flask Application
 const { spawn } = require('child_process');
 
 exports.renderTranslate = async (req, res) => {
@@ -83,22 +83,26 @@ exports.predict = async (req, res) => {
 
     //return res.status(200).json({chord: 'C Major'})
     try {
+        // Path to audios loaded will be saved in /uploads
         const audioPath = req.file.path;
-
+        console.log("Path to user audio: ", audioPath)
+        console.log(__dirname)
         const python = spawn('python', [
-            path.join(__dirname, '/predict.py'),
+            path.join(__dirname, '../predict.py'),
             audioPath
         ]);
 
         let output = '';
+        // Get the python script output
         python.stdout.on('data', (data) => {
+            console.log(`Received audio chunk ${data}`);
             output += data.toString();
         });
-
+        // Handle errors received
         python.stderr.on('data', (err) => {
             console.error(`Python error: ${err}`);
         });
-
+        // When script is closed, return response to Fetch API on the front end
         python.on('close', (code) => {
             if (code !== 0) {
                 return res.status(500).json({ error: 'Model prediction failed.' });

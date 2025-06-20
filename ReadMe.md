@@ -33,6 +33,9 @@ npm install nodemon / npm run devStart
 npm install multer
 
 ## venv setup, to create a python Flask Application to run python code, run the model and predict chords
+
+installed: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorboard-data-server-0.7.2 tensorflow-2.19.0 
+
 - .gitingore add: venv/
 - Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 - Powershell: .\venv\Scripts\Activate.ps1
@@ -43,9 +46,9 @@ npm install multer
 
 
 - Bash: source venv/Scripts/activate
-    - pip install flask librosa tensorflow numpy
+    - pip install flask librosa tensorflow==2.19.0 numpy==1.23.5
     - python predict_server.py
-    - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_003.wav" http://127.0.0.1:5000/predict
+    - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_003.wav" http://127.0.0.1:5000/api/audios/212/predict
 
 http://127.0.0.1:5000/predict
 

@@ -1,32 +1,49 @@
 import sys
 import librosa
 import tensorflow as tf
-from tensorflow import keras
 import numpy as np
 import os
+from chordapp.utils.audio_utils import convert_to_spectrogram
 
-model = tf.keras.models.load_model('C:/Users/shane/Documents/GitHub/Chord_App/notebooks/models/chord_model.keras')
 
-def convert_to_spectrogram(waveform, target_len=32000):
-    waveform = tf.cast(waveform, dtype=tf.float32)
-    waveform = tf.reshape(waveform, [-1])
-    waveform = keras.utils.pad_sequences([waveform], maxlen=target_len, padding='post', truncating='post')[0]
-    spectrogram = tf.signal.stft(
-        waveform, 
-        frame_length=256, 
-        frame_step=128, 
-        fft_length=256
-        )
-    spectrogram = tf.abs(spectrogram) ** 2
-    spectrogram_db = 10 * tf.math.log(spectrogram + 1e-10) / tf.math.log(10.0)
-    return spectrogram_db[..., tf.newaxis]
 
+model = tf.keras.models.load_model('C:/Users/shane/Documents/GitHub/Chord_App/notebooks/models/chord_model_64.h5')
+
+index_to_label = {
+    0: 'Am',
+    1: 'Bb',
+    2: 'Bdim',
+    3: 'C',
+    4: 'Dm',
+    5: 'Em',
+    6: 'F',
+    7: 'G'
+    }
+
+    # Load audio file with librosa, fix the length, convert to Spectrogram for the model.
+    # y = raw data, sr = sample rate
+
+#ONLY run script when executed directly
 if __name__ == "__main__":
+    # From audioController, the file_path takes the first argument
     file_path = sys.argv[1]
-    y, sr = librosa.load(file_path, sr=32000, mono=True)
-    y = librosa.util.fix_length(y, size=32000)
+    # loads raw data, sample rate as a 1D waveform of
+    y, sr = librosa.load(file_path, sr=22050, mono=True)
+
+    print("The first 10 values of inputted audio:")
+    print(y[:10])
+    y = np.array(y, dtype=np.float32)
+
+    print("The shape in inputted audio:")
+    print(y.shape)
+    # Fix the length of all input for normalization
+    y = librosa.util.fix_length(y, size=64000)
     spectrogram = convert_to_spectrogram(y)
+    #Expand dims to fit model trained
+    spectrogram = spectrogram[...,tf.newaxis]
+    # add dimension for batch number
     spectrogram = tf.expand_dims(spectrogram, axis=0)
+    # Model being utilized to make prediction.
     prediction = model.predict(spectrogram)
     predicted_index = np.argmax(prediction)
-    print(predicted_index)
+    print("Predicted Chord: ", index_to_label.get(predicted_index, "Unknown"))
