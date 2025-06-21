@@ -5,7 +5,7 @@ import numpy as np
 import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from utils.audio_utils import convert_to_spectrogram, convert_to_wav
+from utils.audio_utils import convert_to_spectrogram, convert_to_wav, convert_to_waveform
 
 
 # Convert .webm file to .wav for the Model
@@ -32,18 +32,9 @@ def predict_chord(temp_input_path):
     if temp_path_wav:
             print("Converted to wav:", temp_path_wav)
             # loads raw data, sample rate as a 1D waveform of
-            y, sr = librosa.load(temp_path_wav, sr=22050, mono=True)
-
-            print("The first 10 values of inputted audio:")
-            print(y[:10])
-            y = np.array(y, dtype=np.float32)
-
-            print("The shape in inputted audio:")
-            print(y.shape)
-            # Fix the length of all input for normalization
-            y = librosa.util.fix_length(y, size=64000)
-            spectrogram = convert_to_spectrogram(y)
-            if spectrogram:                  
+            spectrogram = convert_to_waveform(temp_path_wav)
+            if spectrogram:
+                  
                 # Expand dims to fit model trained in Jupyter
                 spectrogram = spectrogram[...,tf.newaxis]
                 # Add dimension for batch number

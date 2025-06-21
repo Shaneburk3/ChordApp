@@ -3,6 +3,8 @@ import os
 import ffmpeg
 from pydub import AudioSegment
 import subprocess
+import librosa
+import numpy as np
 
 
 
@@ -69,4 +71,17 @@ def convert_to_wav(input_path):
     except Exception as e:
         print("Error converting file to .wav", str(e))
         return None
+    
+def convert_to_waveform(temp_path_wav):
+    y, sr = librosa.load(temp_path_wav, sr=22050, mono=True)
+
+    y = np.array(y, dtype=np.float32)
+
+    print("The shape in inputted audio:")
+    print(y.shape)
+    # Fix the length of all input for normalization
+    y = librosa.util.fix_length(y, size=64000)
+
+    return y
+
 
