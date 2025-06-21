@@ -1,11 +1,12 @@
 import sys
 import librosa
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import tensorflow as tf
 import numpy as np
-import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from utils.audio_utils import convert_to_spectrogram, convert_to_wav, convert_to_waveform
+from utils.audio_utils import convert_to_spectrogram, convert_file_to_wav, convert_to_waveform
 
 
 # Convert .webm file to .wav for the Model
@@ -27,16 +28,17 @@ def predict_chord(temp_input_path):
     print("Temp audio path from predict_server.py: ", temp_input_path)
     # Path: \\uploads\\ad946a66b1cdc462fe356c8e68927d10
 
-    temp_path_wav = convert_to_wav(temp_input_path)
+    temp_path_wav = convert_file_to_wav(temp_input_path)
 
     if temp_path_wav:
-            print("Converted to wav:", temp_path_wav)
+            print("Converted to .wav:", temp_path_wav)
             # loads raw data, sample rate as a 1D waveform of
-            spectrogram = convert_to_waveform(temp_path_wav)
-            if spectrogram:
+            waveform = convert_to_waveform(temp_path_wav)
+
+            if waveform:
                   
                 # Expand dims to fit model trained in Jupyter
-                spectrogram = spectrogram[...,tf.newaxis]
+                waveform = waveform[...,tf.newaxis]
                 # Add dimension for batch number
                 spectrogram = tf.expand_dims(spectrogram, axis=0)
                 # Model being utilized to make prediction.
