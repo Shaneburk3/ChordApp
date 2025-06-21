@@ -7,11 +7,12 @@ import subprocess
 
 
 def convert_to_spectrogram(waveform, target_len=64000):
-    # Cast waveform to a sensor, so it can be reshaped, then converted to a spectrogram
-    waveform = tf.cast(waveform, dtype=tf.float32)
+    print("*********** Convert_to_spectrogram ********************")
 
     print("Audio before reshaping: ", waveform.shape)
 
+    # Cast waveform to a sensor, so it can be reshaped, then converted to a spectrogram
+    waveform = tf.cast(waveform, dtype=tf.float32)
     # shape of [-1] flattens tensor into 1-D (Audio wave diagram)
     waveform = tf.reshape(waveform, [-1])
 
@@ -56,12 +57,15 @@ def convert_to_wav(input_path):
         output_path = os.path.join(input_dir, input_filename + ".wav")
         print("Output full path: ", output_path)
         # Convert new file path to .wav
-        ffmpeg_path = r"C:\Users\shane\Downloads\ffmpeg-2025-06-17-git-ee1f79b0fa-essentials_build\bin"
         result = subprocess.call(['ffmpeg', '-i', input_path, output_path])
         print("Converted:", result)
         # return path to the altered input file
-        print("*********** Convert_to_wav END ********************")
-        return result
+        if result == 0:
+            print("Conversion to wav was successful.")
+            return output_path
+        else:
+            print("Conversion failed.")
+            return None
     except Exception as e:
         print("Error converting file to .wav", str(e))
         return None

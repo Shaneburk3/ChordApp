@@ -29,25 +29,28 @@ def predict_chord(temp_input_path):
 
     temp_path_wav = convert_to_wav(temp_input_path)
 
-    print("Converted to wav:", temp_path_wav)
-    # loads raw data, sample rate as a 1D waveform of
-    y, sr = librosa.load(temp_path_wav, sr=22050, mono=True)
+    if temp_path_wav:
+            print("Converted to wav:", temp_path_wav)
+            # loads raw data, sample rate as a 1D waveform of
+            y, sr = librosa.load(temp_path_wav, sr=22050, mono=True)
 
-    print("The first 10 values of inputted audio:")
-    print(y[:10])
-    y = np.array(y, dtype=np.float32)
+            print("The first 10 values of inputted audio:")
+            print(y[:10])
+            y = np.array(y, dtype=np.float32)
 
-    print("The shape in inputted audio:")
-    print(y.shape)
-    # Fix the length of all input for normalization
-    y = librosa.util.fix_length(y, size=64000)
-    spectrogram = convert_to_spectrogram(y)
-    # Expand dims to fit model trained in Jupyter
-    spectrogram = spectrogram[...,tf.newaxis]
-    # Add dimension for batch number
-    spectrogram = tf.expand_dims(spectrogram, axis=0)
-    # Model being utilized to make prediction.
-    prediction = model.predict(spectrogram)
-    predicted_index = np.argmax(prediction)
-    print("Raw Label", predicted_index)
-    return(index_to_label.get(predicted_index, "Unknown")) 
+            print("The shape in inputted audio:")
+            print(y.shape)
+            # Fix the length of all input for normalization
+            y = librosa.util.fix_length(y, size=64000)
+            spectrogram = convert_to_spectrogram(y)
+            if spectrogram:                  
+                # Expand dims to fit model trained in Jupyter
+                spectrogram = spectrogram[...,tf.newaxis]
+                # Add dimension for batch number
+                spectrogram = tf.expand_dims(spectrogram, axis=0)
+                # Model being utilized to make prediction.
+                prediction = model.predict(spectrogram)
+                predicted_index = np.argmax(prediction)
+                print("Raw Label", predicted_index)
+                return(index_to_label.get(predicted_index, "Unknown"))
+            return None
