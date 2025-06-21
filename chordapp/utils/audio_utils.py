@@ -1,4 +1,10 @@
 import tensorflow as tf
+import os
+import ffmpeg
+from pydub import AudioSegment
+import subprocess
+
+
 
 def convert_to_spectrogram(waveform, target_len=64000):
     # Cast waveform to a sensor, so it can be reshaped, then converted to a spectrogram
@@ -28,3 +34,35 @@ def convert_to_spectrogram(waveform, target_len=64000):
     spectrogram_db = tf.transpose(spectrogram_db)
     print(tf.shape(spectrogram_db))
     return spectrogram_db[..., tf.newaxis]
+
+def convert_to_wav(input_path):
+    try:
+        print("*********** Convert_to_wav ********************")
+        print("Data given to convert_to_wav:", input_path)
+        print(f"Does file exists? {os.path.exists(input_path)}")
+        print(f"Is it a file? {os.path.isfile(input_path)}")
+
+        # split the filename, path .
+        input_filename = os.path.splitext(os.path.basename(input_path))[0]
+        print("Input File Name: ", input_filename)
+        input_dir = os.path.dirname(input_path)
+        print("Input DIR Name: ", input_dir)
+        # Full input path to user audio
+        input_path = os.path.join(input_dir, input_filename + ".webm")
+        print("Asking subprocess to convert: ", input_path)
+
+
+        # The output path desired
+        output_path = os.path.join(input_dir, input_filename + ".wav")
+        print("Output full path: ", output_path)
+        # Convert new file path to .wav
+        ffmpeg_path = r"C:\Users\shane\Downloads\ffmpeg-2025-06-17-git-ee1f79b0fa-essentials_build\bin"
+        result = subprocess.call(['ffmpeg', '-i', input_path, output_path])
+        print("Converted:", result)
+        # return path to the altered input file
+        print("*********** Convert_to_wav END ********************")
+        return result
+    except Exception as e:
+        print("Error converting file to .wav", str(e))
+        return None
+

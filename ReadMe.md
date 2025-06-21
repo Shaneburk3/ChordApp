@@ -22,15 +22,9 @@ Open terminal: cd chordapp
 
 Install  application dependencies
 
-npm install sqlite3
-npm install body-parser
-npm install express
-npm install ejs
-npm install express-session
-npm install nodemailer
-npm install dotenv
-npm install nodemon / npm run devStart
-npm install multer
+npm install sqlite3 body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch node-fetch@2
+
+npm run devStart
 
 ## venv setup, to create a python Flask Application to run python code, run the model and predict chords
 
@@ -46,9 +40,11 @@ installed: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorboa
 
 
 - Bash: source venv/Scripts/activate
-    - pip install flask librosa tensorflow==2.19.0 numpy==1.23.5
+    - pip install flask librosa tensorflow==2.19.0 numpy==1.23.5 ffmpeg ffmpeg-python pydub
     - python predict_server.py
     - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_003.wav" http://127.0.0.1:5000/api/audios/212/predict
+
+- Note: Must down ffmpeg executable, add it to enviorment variables.
 
 http://127.0.0.1:5000/predict
 

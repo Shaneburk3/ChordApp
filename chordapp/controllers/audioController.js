@@ -1,11 +1,16 @@
-//const Audio = require('../models/audiosModel.js');
-//const Logs = require('../models/logsModel.js');
-//const Session = require('../utils/express-session.js');
 const audioModel = require('../models/audiosModel.js');
 const User = require('../models/usersModel.js');
 const { getAge } = require('../public/scripts/backend/functions.js');
-//const tf = require('@tensorflow/tfjs-node');
 const path = require('path');
+const fs = require('fs');
+const { Blob } = require("buffer");
+// Found at https://stackoverflow.com/questions/63576988/how-to-use-formdata-in-node-js-without-browser
+var FormData = require('form-data');
+// node-fetch is compatible with using APIs
+const fetch = require('node-fetch')
+
+
+
 //const { pathToFileUrl } = require('url');
 //const modelPath = path.join(__dirname, '..', '..', 'notebooks', 'models', '')
 //const model = tf.loadLayersModel('File://C:/Users/shane/Documents/GitHub/Chord_App/notebooks/chord_model.keras');
@@ -78,39 +83,29 @@ exports.upload = async (req, res) => {
 //create
 exports.predict = async (req, res) => {
     console.log("Predicting chord...")
-    console.log(req.file)
-    console.log(req.file.path)
 
-    //return res.status(200).json({chord: 'C Major'})
+    const user_id = req.params?.user_id || null
+    const filePath = req.file.path;
+    // Path to audios loaded will be saved in /uploads
+    console.log(`User ${user_id} audio path `, filePath)
+
+    const form = new FormData();
+    form.append('audio', fs.createReadStream(filePath), {
+        fileName: req.file.filename,
+        contentType: req.file.mimetype
+    });    
+
+    console.log(form)
+
     try {
-        // Path to audios loaded will be saved in /uploads
-        const audioPath = req.file.path;
-        console.log("Path to user audio: ", audioPath)
-        console.log(__dirname)
-        const python = spawn('python', [
-            path.join(__dirname, '../predict.py'),
-            audioPath
-        ]);
-
-        let output = '';
-        // Get the python script output
-        python.stdout.on('data', (data) => {
-            console.log(`Received audio chunk ${data}`);
-            output += data.toString();
+        const response = await fetch(`http://127.0.0.1:5000/api/audios/${user_id}/predict`, {
+            method: "POST",
+            body: form,
+            headers: form.getHeaders()
         });
-        // Handle errors received
-        python.stderr.on('data', (err) => {
-            console.error(`Python error: ${err}`);
-        });
-        // When script is closed, return response to Fetch API on the front end
-        python.on('close', (code) => {
-            if (code !== 0) {
-                return res.status(500).json({ error: 'Model prediction failed.' });
-            }
-            const chordIndex = parseInt(output.trim());
-            const label = indexToChordLabel[chordIndex]; // map index back to label
-            return res.status(200).json({ chord: output.trim() });
-        });
+        const result = await response.json();
+        console.log({result})
+        return res.status(200).json({chord: result.chord})
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });

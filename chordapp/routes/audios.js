@@ -33,7 +33,7 @@ router.get("/:user_id/:audio_id", optionalAuth, audioController.singleAudio);
 
 // /predict
 
-router.post("/:user_id/predict", optionalAuth, upload.single('audio'), audioController.predict);
+router.post("/predict/:user_id", optionalAuth, upload.single('audio'), audioController.predict);
 
 router.post("/upload", optionalAuth, upload.single('audio'), audioController.upload);
 

@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             console.log(formData)
             try {
-                const response = await fetch(`/api/audios/${user_id}/predict`, {
+                const response = await fetch(`/api/audios/predict/${user_id}`, {
                     method: 'POST',
                     body: formData
                 });

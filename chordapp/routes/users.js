@@ -47,6 +47,9 @@ router.post('/admin/selected_action', authToken, authAdmin, adminController.bulk
 router.get('/admin/logs', authToken, authAdmin, adminController.renderLogPage);
 router.post('/admin/logs/filter', authToken, authAdmin, adminController.filterLogs);
 
+router.get("/test", (req, res) => {
+    
+}); 
 
 
 module.exports = router;
