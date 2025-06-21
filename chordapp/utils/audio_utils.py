@@ -41,9 +41,6 @@ def convert_to_spectrogram(waveform, target_len=64000):
 def convert_file_to_wav(input_path):
     try:
         print("Data given to convert_file_to_wav:", input_path)
-        print("\n")
-        print(f"Does file exists? {os.path.exists(input_path)}")
-        print(f"Is it a file? {os.path.isfile(input_path)}")
 
         # split the filename, path .
         input_filename = os.path.splitext(os.path.basename(input_path))[0]
@@ -58,6 +55,11 @@ def convert_file_to_wav(input_path):
         # The output path desired
         output_path = os.path.join(input_dir, input_filename + ".wav")
         print("Output full path: ", output_path)
+
+        # delete if output path already exists
+        if os.path.exists(output_path):
+            os.remove(output_path)
+
         # Convert new file path to .wav
         result = subprocess.call(['ffmpeg', '-i', input_path, output_path])
         print("Converted:", result)
@@ -71,57 +73,39 @@ def convert_file_to_wav(input_path):
     except Exception as e:
         print("Error converting file to .wav", str(e))
         return None
-    
-def convert_to_waveform(temp_path_wav):
-    y, sr = librosa.load(temp_path_wav, sr=22050, mono=True)
 
-    y = np.array(y, dtype=np.float32)
+def create_waveform(file_path, target_sr=22050, target_len=64000):
 
-    print("The shape in inputted audio:")
-    print(y.shape)
-    # Fix the length of all input for normalization
-    y = librosa.util.fix_length(y, size=64000)
-
-    return y
-
-def create_waveforms(folder_path, target_sr=22050, target_len=64000):
-
-    index_to_label = { 0: 'Am', 1: 'Bb', 2: 'Bdim', 3: 'C', 4: 'Dm', 5: 'Em', 6: 'F', 7: 'G' }
     label_to_index = { 'Am': 0, 'Bb': 1, 'Bdim': 2, 'C': 3, 'Dm': 4, 'Em': 5, 'F': 6, 'G': 7 }
+    print("PATH GIVEN TO create_waveform:", file_path)
 
+    audio = ''
+    label = ''
+    file_name = ''
+    path = ''
+    original_len = ''
     
-    audios = []
-    labels = []
-    file_names = []
-    paths = []
-    original_len = []
-    
-    # base path for each folder is the label for each classification
-    label = str(os.path.basename(folder_path))
+    # dir name for each folder is the label for each classification
+    label = os.path.basename(os.path.dirname(file_path))
+    print("LABEL:", label)
     # Gets index numbers based on folder label
     label_index = label_to_index.get(label)
     
     # Librosa - Convert audio file to waveform
-    for file in os.listdir(folder_path):
-        if file.endswith(".wav"):
-            file_path = os.path.join(folder_path, file)
-            y, sr = librosa.load(file_path, sr=target_sr, mono=True)
-            original_len.append(y.shape)
-            # trim audio frames with no noise, less than 20 decibels
-            y_trimmed, _ = librosa.effects.trim(y, top_db=20)
-            # Set length to 64000
-            y_fixed = librosa.util.fix_length(y_trimmed, size=target_len)
-            audios.append(y_fixed)
-            labels.append(label_index)
-            paths.append(file_path)
-            file_names.append(file)
-        else:
-            return None
+    y, sr = librosa.load(file_path, sr=target_sr, mono=True)
+    original_len = y.shape
+    # trim audio frames with no noise, less than 20 decibels
+    y_trimmed, _ = librosa.effects.trim(y, top_db=20)
+    # Set length to 64000
+    y_fixed = librosa.util.fix_length(y_trimmed, size=target_len)
+    audio = y_fixed
+    label = label_index
+    path = file_path
+    file_name = os.path.basename(file_path)
 
-    if audios:
-        print(f"Label: {labels[0]}, Original Shape: {original_len[0]} Fixed Shape: {audios[0].shape}, Total fixed: {len(audios)}")
+    print(f"Label: {label}, Original Shape: {original_len} Fixed Shape: {audio.shape}")
             
     #Each .wav now labelled by number below
-    return audios, labels, sr, file_names, paths
+    return audio, label, sr, file_name, path
 
 
