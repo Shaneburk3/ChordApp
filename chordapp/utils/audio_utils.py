@@ -62,8 +62,6 @@ def convert_file_to_wav(input_path):
 
         # Convert new file path to .wav
         result = subprocess.call(['ffmpeg', '-i', input_path, output_path])
-        print("Converted:", result)
-        # return path to the altered input file
         if result == 0:
             print("Conversion to wav was successful.")
             return output_path
