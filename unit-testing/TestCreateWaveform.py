@@ -23,12 +23,8 @@ class TestCreateWaveform(unittest.TestCase):
 
         audio, label, sr, file_name, path = result
 
+        self.assertEqual(audio.shape[0], 64000, 'Audio shaping failed.')
 
-        print(audio)
-        print(label)
-        print(sr)
-        print(file_name)
-        print(path)
 
         print("WAV file conversion test passed.")
 

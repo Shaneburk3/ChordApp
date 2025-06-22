@@ -95,8 +95,6 @@ exports.predict = async (req, res) => {
         contentType: req.file.mimetype
     });    
 
-    console.log(form)
-
     try {
         const response = await fetch(`http://127.0.0.1:5000/api/audios/${user_id}/predict`, {
             method: "POST",
@@ -104,8 +102,8 @@ exports.predict = async (req, res) => {
             headers: form.getHeaders()
         });
         const result = await response.json();
-        console.log({result})
-        return res.status(200).json({chord: result.chord})
+        console.log("RESULT FROM FLASK API: ", result)
+        return res.status(200).json(result)
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });

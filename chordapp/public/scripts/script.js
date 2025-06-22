@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     result_section.style.display = "block";
                 } else if (response.status === 200) {
                     const result = await response.json();
-                    result_section.textContent = `Prediction chord: ${result.chord}`
+                    console.log(result)
+                    result_section.textContent = `Predicted chord: ${result.Chord}`
                     result_section.style.color = "green";
                     //window.location.href = data.redirect;
                 }

@@ -44,14 +44,16 @@ def predict_chord(temp_input_path):
         spectrogram = convert_to_spectrogram(audio)
         # Expand dims to fit model trained in Jupyter
         spectrogram = spectrogram[...,tf.newaxis]
-        # Add dimension for batch number
+        # Add dimension for batch number: 1
         spectrogram = tf.expand_dims(spectrogram, axis=0)
         # Model being utilized to make prediction.
 
         prediction = model.predict(spectrogram)
         predicted_index = np.argmax(prediction)
         print("Raw Label", predicted_index)
-        return(index_to_label.get(predicted_index, "Unknown"))  
+        chord  = index_to_label.get(predicted_index, "Unknown chord")
+        print("Chord predicted: ", chord)
+        return(chord)
     
     except Exception as e:
         print('Error in model prediction', str(e))   

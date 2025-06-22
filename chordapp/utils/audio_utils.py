@@ -10,15 +10,12 @@ import numpy as np
 
 def convert_to_spectrogram(waveform, target_len=64000):
     print("*********** Convert_to_spectrogram ********************")
-
     print("Audio before reshaping: ", waveform.shape)
 
     # Cast waveform to a sensor, so it can be reshaped, then converted to a spectrogram
     waveform = tf.cast(waveform, dtype=tf.float32)
     # shape of [-1] flattens tensor into 1-D (Audio wave diagram)
     waveform = tf.reshape(waveform, [-1])
-
-    print("Audio after reshaping: ", waveform.shape)
 
     # pad_sequences fixes the audio tensor, so each array is the same length. 32000kHz
     # Truncating removes sequences larger than max length
@@ -35,7 +32,8 @@ def convert_to_spectrogram(waveform, target_len=64000):
     spectrogram = tf.abs(spectrogram) ** 2
     spectrogram_db = 10 * tf.math.log(spectrogram + 1e-10) / tf.math.log(10.0)
     spectrogram_db = tf.transpose(spectrogram_db)
-    print(tf.shape(spectrogram_db))
+
+    print("Spectrogram shape: ", tf.shape(spectrogram_db))
     return spectrogram_db[..., tf.newaxis]
 
 def convert_file_to_wav(input_path):
@@ -60,7 +58,7 @@ def convert_file_to_wav(input_path):
         if os.path.exists(output_path):
             os.remove(output_path)
 
-        # Convert new file path to .wav
+        # Convert new file path to .wav using ffmpeg import
         result = subprocess.call(['ffmpeg', '-i', input_path, output_path])
         if result == 0:
             print("Conversion to wav was successful.")
@@ -75,7 +73,7 @@ def convert_file_to_wav(input_path):
 def create_waveform(file_path, target_sr=22050, target_len=64000):
 
     label_to_index = { 'Am': 0, 'Bb': 1, 'Bdim': 2, 'C': 3, 'Dm': 4, 'Em': 5, 'F': 6, 'G': 7 }
-    print("PATH GIVEN TO create_waveform:", file_path)
+    print("PATH GIVEN: create_waveform:", file_path)
 
     audio = ''
     label = ''
@@ -83,9 +81,8 @@ def create_waveform(file_path, target_sr=22050, target_len=64000):
     path = ''
     original_len = ''
     
-    # dir name for each folder is the label for each classification
+    # dir name for each folder is the label for each classification, i.e. Am
     label = os.path.basename(os.path.dirname(file_path))
-    print("LABEL:", label)
     # Gets index numbers based on folder label
     label_index = label_to_index.get(label)
     
@@ -102,6 +99,8 @@ def create_waveform(file_path, target_sr=22050, target_len=64000):
     file_name = os.path.basename(file_path)
 
     print(f"Label: {label}, Original Shape: {original_len} Fixed Shape: {audio.shape}")
+    print('\n')
+
             
     #Each .wav now labelled by number below
     return audio, label, sr, file_name, path
