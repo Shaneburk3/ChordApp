@@ -3,8 +3,8 @@ const chrome = require('selenium-webdriver/chrome');
 const assert = require('assert');
 
 // UNIT TEST - Test that fails when checkbox is not ticked.
+async function runTestTermsCheck() {
 
-async function testTermsCheck() {
     let driver = await new Builder().forBrowser(Browser.CHROME).build()
     try {
         await driver.get('http://localhost:3000/register');
@@ -41,6 +41,5 @@ async function testTermsCheck() {
     }
 }
 
-(async () => {
-    await testTermsCheck()
-})();
+runTestTermsCheck();
+

@@ -13,7 +13,7 @@ async function createTestUserIfNotExist() {
       const register_email = "testUser@testUser.com"
       const register_password1 = "F38djdn3Jdu3"
       const register_password2 = "F38djdn3Jdu3"
-      const register_dob = '1995-03-12T00:00:00.000Z'
+      const register_dob = '1995-03-12'
       const termsCheck = "on"
 
       const data = {

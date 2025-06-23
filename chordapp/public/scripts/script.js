@@ -26,12 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
         predict_form.addEventListener('submit', async (e) => {
             e.preventDefault();
             console.log('Sending audio server...')
-
-            const user_id = document.getElementById('user_id').value;
             const formData = new FormData(predict_form);
-            
             console.log(formData)
+
+            if (!document.getElementById('user_id')) {
+                console.log("User is not signed in, continuing as non signed in user...")
+            } else {
             try {
+                const user_id = document.getElementById('user_id').value;
                 const response = await fetch(`/api/audios/predict/${user_id}`, {
                     method: 'POST',
                     body: formData
@@ -39,24 +41,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!response.ok) {
                     const errorData = await response.json();
                     //got errors, now map them to the error div
-                    let html = "<ul>";
+                    let html = "<h5>";
                     errorData.errors.forEach(e => {
-                        html += `<li>${e.msg}</li>`
+                        html += `${e.msg}`
                     });
-                    html += "</ul>"
-                    result_section.innerHTML = html;
-                    result_section.style.display = "block";
+                    html += "</h5>"
+                    result_div.innerHTML = html;
+                    result_div.style.display = "block";
                 } else if (response.status === 200) {
                     const result = await response.json();
                     console.log(result)
-                    result_section.textContent = `Predicted chord: ${result.Chord}`
-                    result_section.style.color = "green";
+                    let html = "<h3>";                    
+                    html += `Classification: ${result.Chord}`
+                    html += "</h3>"
+                    result_div.innerHTML = html;
+                    result_div.style.display = "block";
                     //window.location.href = data.redirect;
                 }
             } catch (error) {
                 result_section.textContent = "Error while predicting chord.";
                 result_section.style.display = "block";
                 console.log(error);
+            }
             }
         })
     }

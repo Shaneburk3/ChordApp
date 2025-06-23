@@ -7,33 +7,20 @@ const jwt = require('jsonwebtoken');
 
 exports.registerUser = async (req, res) => {
 
-    const {
-        first_name,
-        last_name,
-        register_email,
-        register_password1,
-        register_password2,
-        user_dob } = req.body;
-    console.log("Registering with DOB: ", user_dob)
+    const { first_name, last_name, register_email, register_password1, register_password2, user_dob } = req.body;
+
     //check if passwords match
     if (register_password1 != register_password2) {
         var formErrors = [{ msg: "ERROR: Passwords are not the same." }];
-        const formData = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            user_dob: req.body.user_dob
-        }
+        
+        const formData = { first_name: req.body.first_name, last_name: req.body.last_name, email: req.body.email, user_dob: req.body.user_dob }
         return res.status(400).json({ errors: formErrors, formData });
     }
     try {
         //Check if user exists
         const userExists = await User.findOne(register_email);
         if (userExists) {
-            const formData = {
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-            }
+            const formData = { first_name: req.body.first_name, last_name: req.body.last_name, }
             var formErrors = [{ msg: "Error please try again." }];
             return res.status(400).json({ errors: formErrors, formData });
         }
@@ -49,6 +36,7 @@ exports.registerUser = async (req, res) => {
         }
         //await Details.create(user.user_id, user_dob);
         var formData = [{ msg: "User registered succesfully." }];
+        console.log("New user registered. status 200")
         return res.status(200).json({ redirect: '/', formData });
     } catch (error) {
         console.log(error.message);;

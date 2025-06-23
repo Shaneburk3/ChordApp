@@ -3,6 +3,7 @@ body, html {
     min-height: 100%;
     width: 100%;
 }
+
 #audio_card {
     color: white;
     font-weight: 300;
@@ -14,17 +15,19 @@ body, html {
     text-decoration: none;
 }
 #banner {
-    background-color: #474e5d;
+    background-color: rgb(68, 67, 67);
     color: white;
     margin: 0;
     height: 10rem;
     padding-bottom: 2rem;
     margin-bottom: 2rem;
 }
-#about_card {
-    
-    margin: 1rem;
+.about_bio{
+    padding: 2rem;
+    font-weight: bold;
+    font-size: 25px;
 }
+
 #about_bio {
     padding: 1rem;
 
@@ -67,6 +70,10 @@ footer {
 header {
     padding: 1rem;
     position:relative;
+}
+#user_container {
+    width: inherit;
+    height: 35rem;
 }
 
 @media (max-width:1000px) {

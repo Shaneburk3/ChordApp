@@ -70,11 +70,11 @@ try {
 
 //Export connection to the database to use elsewhere.
 module.exports = client;
-
+/*
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`)
 });
-
+*/
 
 app.get("/", optionalAuth, (req, res) => {
     const formErrors = req.session.formErrors || [];

@@ -4,9 +4,10 @@ const Func = require('../../testFunction');
 
 
 // Integration Test - Test is user can update their profile, and be directed to their page.
+async function runUpdateUserTest() {
 
+  await Func.createTestUserIfNotExist()
 
-async function testUpdateUser() {
   //stop chrome password alert hindering test: 
   let options = new chrome.Options();
   options.setUserPreferences({ 'credentials_enable_service': false, 'profile.password_manager_enabled': false });
@@ -67,7 +68,5 @@ async function testUpdateUser() {
     await driver.quit()
   }
 }
-(async () => {
-  await Func.createTestUserIfNotExist()
-  await testUpdateUser();
-})();
+
+runUpdateUserTest();

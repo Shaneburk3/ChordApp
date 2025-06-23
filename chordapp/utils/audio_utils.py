@@ -24,9 +24,9 @@ def convert_to_spectrogram(waveform, target_len=64000):
     waveform = tf.pad(waveform, [[0, padding]])
     spectrogram = tf.signal.stft(
         waveform, 
-        frame_length=256, 
-        frame_step=128, 
-        fft_length=256
+        frame_length=400, 
+        frame_step=160, 
+        fft_length=512
         )
     # Get the absolute value of the tf, increase its size for better images
     spectrogram = tf.abs(spectrogram) ** 2
@@ -70,7 +70,7 @@ def convert_file_to_wav(input_path):
         print("Error converting file to .wav", str(e))
         return None
 
-def create_waveform(file_path, target_sr=22050, target_len=64000):
+def create_waveform(file_path, target_sr=16000, target_len=64000):
 
     label_to_index = { 'Am': 0, 'Bb': 1, 'Bdim': 2, 'C': 3, 'Dm': 4, 'Em': 5, 'F': 6, 'G': 7 }
     print("PATH GIVEN: create_waveform:", file_path)

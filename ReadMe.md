@@ -42,7 +42,7 @@ installed: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorboa
 - Bash: source venv/Scripts/activate
     - pip install flask librosa tensorflow==2.19.0 numpy==1.23.5 ffmpeg ffmpeg-python pydub
     - python predict_server.py
-    - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_003.wav" http://127.0.0.1:5000/api/audios/212/predict
+    - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Training\C\C_005.wav" http://127.0.0.1:5000/api/audios/212/predict
 
 - Note: Must down ffmpeg executable, add it to enviorment variables.
 
@@ -135,6 +135,9 @@ Open web browser, enter: http://localhost:3000/
 node tests/selenium/testRegister.test.js
 node tests/selenium/testLogin.test.js
 node tests/selenium/testUpdate.test.js
+
+- Run all jest tests: 
+    - npm run test:jest
 
 ## How to use website
 
