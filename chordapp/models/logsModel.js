@@ -66,7 +66,7 @@ const Logs = {
                 response = await client.query("SELECT * FROM logs WHERE event_type = $1 ORDER BY created_at DESC", [selected_event]);
             }
             await client.query('COMMIT');
-            console.log("Logs found for user: ", response.rows);
+            //console.log("Logs found for user: ", response.rows);
             return response.rows;
         } catch (error) {
             await client.query('ROLLBACK');

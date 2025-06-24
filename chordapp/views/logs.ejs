@@ -92,9 +92,9 @@
                     <% if (results.previous)  { %>
                         <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.previous.page%>&limit=25&event=<%=results.event%>"><%=results.previous.page%></a></li>
                     <% } %>
-                        <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.currentPage%>&limit=25&event=<%=results.event%>"><%=results.currentPage%></a></li>
+                        <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.currentPage%>&limit=25&event=<%=results.event.event%>"><%=results.currentPage%></a></li>
                     <% if (results.next)  { %>
-                        <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.next.page%>&limit=25&event=<%=results.event%>"><%=results.next.page%></a></li>
+                        <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.next.page%>&limit=25&event=<%=results.event.event%>"><%=results.next.page%></a></li>
                     <% } %>
                 </ul>
             </nav>

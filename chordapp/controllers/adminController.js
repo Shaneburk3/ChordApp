@@ -64,6 +64,8 @@ exports.renderLogPage = async (req, res) => {
         console.log("Getting admin page data...");
         // Get values within start, end index
 
+        results.event = event;
+
         results.filteredLogs = allLogs.slice(startIndex, endIndex)
 
         console.log(`Filtered: ${results.filteredLogs.length}`)
@@ -303,7 +305,7 @@ exports.filterLogs = async (req, res) => {
 
         console.log(`Filtered: ${results.filteredLogs.length}`)
 
-        results.pagesNeeded = Math.ceil(results.filteredLogs / limit)
+        results.pagesNeeded = Math.ceil(filtered.length / limit)
         results.currentPage = page
         console.log(`Current page: ${results.currentPage}`)
         if (endIndex < filtered.length) {
