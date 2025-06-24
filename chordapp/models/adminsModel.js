@@ -1,9 +1,6 @@
 const pool = require('../postgresDB')
 
 const Admins = {
-    create: async (user_id, user_dob) => {
-
-    },
     findById: async (user_id) => {
         const client = await pool.connect();
     },

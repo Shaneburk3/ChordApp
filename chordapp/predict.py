@@ -28,6 +28,8 @@ def predict_chord(temp_input_path):
     temp_path_wav = None
     audio = None
     spectrogram = None
+    audio_list = None
+    result = {}
 
     try:
 
@@ -53,7 +55,10 @@ def predict_chord(temp_input_path):
         print("Raw Label", predicted_index)
         chord  = index_to_label.get(predicted_index, "Unknown chord")
         print("Chord predicted: ", chord)
-        return(chord)
+        audio_list = audio.tolist();
+        result = {"Chord": chord, "Audio": audio_list}
+        print("Waveform: ", audio_list[:10])
+        return(result)
     
     except Exception as e:
         print('Error in model prediction', str(e))   

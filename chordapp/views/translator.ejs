@@ -5,47 +5,51 @@
     <body>
         <script src="/scripts/frontend/audio.js" defer></script>
         <%- include("partials/nav") %>
-                <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
-                    <!-- Title -->
-                    <h1 class="display-4">ChordExplorer</h1>
-                    <% if (user) { %>
-                        <h3> Hello, <%= user.first_name %>
-                        </h3>
-                        <% } else { %>
-                            <h3>Hello, let classify some audio!</h3>
-                            <% } %>
-                                <h5 class="text-muted">if you would like to save audios, please login</h5>
-                </div>
+            <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
+                <!-- Title -->
+                <h1 class="display-4">ChordExplorer</h1>
+                <% if (user) { %>
+                    <h3> Hello, <%= user.first_name %>
+                    </h3>
+                    <% } else { %>
+                        <h3>Hello, let classify some audio!</h3>
+                        <% } %>
+                            <h5 class="text-muted">if you would like to save audios, please login</h5>
+            </div>
 
-                <div class="container py-4">
-                    <!-- Audio Function -->
-                    <form id="predict_form">
-                        <div class="border p-4 mb-4">
-                            <div class="mb-3">
-                                <div class="border p-3">
-                                    <!--for playing the audio-->
-                                    <audio id="audio_play" controls></audio>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2" id="audio_controls">
-                                <button class="btn btn-primary" id="record_btn">Record</button>
-                                <button class="btn btn-warning" id="stop_btn">Stop</button>
-                                <button class="btn btn-danger" id="delete_btn">Delete</button>
-                                <button class="btn btn-danger" id="play_btn">Play</button>
-                                <button class="btn btn-danger" type="submit" id="predict_btn">Predict chord</button>
+            <div class="container py-4">
+                <!-- Audio Function -->
+                <form id="predict_form">
+                    <div class="border p-4 mb-4">
+                        <div class="mb-3">
+                            <div class="border p-3">
+                                <!--for playing the audio-->
+                                <audio id="audio_play" controls></audio>
                             </div>
                         </div>
-                        <!--Audio will be saved here for backend multer /upload to be given tp the controller-->
-                        <input type="file" name="audio" id="audio_blob_input" hidden>
-                        <% if (user) { %>
+                        <div class="d-flex flex-wrap gap-2" id="audio_controls">
+                            <button class="btn btn-primary" id="record_btn">Record</button>
+                            <button class="btn btn-warning" id="stop_btn">Stop</button>
+                            <button class="btn btn-danger" id="delete_btn">Delete</button>
+                            <button class="btn btn-danger" id="play_btn">Play</button>
+                            <button class="btn btn-danger" type="submit" id="predict_btn">Predict chord</button>
+                        </div>
+                    </div>
+                    <!--Audio will be saved here for backend multer /upload to be given tp the controller-->
+                    <input type="file" name="audio" id="audio_blob_input" hidden>
+                    <% if (user) { %>
                         <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
                         <% } %>
-                    <!-- Result Section -->
-                    <div class="border p-4 text-center" id="result_div">
-                        <p class="text-center text-muted" id="result_section">Audio result section</p>
-                    </div>
-                </div>
-                <%- include("partials/footer") %>
+                            <!-- Result Section -->
+                            <form action="" id="save_form">
+                                <div class="border p-4 text-center" id="result_div">
+                                    <button class="btn" type="submit" id="save_btn" style="display: none;">Save
+                                        prediction</button>
+                                    <p class="text-center text-muted" id="result_section">Audio result section</p>
+                                </div>
+                            </form>
+            </div>
+            <%- include("partials/footer") %>
     </body>
 
 </html>

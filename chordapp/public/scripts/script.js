@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const register_form = document.getElementById('register_form');
     const predict_form = document.getElementById('predict_form');
     const result_section = document.getElementById('result_section');
+    const save_btn = document.getElementById('save_btn');
 
     //const profileLink = document.getElementById('profileLink');
     //const update_btn = document.getElementById('update_btn');
@@ -52,10 +53,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     const result = await response.json();
                     console.log(result)
                     let html = "<h3>";                    
-                    html += `Classification: ${result.Chord}`
+                    html += `Classification: ${result.prediction.Chord}`
                     html += "</h3>"
+                    html = "<h5>";                    
+                    html += `User: ${result.prediction.user_id}`
+                    html += "</h5>"
                     result_div.innerHTML = html;
                     result_div.style.display = "block";
+                    save_btn.style.display = "block";
                     //window.location.href = data.redirect;
                 }
             } catch (error) {

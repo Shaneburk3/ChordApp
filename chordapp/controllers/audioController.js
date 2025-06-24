@@ -84,6 +84,8 @@ exports.upload = async (req, res) => {
 exports.predict = async (req, res) => {
     console.log("Predicting chord...")
 
+    result = {}
+
     const user_id = req.params?.user_id || null
     const filePath = req.file.path;
     // Path to audios loaded will be saved in /uploads
@@ -101,7 +103,9 @@ exports.predict = async (req, res) => {
             body: form,
             headers: form.getHeaders()
         });
-        const result = await response.json();
+        const chord = await response.json();
+        result.prediction = chord
+        result.user_id = user_id
         console.log("RESULT FROM FLASK API: ", result)
         return res.status(200).json(result)
     } catch (err) {
