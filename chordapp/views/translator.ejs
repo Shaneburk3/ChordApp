@@ -33,6 +33,7 @@
                             <button class="btn btn-danger" id="delete_btn">Delete</button>
                             <button class="btn btn-danger" id="play_btn">Play</button>
                             <button class="btn btn-danger" type="submit" id="predict_btn">Predict chord</button>
+                            <button class="btn btn-primary" type="submit" id="save_btn" style="display: none;">Save prediction</button>
                         </div>
                     </div>
                     <!--Audio will be saved here for backend multer /upload to be given tp the controller-->
@@ -43,8 +44,8 @@
                             <!-- Result Section -->
                             <form action="" id="save_form">
                                 <div class="border p-4 text-center" id="result_div">
-                                    <button class="btn" type="submit" id="save_btn" style="display: none;">Save
-                                        prediction</button>
+                                    <div class="p-4" id="waveform">
+                                    </div>
                                     <p class="text-center text-muted" id="result_section">Audio result section</p>
                                 </div>
                             </form>

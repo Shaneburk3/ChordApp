@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     let html = "<h3>";                    
                     html += `Classification: ${result.prediction.Chord}`
                     html += "</h3>"
-                    html = "<h5>";                    
-                    html += `User: ${result.prediction.user_id}`
+                    html += "<h5>";                    
+                    html += `User: ${result.user_id}`
                     html += "</h5>"
                     result_div.innerHTML = html;
                     result_div.style.display = "block";
