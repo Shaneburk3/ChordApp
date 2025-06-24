@@ -2,48 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const bulk_form = document.getElementById('bulk_form');
     const updateUser_form = document.getElementById('updateUser_form');
-    //const filter_form = document.getElementById('filter_form');
-
-    /*
-        if (filter_form) {
-    
-            filter_form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-    
-                let selected_filter = null;
-                // <-- create and listener, to selecte chosen action of all buttons -->
-                selected_filter = document.getElementById('event_type').value;
-                selected_id = document.getElementById('user_id').value;
-                console.log(`Wants to filter user: ${selected_id} by: ${selected_filter}`);
-    
-                try {
-                    const response = await fetch(`/api/users/admin/logs/filter`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ selected_filter: selected_filter, selected_id: selected_id })
-                    });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        //got errors, now map them to the error div
-                        let html = "<ul>";
-                        errorData.errors.forEach(e => {
-                            html += `<li>${e.msg}</li>`
-                        });
-                        html += "</ul>"
-                        adminErrorDiv.innerHTML = html;
-                        adminErrorDiv.style.display = "block";
-                    } else if (response.status === 200) {
-                        const logs = await response.json();
-                        renderLogs(logs)
-                    }
-                } catch (error) {
-                    console.log(error.message);
-                }
-            });
-    
-        }
-    */
-
 
     if (bulk_form) {
 

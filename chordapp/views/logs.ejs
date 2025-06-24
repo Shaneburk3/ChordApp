@@ -23,30 +23,32 @@
             <div class="container my-5" style="padding: 20px;">
                 <h1 class="mb-4">Log Dashboard</h1>
                 <!-- Form to select a filter of logs -->
-                <form action="/api/users/admin/logs/filter" method="POST" id="filter_form"
-                    class="row g-3 align-items-end p-4">
-                    <div class="col-md-3">
-                        <label for="event_type" class="form-label">Event_type</label>
-                        <select name="selected_event" id="event_type" class="form-select">
-                            <option value="all">All</option>
-                            <option value="login_success">login_success</option>
-                            <option value="login_failure">login_failure</option>
-                            <option value="logout">logout</option>
-                            <option value="register_success">register_success</option>
-                            <option value="register_failure">register_failure</option>
-                            <option value="validation_failure">validation_failure</option>
-                            <option value="admin_action">admin_action</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="user_id" class="form-label">User ID</label>
-                        <input type="text" class="form-control" name="selected_id" id="user_id" placeholder="User ID">
-                    </div>
-                    <div class="col-md-3 col-sm-12 txt-end mt-3">
-                        <button type="submit" class="btn btn-primary">Filter Logs</button>
+
+                <form action="/api/users/admin/logs/filter?page=1&limit=25" method="POST" id="filter_form">
+                    <div class="row g-3 align-items-end p-4">
+                        <div class="col-md-3">
+                            <label for="event_type" class="form-label">Event_type</label>
+                            <select name="selected_event" id="event_type" class="form-select">
+                                <option value="all">All</option>
+                                <option value="login_success">login_success</option>
+                                <option value="login_failure">login_failure</option>
+                                <option value="logout">logout</option>
+                                <option value="register_success">register_success</option>
+                                <option value="register_failure">register_failure</option>
+                                <option value="validation_failure">validation_failure</option>
+                                <option value="admin_action">admin_action</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="user_id" class="form-label">User ID</label>
+                            <input type="text" class="form-control" name="selected_id" id="user_id" placeholder="User ID">
+                        </div>
+                        <div class="col-md-3 col-sm-12 txt-end mt-3">
+                            <button type="submit" class="btn btn-primary">Filter Logs</button>
+                        </div>
                     </div>
                 </form>
-                <% if (logs && logs.length> 0) { %>
+                <% if (results.filteredLogs && results.filteredLogs.length > 0) { %>
                     <form action="/api/users/admin/logs/bulk_view" method="GET" id="log_form">
                         <table id="log_table" class="table table-striped table-bordered text-center">
                             <tr>
@@ -57,7 +59,7 @@
                                 <th>End point</th>
                                 <th>Created At</th>
                             </tr>
-                            <% logs.forEach(log=> { %>
+                            <% results.filteredLogs.forEach(log=> { %>
                                 <tr>
                                     <td>
                                         <%= log.log_id %>
@@ -87,15 +89,13 @@
             </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%= 1 %>">1</a></li>
-                    <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%= 2 %>">2</a></li>
-                    <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%= 3 %>">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
+                    <% if (results.previous)  { %>
+                        <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.previous.page%>&limit=25&event=<%=results.event%>"><%=results.previous.page%></a></li>
+                    <% } %>
+                        <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.currentPage%>&limit=25&event=<%=results.event%>"><%=results.currentPage%></a></li>
+                    <% if (results.next)  { %>
+                        <li class="page-item"><a class="page-link" href="/api/users/admin/logs?page=<%=results.next.page%>&limit=25&event=<%=results.event%>"><%=results.next.page%></a></li>
+                    <% } %>
                 </ul>
             </nav>
 

@@ -34,13 +34,22 @@ exports.renderAdmin = async (req, res) => {
 }
 exports.renderLogPage = async (req, res) => {
     try {
-        const user_id = req.user?.user_id
+        const user_id = parseInt(req.user?.user_id)
+        // Users current page
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 25
+        const event = req.query.event
+        // Get start and end value of logs i.e. 25
+        const startIndex = (page - 1) * limit
+        // End number for logs i.e. 50
+        const endIndex = page * limit
+        const results = {}
+
         if (!user_id) {
             console.log("Unauthenticated.");
             const redirect = "/";
             return res.status(200).json({ redirect: redirect, formData: {} });
         }
-        const UserDetails = await User.findById(user_id);
         const adminDetails = await User.findById(user_id);
         const allLogs = await Log.getAllLogs()
         //console.log("All user details: ",allUserDetails)
@@ -53,7 +62,23 @@ exports.renderLogPage = async (req, res) => {
         const formMessage = req.session.formErrors || [];
         const formData = req.session.formData || {};
         console.log("Getting admin page data...");
-        return res.render("logs", { logs: allLogs, title: "Profile", formData, formMessage, users: UserDetails, user: adminDetails });
+        // Get values within start, end index
+
+        results.filteredLogs = allLogs.slice(startIndex, endIndex)
+
+        console.log(`Filtered: ${results.filteredLogs.length}`)
+
+        results.pagesNeeded = Math.ceil(results.filteredLogs / limit)
+        results.currentPage = page
+        console.log(`Current page: ${results.currentPage}`)
+        if (endIndex < allLogs.length) {
+            results.next = { page: page + 1, limit: limit }
+        }
+        if (startIndex > 0) {
+            results.previous = { page: page - 1, limit: limit }
+        }
+        //results = {filteredLogs, pagesNeeded, currentPage}
+        return res.render("logs", { results, title: "Profile", formData, formMessage, user: adminDetails });
     } catch (error) {
         console.log(error);
         return res.render("index", { title: "Login", formErrors: [], formData: [] });
@@ -258,12 +283,36 @@ exports.bulkUpdate = async (req, res) => {
 }
 exports.filterLogs = async (req, res) => {
     const { selected_event, selected_id } = req.body
+
     console.log("Filter logs by:", selected_event, "With:", selected_id);
     formData = []
     formMessage = []
+    // Users current page
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 25
+    // Get start and end value of logs i.e. 25
+    const startIndex = (page - 1) * limit
+    // End number for logs i.e. 50
+    const endIndex = page * limit
+    const results = {}
+    results.event = { selected_event }
+
     try {
         const filtered = await Log.Filter(selected_event, selected_id);
-        return res.render("logs", { logs: filtered, title: "Filtered Logs", formData, formMessage });
+        results.filteredLogs = filtered.slice(startIndex, endIndex)
+
+        console.log(`Filtered: ${results.filteredLogs.length}`)
+
+        results.pagesNeeded = Math.ceil(results.filteredLogs / limit)
+        results.currentPage = page
+        console.log(`Current page: ${results.currentPage}`)
+        if (endIndex < filtered.length) {
+            results.next = { page: page + 1, limit: limit }
+        }
+        if (startIndex > 0) {
+            results.previous = { page: page - 1, limit: limit }
+        }
+        return res.render("logs", { results, logs: filtered, title: "Filtered Logs", formData, formMessage });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to filter log." });
