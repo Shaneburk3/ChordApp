@@ -52,12 +52,11 @@ def predict_chord(temp_input_path):
 
         prediction = model.predict(spectrogram)
         predicted_index = np.argmax(prediction)
-        print("Raw Label", predicted_index)
+        ("Raw Label", predicted_index)
         chord  = index_to_label.get(predicted_index, "Unknown chord")
-        print("Chord predicted: ", chord)
-        audio_list = audio.tolist();
+        ("Chord predicted: ", chord)
+        audio_list = audio.tolist()
         result = {"Chord": chord, "Audio": audio_list}
-        print("Waveform: ", audio_list[:10])
         return(result)
     
     except Exception as e:

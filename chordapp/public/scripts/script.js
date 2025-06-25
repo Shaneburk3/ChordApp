@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     html += "</h5>"
                     result_div.innerHTML = html;
-                    result_div.style.display = "block";
+                    result_div.style.display = "block"; 
                 } else if (response.status === 200) {
                     const result = await response.json();
-                    console.log(result)
+                    /////console.log(result)
                     let html = "<h3>";                    
                     html += `Classification: ${result.prediction.Chord}`
                     html += "</h3>"

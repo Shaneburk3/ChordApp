@@ -77,7 +77,7 @@ exports.renderLogPage = async (req, res) => {
             results.next = { page: page + 1, limit: limit }
         }
         if (startIndex > 0) {
-            results.previous = { page: page - 1, limit: limit }
+            results.previous = { page: page - 1, limit: limit } 
         }
         //results = {filteredLogs, pagesNeeded, currentPage}
         return res.render("logs", { results, title: "Profile", formData, formMessage, user: adminDetails });

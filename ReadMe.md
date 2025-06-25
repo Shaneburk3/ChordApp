@@ -28,7 +28,7 @@ npm run devStart
 
 ## venv setup, to create a python Flask Application to run python code, run the model and predict chords
 
-installed: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorboard-data-server-0.7.2 tensorflow-2.19.0 
+Dependenies: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorboard-data-server-0.7.2 tensorflow-2.19.0 
 
 - .gitingore add: venv/
 - Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
@@ -94,12 +94,13 @@ node tests/selenium/testTermsCheck.test.js
 
 
 ## Jupyter Setup
--  In C:\Users\shane\Documents, create the venv: 
-    - py -3.11 -m venv chordApp_venv
 
-- Bypass script blocker and activate venv in powershell: 
-    - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass 
-    - .\chordApp_venv\Scripts\Activate.ps1
+In C:\Users\shane\Documents, create the venv: 
+- py -3.11 -m venv chordApp_venv
+
+Bypass script blocker and activate venv in powershell: 
+ - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass 
+ - .\chordApp_venv\Scripts\Activate.ps1
 
 - install packages using Bash: 
     - pip install matplotlib tensorflow==2.19.0 librosa numpy scikit-learn ipykernel
@@ -107,24 +108,22 @@ node tests/selenium/testTermsCheck.test.js
 - Register the venv as a Jupyter Kernel in git bash chordApp_venv:
     - python -m ipykernel install --user --name=chordexplorer_venv --display-name "Python (chordexplorer_venv)"
 
-- Launch notebook in project:
-    - C:\Users\shane\Documents\GitHub\Chord_App\notebooks> jupyter notebook
+## Jupyter Dependencies to install in venv
 
-- To open a notebook: 
-    - select kernel: Python (chordexplorer_venv)
-    - choose notebook .ipynb file.
-
-
-## Jupyter Dependencies
-pip install jupyterlab tensorflow==2.19.00 scikit-learn librosa seaborn matplotlib
+pip install os re pathlib random numpy librosa matplotlib matplotlib tensorflow sklearn
 
 ## Run
-jupyter notebook
+- Launch notebook in project:
+    - \Chord_App\notebooks> jupyter notebook
+
+- To open a notebook: 
+    - Select kernel: Python (chordexplorer_venv)
+    - Select the notebook .ipynb file.
 
 ## Start ChordExplorer
 
-Command line: cd/chordexplorer
-Command line: node app.js
+Command line: cd/Chord_App/chordexplorer
+Command line: npm run devStart
 
 Open web browser, enter: http://localhost:3000/
 
@@ -136,26 +135,52 @@ node tests/selenium/testRegister.test.js
 node tests/selenium/testLogin.test.js
 node tests/selenium/testUpdate.test.js
 
-- Run all jest tests: 
-    - npm run test:jest
+Run all Selenium tests: 
+- cd Chord_App/chordapp
+- npm run test:jest
+
+## Jest
+
+npx jest tests/jest/unit/testAge.test.js
+npx jest tests/jest/unit/testPassword.test.js
+npx jest tests/jest/unit/testSQLInject.test.js
+npx jest tests/jest/unit/testXXS.test.js
+
+Run all jest tests: 
+- cd Chord_App/chordapp
+- npm run test:jest
 
 ## How to use website
 
-1 - Navigate to register page from the dropdown menu in the nab bar.
-2 - Register a new user. Example:
 
-first_name: Name
-last_name: Last name
-email: email
-password: password (min 8 characters)
-Retype password: type password again
-Date of birth: enter DOB
-Accept Terms and Conditions - checkbox
+1 - Register a new user:
 
-3 - redirected to blogs page, views blogs or either create, update or delete blogs.
+- first_name: Name
+- last_name: Last name
+- email: email
+- password: password$ (min 8 characters and a special character)
+- Retype password: password$
+- Date of birth: enter DOB
+- Accept Terms and Conditions - checkbox tick
+
+2 - Edit profile, create, update or delete information.
+
+- Sign in to users account
+- Click update Information
+- Enter new bio/country/city/age/DOB
+- Submit changes.
+
+3 - Use chord classifier
+
+- Navigate to translator page
+- Record an audio, while playing a chord.
+- Audio will be classified to its chord type.
+
 
 ## Database 
 
-When actions run, the database is connected to. the Postgresql file will run transactional functionswith connect / BEGIN / COMMIT / ROLLBACK / RELEASE. This is to ensure there are no locks on tables when querying the data. 
+- When actions run, the database is connected to. 
+- The Postgresql models will run transactional functions with connect / BEGIN / COMMIT / ROLLBACK / RELEASE. 
+- This is to ensure there are no locks on tables when querying the data. 
 
 ## THANK YOU!

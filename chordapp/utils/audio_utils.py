@@ -25,7 +25,7 @@ def convert_to_spectrogram(waveform, target_len=64000):
     spectrogram = tf.signal.stft(
         waveform, 
         frame_length=400, 
-        frame_step=160, 
+        frame_step=160,
         fft_length=512
         )
     # Get the absolute value of the tf, increase its size for better images
@@ -104,5 +104,7 @@ def create_waveform(file_path, target_sr=16000, target_len=64000):
             
     #Each .wav now labelled by number below
     return audio, label, sr, file_name, path
+
+
 
 
