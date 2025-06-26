@@ -6,3 +6,6 @@ trash/
 predict_server.py
 venv/
 predict_server.py/
+
+
+.env
