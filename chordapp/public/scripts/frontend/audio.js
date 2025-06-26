@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 console.log("Time limit reached.");
                 playAudioBtn.disabled = false;
             }
-        }, 5000)
+        }, 8000)
     });
 
     // Stop event

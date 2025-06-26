@@ -18,15 +18,24 @@ Automated testing using *********.
 
 Clone Repo: git clone https://github.com/Shaneburk3/ChordApp.git
 
-Open terminal: cd chordapp
+Open terminal: cd Chord_App
+
+npm install aws-sdk
 
 Install  application dependencies
 
+cd /chordapp:
+
 npm install sqlite3 body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch node-fetch@2
+
+## SECURITY FEATURES
+npm install express-validator crypto jsonwebtoken cookie-parser
 
 npm run devStart
 
 ## venv setup, to create a python Flask Application to run python code, run the model and predict chords
+
+cd: /Chord_App:
 
 Dependenies: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorboard-data-server-0.7.2 tensorflow-2.19.0 
 
@@ -49,12 +58,6 @@ Dependenies: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorb
 http://127.0.0.1:5000/predict
 
 
-## SECURITY FEATURES
-npm install express-validator
-npm install crypto
-npm install jsonwebtoken
-npm install cookie-parser
-
 ## Machine Learning Model Dependencies
 
 Bash: pip install tensorflowjs
@@ -68,34 +71,41 @@ Chord_App/notebooks: tensorflowjs_converter --input_format=keras chord_model.ker
 # TESTING
 
 npm install --save-dev supertest
-
-## unit testing
-
 npm install --save-dev jest
-
-## Integration testing
-
 npm install selenium-webdriver
 npm install chromedriver
 For firefox: geckodriver
 
 # Run Tests
 
+- cd Chord_App/chordapp
+
 npm run test:jest
 npm run test:selenium
 
-## Run individual tests:
+## Run individual tests
+
+- SELENIUM
 
 node tests/selenium/testLogin.test.js 
 node tests/selenium/testRegister.test.js
 node tests/selenium/testUpdateUser.test.js
 node tests/selenium/testTermsCheck.test.js
 
+## Jest
 
+npx jest tests/jest/unit/testAge.test.js
+npx jest tests/jest/unit/testPassword.test.js
+npx jest tests/jest/unit/testSQLInject.test.js
+npx jest tests/jest/unit/testXXS.test.js
+
+Run all jest tests: 
+- cd Chord_App/chordapp
+- npm run test:jest
 
 ## Jupyter Setup
 
-In C:\Users\shane\Documents, create the venv: 
+In C:\Users\[username]\Documents, create the venv: 
 - py -3.11 -m venv chordApp_venv
 
 Bypass script blocker and activate venv in powershell: 
@@ -113,6 +123,7 @@ Bypass script blocker and activate venv in powershell:
 pip install os re pathlib random numpy librosa matplotlib matplotlib tensorflow sklearn
 
 ## Run
+
 - Launch notebook in project:
     - \Chord_App\notebooks> jupyter notebook
 
@@ -127,28 +138,6 @@ Command line: npm run devStart
 
 Open web browser, enter: http://localhost:3000/
 
-## RUN TESTS
-
-## SELENIUM
-
-node tests/selenium/testRegister.test.js
-node tests/selenium/testLogin.test.js
-node tests/selenium/testUpdate.test.js
-
-Run all Selenium tests: 
-- cd Chord_App/chordapp
-- npm run test:jest
-
-## Jest
-
-npx jest tests/jest/unit/testAge.test.js
-npx jest tests/jest/unit/testPassword.test.js
-npx jest tests/jest/unit/testSQLInject.test.js
-npx jest tests/jest/unit/testXXS.test.js
-
-Run all jest tests: 
-- cd Chord_App/chordapp
-- npm run test:jest
 
 ## How to use website
 

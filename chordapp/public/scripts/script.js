@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-
     if (localStorage.getItem('registerSuccess') === true) {
         let html = "<ul>";
         formData.res.forEach(e => {
@@ -19,9 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const predict_form = document.getElementById('predict_form');
     const result_section = document.getElementById('result_section');
     const save_btn = document.getElementById('save_btn');
-
-    //const profileLink = document.getElementById('profileLink');
-    //const update_btn = document.getElementById('update_btn');
+    // Pass user back the audio file, so they can save it if desired.
+    const audio_output = document.getElementById('audio_output');
 
     if (predict_form) {
         predict_form.addEventListener('submit', async (e) => {
@@ -33,41 +31,42 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!document.getElementById('user_id')) {
                 console.log("User is not signed in, continuing as non signed in user...")
             } else {
-            try {
-                const user_id = document.getElementById('user_id').value;
-                const response = await fetch(`/api/audios/predict/${user_id}`, {
-                    method: 'POST',
-                    body: formData
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    //got errors, now map them to the error div
-                    let html = "<h5>";
-                    errorData.errors.forEach(e => {
-                        html += `${e.msg}`
+                try {
+                    const user_id = document.getElementById('user_id').value;
+                    const response = await fetch(`/api/audios/predict/${user_id}`, {
+                        method: 'POST',
+                        body: formData
                     });
-                    html += "</h5>"
-                    result_div.innerHTML = html;
-                    result_div.style.display = "block"; 
-                } else if (response.status === 200) {
-                    const result = await response.json();
-                    /////console.log(result)
-                    let html = "<h3>";                    
-                    html += `Classification: ${result.prediction.Chord}`
-                    html += "</h3>"
-                    html += "<h5>";                    
-                    html += `User: ${result.user_id}`
-                    html += "</h5>"
-                    result_div.innerHTML = html;
-                    result_div.style.display = "block";
-                    save_btn.style.display = "block";
-                    //window.location.href = data.redirect;
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        //got errors, now map them to the error div
+                        let html = "<h5>";
+                        errorData.errors.forEach(e => {
+                            html += `${e.msg}`
+                        });
+                        html += "</h5>"
+                        result_div.innerHTML = html;
+                        result_div.style.display = "block";
+                    } else if (response.status === 200) {
+                        const result = await response.json();
+                        // Temporarily store users audio
+
+                        let html = "<h3>";
+                        html += `Classification: ${result.prediction.Chord}`
+                        html += "</h3>"
+                        html += "<h5>";
+                        html += `User: ${result.user_id}`
+                        html += "</h5>"
+                        result_div.innerHTML = html;
+                        result_div.style.display = "block";
+                        save_btn.style.display = "block";
+                        //window.location.href = data.redirect;
+                    }
+                } catch (error) {
+                    result_section.textContent = "Error while predicting chord.";
+                    result_section.style.display = "block";
+                    console.log(error);
                 }
-            } catch (error) {
-                result_section.textContent = "Error while predicting chord.";
-                result_section.style.display = "block";
-                console.log(error);
-            }
             }
         })
     }

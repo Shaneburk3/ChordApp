@@ -6,14 +6,12 @@ const fs = require('fs');
 const { Blob } = require("buffer");
 // Found at https://stackoverflow.com/questions/63576988/how-to-use-formdata-in-node-js-without-browser
 var FormData = require('form-data');
-// node-fetch is compatible with using APIs
-const fetch = require('node-fetch')
 
+// node-fetch is only compatible with using APIs
+const fetch = require('node-fetch');
+// S3 Bucket connection
+const s3 = require('../utils/aws-s3.js')
 
-
-//const { pathToFileUrl } = require('url');
-//const modelPath = path.join(__dirname, '..', '..', 'notebooks', 'models', '')
-//const model = tf.loadLayersModel('File://C:/Users/shane/Documents/GitHub/Chord_App/notebooks/chord_model.keras');
 
 //child process to work with python script running in Flask Application
 const { spawn } = require('child_process');
