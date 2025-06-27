@@ -76,7 +76,11 @@ exports.delete = async (req, res) => {
 };
 exports.saveAudio = async (req, res) => {
     const user_id = req.params?.user_id || null
-    console.log(`Saving audio: ${req.body}}`)
+    if(!req.file){
+        console.log("No file sent.");
+        return res.status(400).json({errors: [{msg : 'No audio sent with request.'}] })
+    }
+    console.log(`Saving audio for user ${user_id}: ${req.file}}`)
 };
 
 //create

@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const save_form = document.getElementById('save_form');
 
     // Pass user back the audio file, so they can save it if desired.
-    const audio_output = document.getElementById('audio_output');
+    const audio_blob_input = document.getElementById('audio_blob_input');
 
     if (predict_form) {
         predict_form.addEventListener('submit', async (e) => {
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 try {
                     const user_id = document.getElementById('user_id').value;
+                    
                     const response = await fetch(`/api/audios/predict/${user_id}`, {
                         method: 'POST',
                         body: formData
@@ -209,18 +210,23 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Saving user prediction...")
 
             const user_id = document.getElementById('user_id').value;
+            let input = document.getElementById('audio_blob_input');
 
-            const data = {
-                user_id: user_id,
-            };
+            if(!input || !input.files) {
+                saveErrorDiv.innerText = "No file saved."
+                return
+            }
 
-            console.log('User:', user_id, "save data: ", data)
+            const formData = new FormData();
+            formData.append('audio', input.files[0]);
+
+            console.log('User:', user_id, "save data: ", formData)
 
             try {
                 const response = await fetch(`/api/audios/predict/${user_id}/save`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(formData)
                 });
                 if (!response.ok) {
                     const saveErrorDiv = document.getElementById('saveErrorDiv');
