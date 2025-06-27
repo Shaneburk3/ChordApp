@@ -2,9 +2,9 @@
 <html lang="en">
 <%- include("partials/head") %>
 
-<body>
-    <div class="wrapper">
-      <%- include("partials/nav") %>
+  <body>
+    <%- include("partials/nav") %>
+      <div class="wrapper">
 
         <div class="row justify-content-center py-4">
           <div class="col-md-6 col-lg-4">
@@ -24,7 +24,8 @@
 
                   <div class="mb-3">
                     <label for="user_country" class="form-label"><strong>Country</strong></label>
-                    <input type="text" id="user_country" name="user_country" class="form-control" placeholder="<%= user.user_country %>">
+                    <input type="text" id="user_country" name="user_country" class="form-control"
+                      placeholder="<%= user.user_country %>">
                   </div>
 
                   <div class="mb-3">
@@ -35,10 +36,12 @@
 
                   <div class="mb-3">
                     <label for="user_bio" class="form-label"><strong>Bio</strong></label>
-                    <textarea id="user_bio" name="user_bio" class="form-control" rows="3" placeholder="<%= user.user_bio %>"></textarea>
+                    <textarea id="user_bio" name="user_bio" class="form-control" rows="3"
+                      placeholder="<%= user.user_bio %>"></textarea>
                   </div>
 
-                  <button type="submit" id="update_btn" name="update_btn" class="btn btn-primary w-100">Update Profile</button>
+                  <button type="submit" id="update_btn" name="update_btn" class="btn btn-primary w-100">Update
+                    Profile</button>
 
                   <div class="alert alert-danger" id="updateErrorDiv" style="display: none;">
 
@@ -47,9 +50,8 @@
             </div>
           </div>
         </div>
-
-        <%- include("partials/footer") %>
-    </div>
-</body>
+      </div>
+      <%- include("partials/footer") %>
+  </body>
 
 </html>

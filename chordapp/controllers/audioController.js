@@ -53,7 +53,7 @@ exports.singleAudio = async (req, res) => {
     
     const audio_id = req.params.audio_id;
     const single_audio = audioModel.findOne(audio_id)
-    res.render(`audio`, { title: "Sigle audio", audio: single_audio })
+    res.render(`audio`, { title: "Single audio", audio: single_audio })
 
     const audio = {
         audio_id: audio_id
