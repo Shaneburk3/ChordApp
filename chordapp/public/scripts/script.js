@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const predict_form = document.getElementById('predict_form');
     const result_section = document.getElementById('result_section');
     const save_btn = document.getElementById('save_btn');
+    const save_form = document.getElementById('save_form');
+
     // Pass user back the audio file, so they can save it if desired.
     const audio_output = document.getElementById('audio_output');
 
@@ -70,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
     }
-
 
     if (login_form) {
         login_form.addEventListener('submit', async (e) => {
@@ -200,6 +201,12 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.log(error);
             }
+        });
+    }
+    if (save_form) {
+        save_form.addEventListener('submit', async (e) => {
+        e.preventDefault();   
+        
         });
     }
 });
