@@ -206,6 +206,42 @@ document.addEventListener('DOMContentLoaded', function () {
     if (save_form) {
         save_form.addEventListener('submit', async (e) => {
         e.preventDefault();   
+            console.log("Saving user prediction...")
+
+            const user_id = document.getElementById('user_id').value;
+
+            const data = {
+                user_id: user_id,
+            };
+
+            console.log('User:', user_id, "save data: ", data)
+
+            try {
+                const response = await fetch(`/api/audios/predict/${user_id}/save`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    const saveErrorDiv = document.getElementById('saveErrorDiv');
+                    const errorData = await response.json();
+                    //got errors, now map them to the error div
+                    let html = "<ul>";
+                    errorData.errors.forEach(e => {
+                        html += `<li>${e.msg}</li>`
+                    });
+                    html += "</ul>"
+                    saveErrorDiv.innerHTML = html;
+                    saveErrorDiv.style.display = "block";
+                    console.log("No Update received, status:", response.status);
+                } else if (response.status === 200) {
+                    const data = await response.json();
+                    saveErrorDiv.style.display == "none";
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.log(error);
+            }
         
         });
     }

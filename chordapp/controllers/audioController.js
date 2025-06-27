@@ -74,8 +74,9 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
 
 };
-exports.upload = async (req, res) => {
-
+exports.saveAudio = async (req, res) => {
+    const user_id = req.params?.user_id || null
+    console.log(`Saving audio: ${req.body}}`)
 };
 
 //create
@@ -96,6 +97,7 @@ exports.predict = async (req, res) => {
     });    
 
     try {
+        // Send audio to Flask API, that is running on port 5000
         const response = await fetch(`http://127.0.0.1:5000/api/audios/${user_id}/predict`, {
             method: "POST",
             body: form,

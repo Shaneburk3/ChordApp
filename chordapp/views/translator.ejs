@@ -40,17 +40,20 @@
                     <% if (user) { %>
                         <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
                         <% } %>
-                            <!-- Result Section -->
-                            <form action="" id="save_form">
-                                <div class="border p-4 text-center" id="result_div">
-                                    <div class="p-4" id="waveform"></div>
-                                    <p class="text-center text-muted" id="result_section">Audio result section</p>
-                                    <input type="file" name="audio" id="audio_output" hidden>
-                                </div>
-                                <div class="container p-4 mb-4">
-                                    <button class="btn btn-primary" type="submit" id="save_btn" style="display: none;">Save Audio</button>
-                                </div>
-                            </form>
+                </form>
+                <!-- Result Section -->
+                <form action="" id="save_form">
+                    <div class="border p-4 text-center" id="result_div">
+                        <div class="p-4" id="waveform"></div>
+                        <p class="text-center text-muted" id="result_section">Audio result section</p>
+                        <input type="file" name="audio" id="audio_output" hidden>
+                    </div>
+                    <div class="container p-4 mb-4">
+                        <button class="btn btn-primary" type="submit" id="save_btn" style="display: none;">Save
+                            Audio</button>
+                    </div>
+                </form>
+                <div class="alert alert-danger text-start" id="saveErrorDiv" style="display: none;"></div>
             </div>
             <%- include("partials/footer") %>
     </body>
