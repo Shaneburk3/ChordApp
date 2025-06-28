@@ -10,16 +10,16 @@ var FormData = require('form-data');
 // node-fetch is only compatible with using APIs
 const fetch = require('node-fetch');
 // S3 Bucket connection
-const S3 = require('../utils/aws-s3.js')
+const getS3 = require('../utils/aws-s3.js')
 
 
 //child process to work with python script running in Flask Application
 const { spawn } = require('child_process');
 
 exports.renderTranslate = async (req, res) => {
-            try {
-            const user_id = req.params?.user_id
-            if (user_id) { 
+    try {
+        const user_id = req.params?.user_id
+        if (user_id) {
             console.log("Getting translator page for: ", req.params.user_id)
             const UserDetails = await User.findById(user_id);
             console.log("all user details: ", UserDetails)
@@ -34,20 +34,20 @@ exports.renderTranslate = async (req, res) => {
             console.log("Getting user profile...");
             const age = await getAge(UserDetails.user_dob);
             UserDetails.user_dob = age;
-            return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: UserDetails || null})
-            } else {
+            return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: UserDetails || null })
+        } else {
             const audios = [];
             const formErrors = req.session.formErrors || [];
             const formData = req.session.formData || {};
-            return res.render('translator', { title: "Chord translator", formErrors, formData, user: null, audios}); 
-            }               
-        } catch (error) {
-            console.log(error);
-            return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: req.user || null})
+            return res.render('translator', { title: "Chord translator", formErrors, formData, user: null, audios });
         }
+    } catch (error) {
+        console.log(error);
+        return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: req.user || null })
+    }
 }
 exports.findOne = async (req, res) => {
-    
+
     const audio_id = req.params.audio_id;
     const single_audio = audioModel.findOne(audio_id)
     res.render(`audio`, { title: "Single audio", audio: single_audio })
@@ -66,13 +66,36 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
 
 };
+
+// REF: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
+
 exports.saveAudio = async (req, res) => {
     const user_id = req.params?.user_id || null
-    if(!req.file){
+    if (!req.file) {
         console.log("No file sent.");
-        return res.status(400).json({errors: [{msg : 'No audio sent with request.'}] })
+        return res.status(400).json({ errors: [{ msg: 'No audio sent with request.' }] })
     }
-    console.log(`Saving audio for user ${user_id}: ${req.file}}`)
+    console.log(`Saving audio for user ${user_id}: ${JSON.stringify(req.file)}`)
+    // Configure the file stream and obtain the upload parameters
+    const s3 = await getS3()
+
+
+    var fileStream = fs.createReadStream(req.file.path);
+    fileStream.on("error", function (err) {
+        console.log("File Error", err);
+    });
+
+    var uploadParams = { Bucket: process.env.Bucket, Key: `audios/${user_id}/${req.file.filename}`, Body: fileStream };
+    try {
+    // call S3 to save upload file to specified bucket
+    const result = await s3.upload(uploadParams).promise(); 
+    console.log(`Success uploading to S3: ${result.location}`)
+    return res.status(200).json({ message: 'Audio uploaded to S3 sucessfull'})
+    } catch (err) {
+        console.log(`Error uploading to S3 Bucket: ${err}`)
+        return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3'}] });
+    }
+
 };
 
 //create
@@ -90,7 +113,7 @@ exports.predict = async (req, res) => {
     form.append('audio', fs.createReadStream(filePath), {
         fileName: req.file.filename,
         contentType: req.file.mimetype
-    });    
+    });
 
     try {
         // Send audio to Flask API, that is running on port 5000
@@ -106,7 +129,7 @@ exports.predict = async (req, res) => {
         return res.status(200).json(result)
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ errors: [{msg : 'Error submitted request.'}] });
+        return res.status(500).json({ errors: [{ msg: 'Error submitted request.' }] });
     }
 };
 

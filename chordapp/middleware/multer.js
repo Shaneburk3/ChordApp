@@ -5,14 +5,18 @@ const path = require('path')
 
 
 const storage = multer.diskStorage({
+    // Where to temporarily save the audio
   destination(req, file, cb) {
-    // directory of saved audios
     cb(null, "uploads/");
   },
   filename(req, file, cb) {
-    const fileNameArr = file.originalname.split(".");
+    // Create unique name for audio file
+    const user_id = req.params.user_id;
+    const timestamp = Date.now();
+    const ext = file.originalname.split(".")[1];
+    final_name = `${user_id}_${timestamp}.${ext}`
     // file name
-    cb(null, `user-audio.${fileNameArr[fileNameArr.length - 1]}`);
+    cb(null, final_name);
   },
 });
 

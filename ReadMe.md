@@ -26,7 +26,7 @@ Install  application dependencies
 
 cd /chordapp:
 
-npm install sqlite3 body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch node-fetch@2
+npm install sqlite3 body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch node-fetch@2 @aws-sdk/client-secrets-manager
 
 ## SECURITY FEATURES
 npm install express-validator crypto jsonwebtoken cookie-parser
