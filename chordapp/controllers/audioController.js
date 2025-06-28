@@ -10,7 +10,7 @@ var FormData = require('form-data');
 // node-fetch is only compatible with using APIs
 const fetch = require('node-fetch');
 // S3 Bucket connection
-const s3 = require('../utils/aws-s3.js')
+const S3 = require('../utils/aws-s3.js')
 
 
 //child process to work with python script running in Flask Application
@@ -20,7 +20,6 @@ exports.renderTranslate = async (req, res) => {
             try {
             const user_id = req.params?.user_id
             if (user_id) { 
-            //const user_id = req.user?.user_id
             console.log("Getting translator page for: ", req.params.user_id)
             const UserDetails = await User.findById(user_id);
             console.log("all user details: ", UserDetails)
@@ -35,13 +34,11 @@ exports.renderTranslate = async (req, res) => {
             console.log("Getting user profile...");
             const age = await getAge(UserDetails.user_dob);
             UserDetails.user_dob = age;
-            //console.log(UserDetails.user_dob)
             return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: UserDetails || null})
             } else {
             const audios = [];
             const formErrors = req.session.formErrors || [];
             const formData = req.session.formData || {};
-            //console.log(UserDetails.user_dob)
             return res.render('translator', { title: "Chord translator", formErrors, formData, user: null, audios}); 
             }               
         } catch (error) {
@@ -49,7 +46,7 @@ exports.renderTranslate = async (req, res) => {
             return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: req.user || null})
         }
 }
-exports.singleAudio = async (req, res) => {
+exports.findOne = async (req, res) => {
     
     const audio_id = req.params.audio_id;
     const single_audio = audioModel.findOne(audio_id)
@@ -58,11 +55,6 @@ exports.singleAudio = async (req, res) => {
     const audio = {
         audio_id: audio_id
     }
-    
-}
-
-exports.findOne = async (req, res) => {
-
     res.render("audio")
 
 };
@@ -93,7 +85,7 @@ exports.predict = async (req, res) => {
     const filePath = req.file.path;
     // Path to audios loaded will be saved in /uploads
     console.log(`User ${user_id} audio path `, filePath)
-
+    // Create formData, append user audio.
     const form = new FormData();
     form.append('audio', fs.createReadStream(filePath), {
         fileName: req.file.filename,

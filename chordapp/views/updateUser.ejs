@@ -3,18 +3,18 @@
 <%- include("partials/head") %>
 
     <body>
-        <div class="wrapper">
-            <%- include("partials/nav") %>
+        <%- include("partials/nav") %>
 
+            <div class="wrapper">
                 <div class="row justify-content-center py-4">
                     <div class="col-md-6 col-lg-4">
                         <div class="card shadow-sm rounded p-4">
                             <img src="https://plus.unsplash.com/premium_vector-1731922571927-ac1d331d87e3?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                 class="card-img-top rounded-top" alt="Profile piture" style=" height: 10rem;">
 
-                                <form id="updateUser_form">
-                                    <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
-                                    <!-- 
+                            <form id="updateUser_form">
+                                <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
+                                <!-- 
                                     <div class="mb-3">
                                         <label for="user_dob" class="form-label"><strong>Date of Birth</strong></label>
                                         <input type="date" id="user_dob" name="user_dob" class="form-control"
@@ -22,73 +22,71 @@
                                         <small class="text-muted">Current age: <%= user.user_dob %></small>
                                     </div>
                                     -->
-                                    <div class="mb-3">
-                                        <label for="user_status" class="form-label"><strong>Status</strong></label>
-                                    </div>
-                                    <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="user_status" class="form-label"><strong>Status</strong></label>
+                                </div>
+                                <div class="mb-3">
 
-                                        <input type="text" id="user_status" name="user_status" class="form-control"
-                                            value="<%= user.status %>" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <button type="button" onclick="toggleStatus()"
-                                            class="btn btn-warning btn-sm">Change
-                                            status</button>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="user_email" class="form-label"><strong>Email</strong></label>
-                                        <input type="text" id="user_email" name="user_email" class="form-control"
-                                            value="<%= user.email %>">
-                                    </div>
+                                    <input type="text" id="user_status" name="user_status" class="form-control"
+                                        value="<%= user.status %>" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="button" onclick="toggleStatus()" class="btn btn-warning btn-sm">Change
+                                        status</button>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="user_email" class="form-label"><strong>Email</strong></label>
+                                    <input type="text" id="user_email" name="user_email" class="form-control"
+                                        value="<%= user.email %>">
+                                </div>
 
-                                    <div class="mb-3">
-                                        <label for="user_role" class="form-label"><strong>Role</strong></label>
-                                    </div>
-                                    <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="user_role" class="form-label"><strong>Role</strong></label>
+                                </div>
+                                <div class="mb-3">
 
-                                        <input type="text" id="user_role" name="user_role" class="form-control"
-                                            value="<%= user.role %>" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <button type="button" onclick="toggleRole()"
-                                            class="btn btn-warning btn-sm">Change
-                                            role</button>
-                                    </div>
+                                    <input type="text" id="user_role" name="user_role" class="form-control"
+                                        value="<%= user.role %>" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="button" onclick="toggleRole()" class="btn btn-warning btn-sm">Change
+                                        role</button>
+                                </div>
 
-                                    <div class="mb-3">
-                                        <label for="user_country" class="form-label"><strong>Country</strong></label>
-                                        <input type="text" id="user_country" name="user_country" class="form-control"
-                                            value="<%= user.user_country %>">
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="user_country" class="form-label"><strong>Country</strong></label>
+                                    <input type="text" id="user_country" name="user_country" class="form-control"
+                                        value="<%= user.user_country %>">
+                                </div>
 
-                                    <div class="mb-3">
-                                        <label for="user_city" class="form-label"><strong>City</strong></label>
-                                        <input type="text" id="user_city" name="user_city" class="form-control"
-                                            Value="<%= user.user_city %>">
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="user_city" class="form-label"><strong>City</strong></label>
+                                    <input type="text" id="user_city" name="user_city" class="form-control"
+                                        Value="<%= user.user_city %>">
+                                </div>
 
-                                    <div class="mb-3">
-                                        <label for="user_bio" class="form-label"><strong>Bio</strong></label>
-                                        <textarea id="user_bio" name="user_bio" class="form-control"
-                                            rows="3"><%= user.user_bio %></textarea>
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="user_bio" class="form-label"><strong>Bio</strong></label>
+                                    <textarea id="user_bio" name="user_bio" class="form-control"
+                                        rows="3"><%= user.user_bio %></textarea>
+                                </div>
 
-                                    <button type="submit" id="updateUser_btn" name="updateUser_btn"
-                                        class="btn btn-primary w-100">Update
-                                        Profile</button>
+                                <button type="submit" id="updateUser_btn" name="updateUser_btn"
+                                    class="btn btn-primary w-100">Update
+                                    Profile</button>
 
-                                    <div class="alert alert-danger" id="updateErrorDiv" style="display: none;">
-                                    </div>
+                                <div class="alert alert-danger" id="updateErrorDiv" style="display: none;">
+                                </div>
 
-                                </form>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <%- include("partials/footer") %>
-        </div>
-        <script src="/scripts/frontend/utils.js"></script>
+            <%- include("partials/footer") %>
+                </div>
+                <script src="/scripts/frontend/utils.js"></script>
     </body>
 
 </html>

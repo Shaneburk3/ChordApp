@@ -24,13 +24,14 @@ router.get('/translator/:user_id', authToken, audioController.renderTranslate);
 
 
 //route to a selected audio file, will be used to edit submission.
-router.get("/:user_id/:audio_id", optionalAuth, audioController.singleAudio);
+router.get("/:user_id/:audio_id", optionalAuth, audioController.findOne);
 
 // Audio Routes 
 
 // /predict
 
 router.post("/predict/:user_id", optionalAuth, upload.single('audio'), audioController.predict);
+
 router.post("/predict/:user_id/save", optionalAuth, upload.single('audio'),audioController.saveAudio);
 
 
