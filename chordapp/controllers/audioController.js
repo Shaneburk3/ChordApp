@@ -77,6 +77,7 @@ exports.saveAudio = async (req, res) => {
     }
     console.log(`Saving audio for user ${user_id}: ${JSON.stringify(req.file)}`)
     // Configure the file stream and obtain the upload parameters
+    
     const s3 = await getS3()
 
 
@@ -85,7 +86,7 @@ exports.saveAudio = async (req, res) => {
         console.log("File Error", err);
     });
 
-    var uploadParams = { Bucket: process.env.Bucket, Key: `audios/${user_id}/${req.file.filename}`, Body: fileStream };
+    var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `audios/${user_id}/${req.file.filename}`, Body: fileStream };
     try {
     // call S3 to save upload file to specified bucket
     const result = await s3.upload(uploadParams).promise(); 
