@@ -19,9 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const result_section = document.getElementById('result_section');
     const save_btn = document.getElementById('save_btn');
     const save_form = document.getElementById('save_form');
-
-    // Pass user back the audio file, so they can save it if desired.
-    const audio_blob_input = document.getElementById('audio_blob_input');
+    const predicted_chord = document.getElementById('predicted_chord');
 
     if (predict_form) {
         predict_form.addEventListener('submit', async (e) => {
@@ -35,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 try {
                     const user_id = document.getElementById('user_id').value;
-                    
+
                     const response = await fetch(`/api/audios/predict/${user_id}`, {
                         method: 'POST',
                         body: formData
@@ -63,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         result_div.innerHTML = html;
                         result_div.style.display = "block";
                         save_btn.style.display = "block";
+                        predicted_chord.value = result.prediction.Chord;
                         //window.location.href = data.redirect;
                     }
                 } catch (error) {
@@ -206,27 +205,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (save_form) {
         save_form.addEventListener('submit', async (e) => {
-        e.preventDefault();   
+            e.preventDefault();
             console.log("Saving user prediction...")
+            // Get user audio file, so they can save it if desired.
 
             const user_id = document.getElementById('user_id').value;
-            let input = document.getElementById('audio_blob_input');
-
-            if(!input || !input.files) {
-                saveErrorDiv.innerText = "No file saved."
-                return
+            let AudioInput = document.getElementById('audio_blob_input');
+            let chord = predicted_chord.value;
+            if (!AudioInput || !AudioInput.files.length) {
+                saveErrorDiv.innerText = "No  audio file saved."
+                return;
             }
 
-            const formData = new FormData();
-            formData.append('audio', input.files[0]);
 
-            console.log('User:', user_id, "save data: ", formData)
+            const formData = new FormData();
+            formData.append('audio', AudioInput.files[0]);
+            formData.append('chord', chord);
+            
+            console.log('Sending to backend:', formData)
 
             try {
                 const response = await fetch(`/api/audios/predict/${user_id}/save`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+                    body: formData
                 });
                 if (!response.ok) {
                     const saveErrorDiv = document.getElementById('saveErrorDiv');
@@ -248,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.log(error);
             }
-        
+
         });
     }
 });

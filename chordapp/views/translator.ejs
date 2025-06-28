@@ -36,7 +36,8 @@
                             <button class="btn btn-danger" type="submit" id="predict_btn">Predict chord</button>
                         </div>
                     </div>
-                    <!--Audio will be saved here for backend multer /upload to be given tp the controller-->
+                    <!--Audio and chord will be saved here for backend multer /upload to be given tp the controller-->
+                    <input type="hidden" id="predicted_chord" name="chord">
                     <input type="file" name="audio" id="audio_blob_input" hidden>
                     <% if (user) { %>
                         <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
