@@ -3,6 +3,7 @@
 <%- include("partials/head") %>
 
     <body>
+        <script src="/scripts/frontend/audio.js" defer></script>
 
         <%- include("partials/nav") %>
             <div class="wrapper">
@@ -10,13 +11,55 @@
                 <div class="container align-items-center text-center justify-content-center" style="width: 40%;">
                     <h1 class="display-4">ChordExplorer</h1>
                     <h4 class="text-muted">Audio translation page</h4>
-                    <h2>This will be a single audio translation</h2>
-                </div>
+                    <h2>This is a single audio translation</h2>
+                    <div class="card shadow-sm rounded p-4">
+                        <div class="mb-3">
+                            <div class="border p-3">
+                                <!--for playing the audio-->
+                                <audio controls>
+                                    <source src="<%= single_audio.file_path %>" type="audio/webm">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2" id="audio_controls">
+                            <button class="btn btn-primary" id="record_btn" hidden>Record</button>
+                            <button class="btn btn-warning" id="stop_btn" hidden>Stop</button>
+                            <button class="btn btn-danger" id="delete_btn" hidden>Delete</button>
+                            <button class="btn btn-danger" id="play_btn" hidden>Play</button>
+                        </div>
 
-                <div>
-                    <p>ID: audio.id</p>
-                    <p>Chord: audio.chord</p>
-                    <p>Uplaoded By: audio.uploadedBy</p>
+                        <form id="updateUser_form">
+                            <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
+
+                            <div class="mb-3">
+                                <label for="user_status" class="form-label"><strong>Waveform</strong></label>
+                            </div>
+                            <div class="mb-3">
+                                <h2>Chord: <%= single_audio.chord %>
+                                </h2>
+                            </div>
+
+                            <div class="mb-3 text-start">
+                                <label for="file_name" class="form-label"><strong>File name</strong></label>
+                                <input type="text" id="file_name" name="file_name" class="form-control"
+                                    value="<%= single_audio.file_name %>">
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label for="created_at" class="form-label"><strong>Creation Date</strong></label>
+                                <input type="text" id="created_at" name="created_at" class="form-control"
+                                    value="<%= single_audio.created_at %>">
+                            </div>
+
+                            <p hidden>
+                                <%= single_audio.file_path %>
+                            </p>
+
+                            <button type="submit" id="updateUser_btn" name="updateUser_btn"
+                                class="btn btn-warning w-100">Delete</button>
+                            <div class="alert alert-danger" id="updateErrorDiv" style="display: none;"></div>
+                        </form>
+                    </div>
                 </div>
 
             </div>

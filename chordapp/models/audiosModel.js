@@ -13,6 +13,16 @@ const Audios = {
     },
     findOne: async (audio_id) => {
         console.log("Finding One audio..");
+        try {
+            const response = await client.query("SELECT * FROM audios WHERE audio_id = ($1)", [audio_id]);
+            if (response.rows.length == 0) {
+                return false;
+            } else {
+                return response.rows;
+            }
+        } catch (error) {
+            console.log("GetUserInfo ERROR:", error.message);
+        }
     },
     getUserAudios: async (user_id) => {
         try {

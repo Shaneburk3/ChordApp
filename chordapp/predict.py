@@ -46,7 +46,7 @@ def predict_chord(temp_input_path):
         spectrogram = convert_to_spectrogram(audio)
         # Expand dims to fit model trained in Jupyter
         spectrogram = spectrogram[...,tf.newaxis]
-        # Add dimension for batch number: 1
+        # Add dimension for batch number: 1 
         spectrogram = tf.expand_dims(spectrogram, axis=0)
         # Model being utilized to make prediction.
 

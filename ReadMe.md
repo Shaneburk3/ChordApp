@@ -44,14 +44,14 @@ Dependenies: keras-3.10.0 numpy-2.0.2 protobuf-5.29.5 tensorboard-2.19.0 tensorb
 - Powershell: .\venv\Scripts\Activate.ps1
     - pip install flask librosa tensorflow numpy
     - python predict_server.py
-    - Invoke-WebRequest -Uri http://127.0.0.1:5000/predict -Method POST -InFIle C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_003.wav -ContentType "multipart/form-data"
+    - Invoke-WebRequest -Uri http://127.0.0.1:5000/predict -Method POST -InFIle C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Test\C\C_012.wav -ContentType "multipart/form-data"
 
 
 
 - Bash: source venv/Scripts/activate
     - pip install flask librosa tensorflow==2.19.0 numpy==1.23.5 ffmpeg ffmpeg-python pydub
     - python predict_server.py
-    - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Training\C\C_005.wav" http://127.0.0.1:5000/api/audios/212/predict
+    - Test prediction model in new window: bash $ curl -X POST -F "audio=@C:\Users\shane\Documents\GitHub\Chord_App\audio_data\data\Training\C\C_012.wav" http://127.0.0.1:5000/api/audios/212/predict
 
 - Note: Must down ffmpeg executable, add it to enviorment variables.
 
