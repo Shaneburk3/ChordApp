@@ -1,5 +1,6 @@
 const audioModel = require('../models/audiosModel.js');
 const User = require('../models/usersModel.js');
+const Audio = require('../models/audiosModel.js')
 const { getAge } = require('../public/scripts/backend/functions.js');
 const path = require('path');
 const fs = require('fs');
@@ -15,6 +16,7 @@ const getS3 = require('../utils/aws-s3.js')
 
 //child process to work with python script running in Flask Application
 const { spawn } = require('child_process');
+const { ConsoleLogEntry } = require('selenium-webdriver/bidi/logEntries.js');
 
 exports.renderTranslate = async (req, res) => {
     try {
@@ -71,16 +73,17 @@ exports.delete = async (req, res) => {
 
 exports.saveAudio = async (req, res) => {
     const user_id = req.params?.user_id || null
+    const chord = req.body.chord
     if (!req.file) {
         console.log("No file sent.");
         return res.status(400).json({ errors: [{ msg: 'No audio sent with request.' }] })
     }
     console.log(`Saving audio for user ${user_id}: ${JSON.stringify(req.file)}`)
     // Configure the file stream and obtain the upload parameters
-    
+
     const s3 = await getS3()
 
-
+    // Get the temp audio saved in /uploads
     var fileStream = fs.createReadStream(req.file.path);
     fileStream.on("error", function (err) {
         console.log("File Error", err);
@@ -88,13 +91,23 @@ exports.saveAudio = async (req, res) => {
 
     var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `audios/${user_id}/${req.file.filename}`, Body: fileStream };
     try {
-    // call S3 to save upload file to specified bucket
-    const result = await s3.upload(uploadParams).promise(); 
-    console.log(`Success uploading to S3: ${result.location}`)
-    return res.status(200).json({ message: 'Audio uploaded to S3 sucessfull'})
+        // call S3 to save upload file to specified bucket
+        const result = await s3.upload(uploadParams).promise();
+        console.log(`Success uploading to S3: ${JSON.stringify(result.Key)}`)
+        const S3_location = result.Location;
+        const S3_key = result.Key;
+        const data = { user_id, S3_location, S3_key, chord }
+        Audio.create(data)
+        const redirect = "/api/audios/translator";
+        return res.status(200).json({ redirect: redirect, message: 'Audio uploaded to S3 successfull' })
+
     } catch (err) {
         console.log(`Error uploading to S3 Bucket: ${err}`)
-        return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3'}] });
+        return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3' }] });
+    } finally {
+            console.log("Removing: ", req.file.path)       
+            fs.unlink(req.file.path, (err) => err && console.error(err))
+            console.log("Audio file removed from temp directory")
     }
 
 };
@@ -131,6 +144,10 @@ exports.predict = async (req, res) => {
     } catch (err) {
         console.error(err);
         return res.status(500).json({ errors: [{ msg: 'Error submitted request.' }] });
+    } finally {
+            console.log("Removing: ", req.file.path)       
+            fs.unlink(req.file.path, (err) => err && console.error(err))
+            console.log("Audio file removed from temp directory")
     }
 };
 
