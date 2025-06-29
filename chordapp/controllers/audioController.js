@@ -98,7 +98,7 @@ exports.saveAudio = async (req, res) => {
         const S3_key = result.Key;
         const data = { user_id, S3_location, S3_key, chord }
         Audio.create(data)
-        const redirect = "/api/audios/translator";
+        const redirect = `/api/audios/translator/${user_id}`;
         return res.status(200).json({ redirect: redirect, message: 'Audio uploaded to S3 successfull' })
 
     } catch (err) {

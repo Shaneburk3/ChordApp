@@ -22,7 +22,7 @@ const getS3 = async () => {
         const response = await secretsClient.send(command);
         const secrets = JSON.parse(response.SecretString);
         const { aws_key, aws_secret } = secrets;
-
+        // Create S3 connection, with access and secre key.
         s3 = new AWS.S3({
             accessKeyId: aws_key,
             secretAccessKey: aws_secret,

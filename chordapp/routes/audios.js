@@ -3,11 +3,10 @@ const router = express.Router();
 const session = require('express-session');
 //const userController = require('../controllers/userController');
 const audioController = require('../controllers/audioController');
-const { validateAudio } = require('../middleware/validation');
 const { authToken, checkAdmin, optionalAuth} = require('../middleware/authentication');
 // Used for saving audio files
 const upload = require('../middleware/multer')
-//Give the absolute path to the project
+// Give the absolute path to the project
 const path = require('path')
 
 // Session Setup
@@ -17,21 +16,17 @@ router.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
-
+// Render translate page
 router.get("/translator", optionalAuth, audioController.renderTranslate); 
-
+// Render translate page for signed in user
 router.get('/translator/:user_id', authToken, audioController.renderTranslate);
 
 
-//route to a selected audio file, will be used to edit submission.
+//Select audio file
 router.get("/:user_id/:audio_id", optionalAuth, audioController.findOne);
-
-// Audio Routes 
-
-// /predict
-
+// Predict chord
 router.post("/predict/:user_id", optionalAuth, upload.single('audio'), audioController.predict);
-
+// Save prediction
 router.post("/predict/:user_id/save", optionalAuth, upload.single('audio'),audioController.saveAudio);
 
 
