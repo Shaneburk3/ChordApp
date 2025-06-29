@@ -2,6 +2,8 @@
 const AWS = require("aws-sdk")
 const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
 
+// REF: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_secrets-manager_code_examples.html
+
 const secret_name = "chordexplorer/s3/credentials";
 const region = process.env.AWS_REGION || "eu-north-1"
 let s3 = null;

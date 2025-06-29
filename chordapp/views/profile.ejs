@@ -48,65 +48,46 @@
                     </p>
                   </div>
                 </div>
-                <a href="/api/users/update/<%= user.user_id %>" class="btn btn-dark" id="edit_profile_btn">Edit
+                <a href="/api/users/update/<%= user.user_id %>" class="btn btn-dark" style="font-size: 1.5rem;" id="edit_profile_btn">Edit
                   Profile</a>
               </div>
             </div>
 
             <!-- Audio logs -->
             <div class="mb-4">
-              <a href="/api/audios/translator/<%= user.user_id %>" class="btn btn-dark mb-3">Audio Translator</a>
+              <a href="/api/audios/translator/<%= user.user_id %>" class="btn btn-dark mb-3" style="font-size: 2rem;">Audio Translator</a>
               <h2>Audio Files</h2>
               <p>Below is an assortment of your saved audio files. Select and review as needed. Have fun!</p>
             </div>
 
-            <% if (audios && audios.length> 0) { %>
-              <div class="mt-3">
-                <% audios.forEach(audio=> { %>
-                  <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                      <div class="card bg-dark text-light h-100">
-                        <div class="card-body">
-                          <h4 class="card-title">Title: [audio.title]</h4>
-                          <h5>Chord: audio.Result</h5>
-                          <h6>Heading</h6>
-                          <p>
-                            The words nature and natural are used for all the things not made by humans: weather,
-                            organisms,
-                            landforms, celestial bodies, and more...
-                          </p>
-                          <a href="/api/audios/<% user.user_id %>/<% audio.audio_id%>" class="btn btn-light">Select
-                            Audio</a>
-                        </div>
-                      </div>
-                    </div>
-                    <% }) %>
-                  </div>
-                  <% } %>
-
-
+            <% if (audios.length === 0) { %>
+              <p>No Audios in user's profile</p>
+              <% } else {%>
+                <div class="mt-3 container-fluid">
+                  <% audios.forEach(audio => { %>
                     <div class="row g-4">
                       <div class="col-md-6 col-lg-4">
                         <div class="card bg-dark text-light h-100">
-                          <div class="card-body">
-                            <h4 class="card-title">Title: [audio.title]</h4>
-                            <h5>Chord: Audio.Result</h5>
-                            <h6>Heading</h6>
-                            <p>
-                              This is an example section for a singular audio file
-                            </p>
-                            <a href="/api/audios/148/1" class="btn btn-light">Select Audio</a>
+                          <div class="card-body text-light">
+                            <h3>Chord: <%= audio.chord %>
+                            </h3>
+                            <h5 class="card-title">Audio ID: <%= audio.audio_id %>
+                            </h5>
+                            <h6>Audio file</h6>
+                            <audio>
+                              <source src="<% audio.file_path %>" type="audio/webm">
+                            </audio>
+                            <a href="/api/audios/<%= audio.user_id%>/<%= audio.audio_id%>" class="btn btn-light">Select Audio</a>
                           </div>
                         </div>
                       </div>
-                      <!-- You can loop more audio cards here -->
+                      <% }) %>
                     </div>
-              </div>
+                </div>
+                <% } %>
         </div>
-        <%- include("partials/footer") %>
       </div>
-
-
+        <%- include("partials/footer") %>
   </body>
 
 </html>

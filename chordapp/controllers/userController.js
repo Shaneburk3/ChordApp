@@ -1,5 +1,6 @@
 const User = require('../models/usersModel.js');
 const Details = require('../models/detailsModel.js');
+const Audio = require('../models/audiosModel.js')
 const Logs = require('../models/logsModel.js');
 const Cipher = require('../middleware/encryption');
 const { getAge, getDate } = require('../public/scripts/backend/functions.js');
@@ -145,10 +146,12 @@ exports.renderProfile = async (req, res) => {
             const formErrors = [{ msg: "Details not found" }];
             return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: null });
         }
-        const audios = [];
+        let audios = [];
         const formErrors = req.session.formErrors || [];
         const formData = req.session.formData || {};
         const age = await getAge(UserDetails.user_dob);
+        audios = await Audio.getUserAudios(user_id)
+        console.log("User audios", audios)
         UserDetails.user_dob = age;
         //console.log(UserDetails.user_dob)
         return res.render("profile", { user: UserDetails, title: "Profile", audios, formData, formErrors });
