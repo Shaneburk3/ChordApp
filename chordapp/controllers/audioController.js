@@ -13,7 +13,6 @@ const fetch = require('node-fetch');
 // S3 Bucket connection
 const getS3 = require('../utils/aws-s3.js')
 
-
 //child process to work with python script running in Flask Application
 const { spawn } = require('child_process');
 const { ConsoleLogEntry } = require('selenium-webdriver/bidi/logEntries.js');
@@ -49,17 +48,17 @@ exports.renderTranslate = async (req, res) => {
     }
 }
 exports.findOne = async (req, res) => {
-
+    // Retrieve one single audio
     const audio_id = req.params.audio_id;
     const user_id = req.params.user_id;
     if (!audio_id || !user_id) {
-        console.log("No IDs provided.")
-        const formErrors = [{ msg: "Details not found" }];
-        return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: null });
+        console.log("Both IDs not provided.")
+        const formErrors = [{ msg: "Both IDs not provided" }];
+        return res.status(404).render('404', { title: "404", formErrors, user: null });
     }
     console.log("Getting translator page for: ", req.params.user_id)
     const UserDetails = await User.findById(user_id);
-    console.log("all user details: ", UserDetails)
+    console.log("all user details: ", UserDetails);
     if (!UserDetails) {
         console.log("Could not get users information.")
         const formErrors = [{ msg: "Details not found" }];
@@ -68,16 +67,12 @@ exports.findOne = async (req, res) => {
     let single_audio = await audioModel.findOne(audio_id)
     if (!single_audio) {
         console.log("Could not get users audio.")
-        const formErrors = [{ msg: "Details not found" }];
+        const formErrors = [{ msg: "Audio not found" }];
         return res.status(404).render('404', { title: "404", formErrors, formData: {}, user: null });
     }
     single_audio = single_audio[0]
     console.log("all audio details: ", single_audio)
     return res.render(`audio`, { title: "Single audio", single_audio, user: UserDetails })
-
-};
-
-exports.update = async (req, res) => {
 
 };
 
@@ -87,23 +82,25 @@ exports.deleteAudio = async (req, res) => {
     const audio_url = req.body.audio_url
     const file_name = req.body.file_name
 
-    console.log(`GOT URL: ${audio_url} for user: ${user_id} with audio ID: ${audio_id}`)
+    console.log(`Got URL: ${audio_url} for user: ${user_id} with audio ID: ${audio_id}`)
 
     if (!audio_id) {
         console.log("No audio sent.");
         return res.status(400).json({ errors: [{ msg: 'No audio sent with delete request.' }] })
     }
-    const s3 = await getS3()
+    // Connect to S3 Bucket from utils/aws-s3
+    const s3 = await getS3();
     var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `${file_name}` };
     try {
-        // call S3 to save upload file to specified bucket
+        // call S3 to delete file specified in uploadParams
         await s3.deleteObject(uploadParams).promise();
-        console.log(`Success deleting from S3 Bucket`)
+        // Delete audio from PostgreSQL
         const response = await Audio.delete(audio_id)
         if (response) {
-            console.log(`Audio ${JSON.stringify(response)} deleted.`)
-        } const redirect = `/api/users/profile/${user_id}`;
-        return res.status(200).json({ redirect: redirect, message: 'Audio deleted from S3 successfull' })
+            console.log(`Audio ${JSON.stringify(response.audio_id)} deleted.`)
+        } 
+        const redirect = `/api/users/profile/${user_id}`;
+        return res.status(200).json({ redirect: redirect, message: 'Audio deleted from S3 successful' })
 
     } catch (err) {
         console.log(`Error deleting S3 Object: ${err}`)
@@ -124,8 +121,7 @@ exports.saveAudio = async (req, res) => {
         return res.status(400).json({ errors: [{ msg: 'No audio sent with request.' }] })
     }
     console.log(`Saving audio for user ${user_id}: ${JSON.stringify(req.file)}`)
-    // Configure the file stream and obtain the upload parameters
-
+    // Connect to S3
     const s3 = await getS3()
 
     // Get the temp audio saved in /uploads
@@ -142,6 +138,7 @@ exports.saveAudio = async (req, res) => {
         const S3_location = result.Location;
         const S3_key = result.Key;
         const data = { user_id, S3_location, S3_key, chord }
+        // Save details from S3 to PostsgreSQL audios table
         Audio.create(data)
         const redirect = `/api/audios/translator/${user_id}`;
         return res.status(200).json({ redirect: redirect, message: 'Audio uploaded to S3 successfull' })
@@ -157,10 +154,8 @@ exports.saveAudio = async (req, res) => {
 
 };
 
-//create
 exports.predict = async (req, res) => {
     console.log("Predicting chord...")
-
     result = {}
 
     const user_id = req.params?.user_id || null

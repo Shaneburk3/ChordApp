@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
 
             const adminErrorDiv = document.getElementById('adminErrorDiv');
-            // <-- Must create and array, mapping from the selected user_ids in all checkboxs -->
+            // <-- Must create and array, mapping from the selected user_ids in all checkboxes -->
             const selected_action = e.submitter?.value;
             const selected_ids = Array.from(bulk_form.querySelectorAll('input[name="selected_users[]"]:checked')).map(e => e.value);
             console.log('selected_ids')
             let text = `You are about to ${selected_action} users ${selected_ids}\nSelect OK or Cancel.`;
-
+            // Confirm admin wishes to continue with seletion
             if (!confirm(text)) {
                 window.location.reload();
                 return;

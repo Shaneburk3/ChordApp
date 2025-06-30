@@ -36,9 +36,6 @@ const Audios = {
             console.log("GetUserInfo ERROR:", error.message);
         }
     },
-    update: async (data) => {
-
-    },
     delete: async (audio_id) => {
         console.log("Finding One audio..");
         try {

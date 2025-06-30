@@ -5,8 +5,18 @@
     <%- include("partials/nav") %>
 
     <div class="wrapper">
-        <h1>404 not found</h1>
-
+        <div class="container py-4">
+        <h1>404 not found !</h1>
+          <% if (formErrors && formErrors.length > 0) { %>
+            <div class="alert alert-danger text-start mt-3" id="loginErrorDiv">
+              <% formErrors.forEach(error => { %>
+                <p class="text-danger"><%= error.msg %></p>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="alert alert-danger text-start" id="loginErrorDiv" style="display: none;"></div>
+          <% } %>
+        </div>
     </div>
 
     <%- include("partials/footer") %>

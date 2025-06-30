@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    /*
     if (localStorage.getItem('registerSuccess') === true) {
         let html = "<ul>";
         formData.res.forEach(e => {
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.prepend(html);
         localStorage.removeItem('registerSuccess');
     }
+    */
 
 
     const update_form = document.getElementById('update_form');
@@ -71,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(formData)
 
             if (!document.getElementById('user_id')) {
-                console.log("User is not signed in, continuing as non signed in user...")
+                console.log("User is not signed in...")
             } else {
                 try {
                     const user_id = document.getElementById('user_id').value;

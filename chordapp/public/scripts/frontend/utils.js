@@ -1,5 +1,3 @@
-
-
 async function toggleStatus() {
 
     const currentStatus = document.getElementById('user_status').value;

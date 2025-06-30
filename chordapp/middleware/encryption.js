@@ -48,9 +48,3 @@ const Cipher = {
 
 module.exports = Cipher;
 
-//create hash
-
-//update with message to be hashed
-
-//digest it to something that can be used
-

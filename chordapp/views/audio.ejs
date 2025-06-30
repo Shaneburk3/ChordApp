@@ -21,12 +21,6 @@
                                 </audio>
                             </div>
                         </div>
-                        <div class="d-flex flex-wrap gap-2" id="audio_controls">
-                            <button class="btn btn-primary" id="record_btn" hidden>Record</button>
-                            <button class="btn btn-warning" id="stop_btn" hidden>Stop</button>
-                            <button class="btn btn-danger" id="delete_btn" hidden>Delete</button>
-                            <button class="btn btn-danger" id="play_btn" hidden>Play</button>
-                        </div>
 
                         <form id="delete_audio_form">
                             <input type="hidden" name="user_id" id="user_id" value="<%= user.user_id %>">
@@ -43,17 +37,17 @@
                             <div class="mb-3 text-start">
                                 <label for="audio_id" class="form-label"><strong>Audio ID</strong></label>
                                 <input type="text" id="audio_id" name="audio_id" class="form-control"
-                                    value="<%= single_audio.audio_id %>" style="width: fit-content;">
+                                    value="<%= single_audio.audio_id %>" style="width: fit-content;" disabled>
                             </div>
                             <div class="mb-3 text-start">
                                 <label for="file_name" class="form-label"><strong>File Name</strong></label>
                                 <input type="text" id="file_name" name="file_name" class="form-control"
-                                    value="<%= single_audio.file_name %>" style="width: fit-content;">
+                                    value="<%= single_audio.file_name %>" disabled>
                             </div>
                             <div class="mb-3 text-start">
                                 <label for="created_at" class="form-label"><strong>Creation Date</strong></label>
                                 <input type="text" id="created_at" name="created_at" class="form-control"
-                                    value="<%= single_audio.created_at %>" style="width: fit-content;">
+                                    value="<%= single_audio.created_at %>" disabled>
                             </div>
 
                             <p hidden>

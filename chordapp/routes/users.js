@@ -37,13 +37,11 @@ router.post('/update/:user_id', authToken, validateUpdate, userController.update
  
 // Admin Section
 router.get('/admin', authToken, authAdmin, adminController.renderAdmin);
-
 router.post('/admin/delete/:user_id', authToken, authAdmin, adminController.deleteUser);
 router.post('/admin/suspend/:user_id', authToken, authAdmin, adminController.suspendUser);
 router.post('/admin/update/:user_id', authToken, authAdmin, adminController.updateUser);
 router.get('/admin/update/:user_id', authToken, authAdmin, adminController.renderUpdatePage);
 router.post('/admin/selected_action', authToken, authAdmin, adminController.bulkUpdate);
-
 router.get('/admin/logs', authToken, authAdmin, adminController.renderLogPage);
 router.post('/admin/logs/filter', authToken, authAdmin, adminController.filterLogs);
 

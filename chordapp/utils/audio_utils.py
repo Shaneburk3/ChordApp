@@ -9,7 +9,7 @@ import numpy as np
 
 
 def convert_to_spectrogram(waveform, target_len=64000):
-    print("*********** Convert_to_spectrogram ********************")
+    print("*********** Convert_to_spectrogram *************")
     print("Audio before reshaping: ", waveform.shape)
 
     # Cast waveform to a sensor, so it can be reshaped, then converted to a spectrogram

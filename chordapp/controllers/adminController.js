@@ -1,22 +1,18 @@
 const User = require('../models/usersModel.js');
-const Details = require('../models/detailsModel.js');
 const Admin = require('../models/adminsModel.js');
 const Log = require('../models/logsModel.js');
-const Cipher = require('../middleware/encryption');
 const { getAge } = require('../public/scripts/backend/functions.js');
-const jwt = require('jsonwebtoken');
 
 exports.renderAdmin = async (req, res) => {
     try {
         const user_id = req.user?.user_id
         const adminDetails = await User.findById(user_id);
         const allUserDetails = await User.getAllUsers()
-        //console.log("All user details: ",allUserDetails)
-        // GET ALL USER DATA.
+        // Get all user data.
         if (!allUserDetails) {
             console.log("Could not get users information.")
             const formErrors = [{ msg: "Details not found" }];
-            return res.status(404).render('404', { title: "404" });
+            return res.status(404).render('404', { title: "404", formErrors });
         }
         if (!adminDetails) {
             console.log("Could not get admins information.")
@@ -35,7 +31,7 @@ exports.renderAdmin = async (req, res) => {
 exports.renderLogPage = async (req, res) => {
     try {
         const user_id = parseInt(req.user?.user_id)
-        // Users current page
+        // Users current page number, limit and event
         const page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit) || 25
         const event = req.query.event
@@ -47,8 +43,9 @@ exports.renderLogPage = async (req, res) => {
 
         if (!user_id) {
             console.log("Unauthenticated.");
+            formData = 'Unauthenticated, please sign in'
             const redirect = "/";
-            return res.status(200).json({ redirect: redirect, formData: {} });
+            return res.status(200).json({ redirect: redirect, formData });
         }
         const adminDetails = await User.findById(user_id);
         const allLogs = await Log.getAllLogs()
