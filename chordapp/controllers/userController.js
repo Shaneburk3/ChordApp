@@ -13,7 +13,7 @@ exports.registerUser = async (req, res) => {
     //check if passwords match
     if (register_password1 != register_password2) {
         var formErrors = [{ msg: "ERROR: Passwords are not the same." }];
-        
+
         const formData = { first_name: req.body.first_name, last_name: req.body.last_name, email: req.body.email, user_dob: req.body.user_dob }
         return res.status(400).json({ errors: formErrors, formData });
     }
@@ -97,7 +97,7 @@ exports.loginUser = async (req, res) => {
 
         //if user is ADMIN redirect to admin page, else user profile
         const redirect = foundUser.role === "ADMIN" ? "/api/users/admin" : `/api/users/profile/${foundUser.user_id}`;
-        return res.cookie('token', accessToken, { httpOnly: true, maxAge: 60 * 60 * 1000}).status(200).json({ redirect })
+        return res.cookie('token', accessToken, { httpOnly: true, maxAge: 60 * 60 * 1000 }).status(200).json({ redirect })
     } catch (error) {
         console.log("Error loginUser: ", error);
         res.status(500).json({ error: "Error logging in user." })
@@ -135,6 +135,7 @@ exports.updateUser = async (req, res) => {
         return res.status(500).json({ message: "Failed to update user.", formData });
     }
 };
+
 exports.renderProfile = async (req, res) => {
     try {
         const user_id = req.user?.user_id;
@@ -160,6 +161,7 @@ exports.renderProfile = async (req, res) => {
         return res.render("index", { title: "Login", formErrors: [], formData: [] });
     }
 };
+
 exports.renderUpdate = async (req, res) => {
     try {
         const user = await User.findById(req.params.user_id);
@@ -173,12 +175,52 @@ exports.renderUpdate = async (req, res) => {
         return res.render("update", { title: "Profile", user: user });
     } catch (error) {
         console.log(error);
-        return res.render("index", { title: "Login", formErrors: [], formData: []});
+        return res.render("index", { title: "Login", formErrors: [], formData: [] });
     }
-}
-exports.sendMessage = async (req, res) => {
+};
 
-}
+exports.sendMessage = async (req, res) => {
+};
+
+exports.deleteUser = async (req, res, next) => {
+
+    const user_id = req.params.user_id || null;
+    console.log("Deleting user: ", user_id)
+
+    if (!user_id) {
+        return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
+    }
+    try {
+        const audiosDeleted = await Audio.deleteUser(user_id)
+        if (!audiosDeleted) {
+            console.log("No audios associated with user.")
+        }
+        const detailsDeleted = await Details.delete(user_id)
+        if (!detailsDeleted) {
+            return res.status(404).json({ message: "Details not deleted." });
+        }
+        const userDeleted = await User.delete(user_id)
+        if (!userDeleted) {
+            return res.status(404).json({ message: "User not deleted." });
+        }
+
+        const event_type = "delete_success"
+        const event_message = `Deleted ${user_id}.`;
+        const endpoint = "/api/users/delete"
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Logs.create(data);
+        } catch (log_error) {
+            console.log(`Error creating deletion log: ${log_error}`)
+        }
+        console.log(`User ${user_id} deleted from Details, Users tables`)
+        return next();
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to update user.", formData : {msg: "Error deleting user from system."}});
+    }
+};
+
 exports.logoutUser = async (req, res) => {
     const user_id = req.params.user_id;
     const event_type = "logout";
@@ -192,4 +234,5 @@ exports.logoutUser = async (req, res) => {
     }
     res.clearCookie('token');
     res.redirect('/');
+
 };

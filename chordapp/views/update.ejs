@@ -38,7 +38,8 @@
 
                     <div class="mb-3">
                       <label for="user_bio" class="form-label"><strong>Bio</strong></label>
-                      <textarea id="user_bio" name="user_bio" class="form-control" rows="3"><%= user.user_bio %></textarea>
+                      <textarea id="user_bio" name="user_bio" class="form-control"
+                        rows="3"><%= user.user_bio %></textarea>
                     </div>
 
                     <button type="submit" id="update_btn" name="update_btn" class="btn btn-primary w-100">Update
@@ -47,13 +48,18 @@
                     <div class="alert alert-danger" id="updateErrorDiv" style="display: none;">
 
                   </form>
+
+                </div>
+                <div class="mb-3 p-4">
+                  <button type="submit" id="delete_user_btn" name="delete_user_btn" class="btn btn-danger">Delete
+                    Account</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      </div>
       <%- include("partials/footer") %>
   </body>
 

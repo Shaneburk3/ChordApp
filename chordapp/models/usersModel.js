@@ -155,20 +155,25 @@ const User = {
         }
     },
     delete: async (user_id) => {
+        console.log(`Deleting user ${user_id} from users DB..`);
+        let response;
         const client = await pool.connect();
+
         try {
             await client.query('BEGIN');
-            await client.query('DELETE FROM user_details WHERE "info_id" = $1', [user_id]);
-            await client.query('DELETE FROM users WHERE "user_id" = $1', [user_id]);
-            console.log(`User ${user_id} deleted.`);
+            response = await client.query("DELETE FROM users WHERE user_id = $1 RETURNING user_id", [user_id]);
+            if (response.rows.length === 0) {
+                await client.query('ROLLBACK');
+                console.log('Could not delete user from users.');
+                return false;
+            }
             await client.query('COMMIT');
-            return true;
-        } catch (error) {
-            console.log("ERROR:", error.message);
-            await client.query('ROLLBACK');
-            return false;
-        } finally {
+            console.log(`User ${response} deleted from users`);
             client.release();
+            return response.rows[0];
+        } catch (error) {
+            console.log("Deleting user from users DB error:", error.message);
+            return false;
         }
     }
 }

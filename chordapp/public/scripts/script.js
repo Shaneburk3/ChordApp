@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const save_form = document.getElementById('save_form');
     const predicted_chord = document.getElementById('predicted_chord');
     const delete_audio_form = document.getElementById('delete_audio_form');
+    const delete_user_btn = document.getElementById('delete_user_btn');
+
+
 
     if (delete_audio_form) {
         delete_audio_form.addEventListener('submit', async (e) => {
@@ -33,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const audio_url = document.getElementById('audio_url').value;
                 const audio_id = document.getElementById('audio_id').value;
                 const file_name = document.getElementById('file_name').value;
-                data = { user_id, audio_url, audio_id, file_name}
+                data = { user_id, audio_url, audio_id, file_name }
                 const response = await fetch(`/api/audios/delete/${audio_id}/user/${user_id}`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
                 if (!response.ok) {
@@ -295,5 +298,47 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
         });
+    }
+    if (delete_user_btn) {
+        delete_user_btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            let text = `You are about to delete this account. All data will be lost after doing so.\nSelect OK or Cancel.`;
+            // Confirm admin wishes to continue with seletion
+            if (!confirm(text)) {
+                window.location.reload();
+                return;
+            }
+
+            try {
+                const user_id = document.getElementById('user_id').value;
+                const response = await fetch(`/api/users/delete/${user_id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({user_id})
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    //got errors, now map them to the error div
+                    let html = "<h5>";
+                    errorData.errors.forEach(e => {
+                        html += `${e.msg}`
+                    });
+                    html += "</h5>"
+                    updateErrorDiv.innerHTML = html;
+                    updateErrorDiv.style.display = "block";
+                } else if (response.status === 200) {
+                    // Success deletion
+                    const data = await response.json();
+                    updateErrorDiv.style.display = "none";
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                updateErrorDiv.textContent = "Error while deleting user.";
+                updateErrorDiv.style.display = "block";
+                console.log(error);
+            }
+
+        })
     }
 });

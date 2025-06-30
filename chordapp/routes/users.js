@@ -7,6 +7,7 @@ const { optionalAuth, authToken, authAdmin } = require('../middleware/authentica
 
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
+const audioController = require('../controllers/audioController')
 
 const { validateRegister, validateLogin, validateUpdate } = require('../middleware/validation');
 
@@ -34,6 +35,8 @@ router.get("/terms", optionalAuth, (req, res) => {
 router.get('/profile/:user_id', authToken, userController.renderProfile);
 router.get('/update/:user_id', authToken, userController.renderUpdate);
 router.post('/update/:user_id', authToken, validateUpdate, userController.updateUser);
+router.post('/delete/:user_id', authToken, userController.deleteUser, audioController.deleteUser);
+
  
 // Admin Section
 router.get('/admin', authToken, authAdmin, adminController.renderAdmin);

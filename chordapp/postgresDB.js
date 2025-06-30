@@ -8,7 +8,5 @@ require('dotenv').config();
         password: process.env.DB_PASSWORD,
         port: 5432,
     });
-
-    //client.connect();
   
 module.exports = pool;

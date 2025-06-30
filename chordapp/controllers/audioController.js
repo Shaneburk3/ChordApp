@@ -98,7 +98,7 @@ exports.deleteAudio = async (req, res) => {
         const response = await Audio.delete(audio_id)
         if (response) {
             console.log(`Audio ${JSON.stringify(response.audio_id)} deleted.`)
-        } 
+        }
         const redirect = `/api/users/profile/${user_id}`;
         return res.status(200).json({ redirect: redirect, message: 'Audio deleted from S3 successful' })
 
@@ -188,6 +188,54 @@ exports.predict = async (req, res) => {
         console.log("Removing: ", req.file.path)
         fs.unlink(req.file.path, (err) => err && console.error(err))
         console.log("Audio file removed from temp directory")
+    }
+};
+exports.deleteUser = async (req, res) => {
+    const user_id = req.params?.user_id || null
+    const bucket = process.env.AWS_BUCKET
+    const dir = `audios/${user_id}`
+    if (!user_id) {
+        console.log("No user ID sent.");
+        return res.status(400).json({ errors: [{ msg: 'No ID sent with request.' }] })
+    }
+    console.log(`Deleting S3 for user ${user_id}`)
+    // Connect to S3
+    const s3 = await getS3()
+
+    const listParams = {
+        Bucket: bucket,
+        Prefix: dir
+    };
+
+    try {
+        // Get all user audios in folder
+        const usersObjects = await s3.listObjectsV2(listParams).promise();
+
+        if (usersObjects.Contents.length === 0) {
+            console.log(`User has no audios saved from S3`);
+            return res.status(200).json({ redirect: `/api/users/logout/${user_id}` })
+        }
+        // Create delete paramters, with BUCKET & empty JSON
+        const deleteParams = {
+            Bucket: bucket,
+            Delete: { Objects: [] }
+        };
+        // Push objects to deleteParams
+        usersObjects.Contents.forEach(({ Key }) => {
+            deleteParams.Delete.Objects.push({ Key });
+        });
+        // Delete all objects from S3
+        await s3.deleteObjects(deleteParams).promise();
+
+        if (usersObjects.IsTruncated) {
+            await emptyS3Directory(bucket, dir);
+        }
+        console.log(`User deleted from S3`);
+        return res.status(200).json({ redirect: `/api/users/logout/${user_id}` })
+
+    } catch (err) {
+        console.log(`Error deleting user from S3 Bucket: ${err}`)
+        return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3' }] });
     }
 };
 
