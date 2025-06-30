@@ -27,8 +27,8 @@ router.get("/:user_id/:audio_id", optionalAuth, audioController.findOne);
 // Predict chord
 router.post("/predict/:user_id", optionalAuth, upload.single('audio'), audioController.predict);
 // Save prediction
-router.post("/predict/:user_id/save", optionalAuth, upload.single('audio'),audioController.saveAudio);
+router.post("/predict/:user_id/save", authToken, upload.single('audio'),audioController.saveAudio);
 
-
+router.post("/delete/:audio_id/user/:user_id", authToken, audioController.deleteAudio);
 
 module.exports = router;

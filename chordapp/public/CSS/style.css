@@ -30,8 +30,8 @@ main {
 }
 
 #banner {
-    background-color: rgb(68, 67, 67);
-    color: white;
+    background-color: rgb(245, 240, 240);
+    color: rgb(119, 116, 116);
     margin: 0;
     height: 10rem;
     padding-bottom: 2rem;

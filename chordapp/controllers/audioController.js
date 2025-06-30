@@ -75,96 +75,125 @@ exports.findOne = async (req, res) => {
     console.log("all audio details: ", single_audio)
     return res.render(`audio`, { title: "Single audio", single_audio, user: UserDetails })
 
-    };
+};
 
-    exports.update = async (req, res) => {
+exports.update = async (req, res) => {
 
-    };
+};
 
-    exports.delete = async (req, res) => {
+exports.deleteAudio = async (req, res) => {
+    const audio_id = req.params?.audio_id || null
+    const user_id = req.params?.user_id || null
+    const audio_url = req.body.audio_url
+    const file_name = req.body.file_name
 
-    };
+    console.log(`GOT URL: ${audio_url} for user: ${user_id} with audio ID: ${audio_id}`)
 
-    // REF: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
+    if (!audio_id) {
+        console.log("No audio sent.");
+        return res.status(400).json({ errors: [{ msg: 'No audio sent with delete request.' }] })
+    }
+    const s3 = await getS3()
+    var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `${file_name}` };
+    try {
+        // call S3 to save upload file to specified bucket
+        await s3.deleteObject(uploadParams).promise();
+        console.log(`Success deleting from S3 Bucket`)
+        const response = await Audio.delete(audio_id)
+        if (response) {
+            console.log(`Audio ${JSON.stringify(response)} deleted.`)
+        } const redirect = `/api/users/profile/${user_id}`;
+        return res.status(200).json({ redirect: redirect, message: 'Audio deleted from S3 successfull' })
 
-    exports.saveAudio = async (req, res) => {
-        const user_id = req.params?.user_id || null
-        const chord = req.body.chord
-        if (!req.file) {
-            console.log("No file sent.");
-            return res.status(400).json({ errors: [{ msg: 'No audio sent with request.' }] })
-        }
-        console.log(`Saving audio for user ${user_id}: ${JSON.stringify(req.file)}`)
-        // Configure the file stream and obtain the upload parameters
+    } catch (err) {
+        console.log(`Error deleting S3 Object: ${err}`)
+        return res.status(500).json({ errors: [{ msg: 'Failed to delete from S3' }] });
+    } finally {
+        console.log("Audio file removed from S3 bucket")
+    }
 
-        const s3 = await getS3()
+};
 
-        // Get the temp audio saved in /uploads
-        var fileStream = fs.createReadStream(req.file.path);
-        fileStream.on("error", function (err) {
-            console.log("File Error", err);
+// REF: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
+
+exports.saveAudio = async (req, res) => {
+    const user_id = req.params?.user_id || null
+    const chord = req.body.chord
+    if (!req.file) {
+        console.log("No file sent.");
+        return res.status(400).json({ errors: [{ msg: 'No audio sent with request.' }] })
+    }
+    console.log(`Saving audio for user ${user_id}: ${JSON.stringify(req.file)}`)
+    // Configure the file stream and obtain the upload parameters
+
+    const s3 = await getS3()
+
+    // Get the temp audio saved in /uploads
+    var fileStream = fs.createReadStream(req.file.path);
+    fileStream.on("error", function (err) {
+        console.log("File Error", err);
+    });
+
+    var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `audios/${user_id}/${req.file.filename}`, Body: fileStream };
+    try {
+        // call S3 to save upload file to specified bucket
+        const result = await s3.upload(uploadParams).promise();
+        console.log(`Success uploading to S3: ${JSON.stringify(result.Key)}`)
+        const S3_location = result.Location;
+        const S3_key = result.Key;
+        const data = { user_id, S3_location, S3_key, chord }
+        Audio.create(data)
+        const redirect = `/api/audios/translator/${user_id}`;
+        return res.status(200).json({ redirect: redirect, message: 'Audio uploaded to S3 successfull' })
+
+    } catch (err) {
+        console.log(`Error uploading to S3 Bucket: ${err}`)
+        return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3' }] });
+    } finally {
+        console.log("Removing: ", req.file.path)
+        fs.unlink(req.file.path, (err) => err && console.error(err))
+        console.log("Audio file removed from temp directory")
+    }
+
+};
+
+//create
+exports.predict = async (req, res) => {
+    console.log("Predicting chord...")
+
+    result = {}
+
+    const user_id = req.params?.user_id || null
+    const filePath = req.file.path;
+    // Path to audios loaded will be saved in /uploads
+    console.log(`User ${user_id} audio path `, filePath)
+    // Create formData, append user audio.
+    const form = new FormData();
+    form.append('audio', fs.createReadStream(filePath), {
+        fileName: req.file.filename,
+        contentType: req.file.mimetype
+    });
+
+    try {
+        // Send audio to Flask API, that is running on port 5000
+        const response = await fetch(`http://127.0.0.1:5000/api/audios/${user_id}/predict`, {
+            method: "POST",
+            body: form,
+            headers: form.getHeaders()
         });
-
-        var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `audios/${user_id}/${req.file.filename}`, Body: fileStream };
-        try {
-            // call S3 to save upload file to specified bucket
-            const result = await s3.upload(uploadParams).promise();
-            console.log(`Success uploading to S3: ${JSON.stringify(result.Key)}`)
-            const S3_location = result.Location;
-            const S3_key = result.Key;
-            const data = { user_id, S3_location, S3_key, chord }
-            Audio.create(data)
-            const redirect = `/api/audios/translator/${user_id}`;
-            return res.status(200).json({ redirect: redirect, message: 'Audio uploaded to S3 successfull' })
-
-        } catch (err) {
-            console.log(`Error uploading to S3 Bucket: ${err}`)
-            return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3' }] });
-        } finally {
-            console.log("Removing: ", req.file.path)
-            fs.unlink(req.file.path, (err) => err && console.error(err))
-            console.log("Audio file removed from temp directory")
-        }
-
-    };
-
-    //create
-    exports.predict = async (req, res) => {
-        console.log("Predicting chord...")
-
-        result = {}
-
-        const user_id = req.params?.user_id || null
-        const filePath = req.file.path;
-        // Path to audios loaded will be saved in /uploads
-        console.log(`User ${user_id} audio path `, filePath)
-        // Create formData, append user audio.
-        const form = new FormData();
-        form.append('audio', fs.createReadStream(filePath), {
-            fileName: req.file.filename,
-            contentType: req.file.mimetype
-        });
-
-        try {
-            // Send audio to Flask API, that is running on port 5000
-            const response = await fetch(`http://127.0.0.1:5000/api/audios/${user_id}/predict`, {
-                method: "POST",
-                body: form,
-                headers: form.getHeaders()
-            });
-            const chord = await response.json();
-            result.prediction = chord
-            result.user_id = user_id
-            console.log("RESULT FROM FLASK API: ", result)
-            return res.status(200).json(result)
-        } catch (err) {
-            console.error(err);
-            return res.status(500).json({ errors: [{ msg: 'Error submitted request.' }] });
-        } finally {
-            console.log("Removing: ", req.file.path)
-            fs.unlink(req.file.path, (err) => err && console.error(err))
-            console.log("Audio file removed from temp directory")
-        }
-    };
+        const chord = await response.json();
+        result.prediction = chord
+        result.user_id = user_id
+        console.log("RESULT FROM FLASK API: ", result)
+        return res.status(200).json(result)
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ errors: [{ msg: 'Error submitted request.' }] });
+    } finally {
+        console.log("Removing: ", req.file.path)
+        fs.unlink(req.file.path, (err) => err && console.error(err))
+        console.log("Audio file removed from temp directory")
+    }
+};
 
 

@@ -20,6 +20,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const save_btn = document.getElementById('save_btn');
     const save_form = document.getElementById('save_form');
     const predicted_chord = document.getElementById('predicted_chord');
+    const delete_audio_form = document.getElementById('delete_audio_form');
+
+    if (delete_audio_form) {
+        delete_audio_form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                const user_id = document.getElementById('user_id').value;
+                const audio_url = document.getElementById('audio_url').value;
+                const audio_id = document.getElementById('audio_id').value;
+                const file_name = document.getElementById('file_name').value;
+                data = { user_id, audio_url, audio_id, file_name}
+                const response = await fetch(`/api/audios/delete/${audio_id}/user/${user_id}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    //got errors, now map them to the error div
+                    let html = "<h5>";
+                    errorData.errors.forEach(e => {
+                        html += `${e.msg}`
+                    });
+                    html += "</h5>"
+                    audioErrorDiv.innerHTML = html;
+                    audioErrorDiv.style.display = "block";
+                } else if (response.status === 200) {
+                    // Success deletion
+                    const data = await response.json();
+                    audioErrorDiv.style.display == "none";
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                audioErrorDiv.textContent = "Error while deleting audio.";
+                audioErrorDiv.style.display = "block";
+                console.log(error);
+            }
+
+        })
+    }
+
 
     if (predict_form) {
         predict_form.addEventListener('submit', async (e) => {
@@ -221,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const formData = new FormData();
             formData.append('audio', AudioInput.files[0]);
             formData.append('chord', chord);
-            
+
             console.log('Sending to backend:', formData)
 
             try {

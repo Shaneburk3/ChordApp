@@ -39,8 +39,18 @@ const Audios = {
     update: async (data) => {
 
     },
-    delete: async (data) => {
-
+    delete: async (audio_id) => {
+        console.log("Finding One audio..");
+        try {
+            const response = await client.query("DELETE FROM audios WHERE audio_id = $1 RETURNING audio_id", [audio_id]);
+            if (response.rows.length == 0) {
+                return false;
+            } else {
+                return response.rows;
+            }
+        } catch (error) {
+            console.log("GetUserInfo ERROR:", error.message);
+        }
     },
 }
 
