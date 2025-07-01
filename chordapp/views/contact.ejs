@@ -34,14 +34,14 @@
                                             <% } %>
                                                 <div class="form-group">
                                                     <label for="message_text">Enter Message:</label>
-                                                    <textarea class="form-control" id="message_text"
+                                                    <textarea class="form-control" name="message_text" id="message_text"
                                                         rows="3"></textarea>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="form-check" for="exampleFormControlSelect1"
                                                         style="padding: 1rem;">Select
                                                         Topic</label>
-                                                    <select class="form-control" id="message_type">
+                                                    <select class="form-control" id="message_type" name="message_type">
                                                         <option>Account Issue</option>
                                                         <option>Query</option>
                                                         <option>Audio Issue</option>
@@ -51,6 +51,10 @@
                                                 </div>
                                                 <button class="btn-primary" type="submit" style="margin: 2rem;">Send
                                                     Message</button>
+                                                <p class="text-danger">
+                                                    <%= formData.msg %>
+                                                </p>
+
                                 </form>
                             </div>
                         </div>

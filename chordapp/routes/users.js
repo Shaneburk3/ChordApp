@@ -25,7 +25,8 @@ router.get('/register', (req, res) => {
 });
 router.post('/register', validateRegister, userController.registerUser);
 router.post('/login', validateLogin, userController.loginUser); 
-router.get('/logout/:user_id', userController.logoutUser);
+router.post('/login', validateLogin, userController.loginUser); 
+router.get('/send_message', optionalAuth, userController.sendMessage);
 
 router.get("/terms", optionalAuth, (req, res) => {
     res.render("Terms", { header: "Terms and Conditions", title: "T&C's" });

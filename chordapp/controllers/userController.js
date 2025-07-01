@@ -5,6 +5,7 @@ const Logs = require('../models/logsModel.js');
 const Cipher = require('../middleware/encryption');
 const { getAge, getDate } = require('../public/scripts/backend/functions.js');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 exports.registerUser = async (req, res) => {
 
@@ -180,6 +181,42 @@ exports.renderUpdate = async (req, res) => {
 };
 
 exports.sendMessage = async (req, res) => {
+    console.log(`Sending email: ${JSON.stringify(req.body)}`);
+
+    let { message_name, message_email, message_text, message_type } = req.body
+
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.ethereal.email',
+            port: 587,
+            auth: {
+                user: 'hans.beer62@ethereal.email',
+                pass: '3YCURRZRQkWX9fpeBU'
+            }
+        });
+
+        const mailOptions = {
+            from: message_email,
+            to: process.env.SMTP_USER,
+            subject: message_name + ': ' + message_type,
+            text: message_text
+        };
+
+        transporter.sendMail(mailOptions, function (error, res) {
+            if (error) {
+                console.error('Email error:', error);
+                return false;
+            } else {
+                console.log('Email sent:', res.response);
+                return true;
+            }
+        });
+        return res.status(200).render('contact', {title: "Contact", formData: { msg: "Message sent"} }) ;
+
+    } catch (error) {
+        console.log('Error sending users mail to chordExplorer');
+        return null;
+    }
 };
 
 exports.deleteUser = async (req, res, next) => {
@@ -217,7 +254,7 @@ exports.deleteUser = async (req, res, next) => {
         return next();
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Failed to update user.", formData : {msg: "Error deleting user from system."}});
+        return res.status(500).json({ message: "Failed to update user.", formData: { msg: "Error deleting user from system." } });
     }
 };
 
@@ -225,7 +262,7 @@ exports.logoutUser = async (req, res) => {
     const user_id = req.params.user_id;
     const event_type = "logout";
     const event_message = `Logged out.`;
-    const endpoint = "/api/users/login"
+    const endpoint = "/api/users/logout"
     data = { user_id, event_type, event_message, endpoint };
     try {
         await Logs.create(data);
