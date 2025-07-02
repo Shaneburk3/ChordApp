@@ -13,3 +13,5 @@ describe('getAge()', () => {
     });
     
 });
+
+// npx jest tests/jest/unit/testAge.test.js

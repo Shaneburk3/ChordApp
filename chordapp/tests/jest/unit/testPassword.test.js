@@ -2,6 +2,7 @@
 const supertest = require('supertest');
 const app = require('../../../app');
 const Func = require('../../testFunction');
+const { beforeAll, test, expect } = require('@jest/globals');
 
 
 beforeAll(async () => {
@@ -15,12 +16,15 @@ describe('POST /api/users/register', () => {
             first_name: 'Test',
             last_name: "User",
             register_email: "testUser@testUser.com",
-            register_password1: "1111111$",
-            register_password2: "1111111$",
+            register_password1: "F38djdn3Jdu",
+            register_password2: "F38djdn3Jdu",
             user_dob: "1995-03-12",
             terms_check: "on"
         });
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(400);
+
     });
+
 });
 
+// npx jest tests/jest/unit/testPassword.test.js

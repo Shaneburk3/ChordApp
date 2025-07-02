@@ -74,11 +74,11 @@ npm install --save-dev supertest
 npm install --save-dev jest
 npm install selenium-webdriver
 npm install chromedriver
-For firefox: geckodriver
+npm install geckodriver
 
-# Run Tests
+# Run all Tests
 
-- cd Chord_App/chordapp
+- cd chordapp
 
 npm run test:jest
 npm run test:selenium
@@ -98,10 +98,6 @@ npx jest tests/jest/unit/testAge.test.js
 npx jest tests/jest/unit/testPassword.test.js
 npx jest tests/jest/unit/testSQLInject.test.js
 npx jest tests/jest/unit/testXXS.test.js
-
-Run all jest tests: 
-- cd Chord_App/chordapp
-- npm run test:jest
 
 ## Jupyter Setup
 

@@ -38,5 +38,5 @@ const getS3 = async () => {
     }
 }
 // Export the S3 connection to be used elsewhere.
-module.exports = getS3;
+module.exports = { getS3 };
 

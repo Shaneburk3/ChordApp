@@ -22,12 +22,17 @@ class TestCreateWaveform(unittest.TestCase):
         self.assertIsNotNone(result, 'create_waveform returned None')
 
         audio, label, sr, file_name, path = result
-
+        # Check if the audio sameple_rate and shape are as expected
+        self.assertEqual(sr, 22025, 'Sample rate mismatch.')
         self.assertEqual(audio.shape[0], 64000, 'Audio shaping failed.')
 
 
         print("WAV file conversion test passed.")
+if __name__ == '__main__':
+    unittest.main()
 
-# python -m unittest unit-testing/TestCreateWaveform.py
+    # To run this test, use the command:    
+
+    # python -m unittest unit-testing/TestCreateWaveform.py
 
         

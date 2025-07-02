@@ -24,9 +24,11 @@ class TestConvertToSpectrogram(unittest.TestCase):
         audio, label, sr, file_name, path = self.test_waveform
 
         test_spectrogran = convert_to_spectrogram(audio)
-
-        self.assertEqual(test_spectrogran.shape[0], 129, 'Spectrogram dimension incorrect')
-        self.assertEqual(test_spectrogran.shape[1], 499, 'Spectrogram dimension incorrect')
+        # Check if the spectrogram number of frequencies (257) and time frames (398) are as expected
+        # 512 / 2 + 1 = 257 frequencies
+        # Math.floor((64000 - 400 / 160)) = 398 time frames
+        self.assertEqual(test_spectrogran.shape[0], 257, 'Spectrogram dimension incorrect')
+        self.assertEqual(test_spectrogran.shape[1], 398, 'Spectrogram dimension incorrect')
 
 
         print("Spectrogram conversion test passed.")
