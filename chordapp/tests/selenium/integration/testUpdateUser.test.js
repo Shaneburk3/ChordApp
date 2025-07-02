@@ -16,7 +16,7 @@ async function runUpdateUserTest() {
   try {
     await driver.get('http://localhost:3000/')
     await driver.findElement(By.id('login_email')).sendKeys('testUser@testUser.com')
-    await driver.findElement(By.id('login_password')).sendKeys('F38djdn3Jdu3')
+    await driver.findElement(By.id('login_password')).sendKeys('F38djdn3Jdu$')
     await driver.findElement(By.id('login_btn')).submit();
     //direct to user profile
     await driver.wait(until.urlContains('api/users/profile'), 5000);

@@ -1,9 +1,13 @@
 const { Builder, Browser, By, Key, until } = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome');
 const assert = require('assert');
+const Func = require('../../testFunction');
+
 
 // UNIT TEST - Test that fails when checkbox is not ticked.
 async function runTestTermsCheck() {
+    // Ensure the test user exists before running the test
+    await Func.createTestUserIfNotExist();
 
     let driver = await new Builder().forBrowser(Browser.CHROME).build()
     try {

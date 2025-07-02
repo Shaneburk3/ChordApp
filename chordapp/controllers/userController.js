@@ -186,90 +186,98 @@ exports.sendMessage = async (req, res) => {
     let { message_name, message_email, message_text, message_type } = req.body
 
     try {
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            auth: {
-                user: 'hans.beer62@ethereal.email',
-                pass: '3YCURRZRQkWX9fpeBU'
-            }
-        });
-
-        const mailOptions = {
-            from: message_email,
-            to: process.env.SMTP_USER,
-            subject: message_name + ': ' + message_type,
-            text: message_text
-        };
-
-        transporter.sendMail(mailOptions, function (error, res) {
-            if (error) {
-                console.error('Email error:', error);
-                return false;
+        // Email sending simulation using Ethereal
+        if (!message_name || !message_email || !message_text || !message_type) {
+            // If fields are missing, return an error response
+                console.log("Missing required fields.");
+                return res.status(400).render('contact', { title: "Contact", formErrors: ["Missing required fields."], formData: {} });
             } else {
-                console.log('Email sent:', res.response);
-                return true;
+                const transporter = nodemailer.createTransport({
+                    host: 'smtp.ethereal.email',
+                    port: 587,
+                    auth: {
+                        user: 'hans.beer62@ethereal.email',
+                        pass: '3YCURRZRQkWX9fpeBU'
+                    }
+                });
             }
-        });
-        return res.status(200).render('contact', {title: "Contact", formData: { msg: "Message sent"} }) ;
 
-    } catch (error) {
-        console.log('Error sending users mail to chordExplorer');
-        return null;
-    }
-};
 
-exports.deleteUser = async (req, res, next) => {
+            const mailOptions = {
+                from: message_email,
+                to: process.env.SMTP_USER,
+                subject: message_name + ': ' + message_type,
+                text: message_text
+            };
 
-    const user_id = req.params.user_id || null;
-    console.log("Deleting user: ", user_id)
+            transporter.sendMail(mailOptions, function (error, res) {
+                if (error) {
+                    console.error('Email error:', error);
+                    return false;
+                } else {
+                    console.log('Email sent:', res.response);
+                    return true;
+                }
+            });
+            return res.status(200).render('contact', { title: "Contact", formData: { msg: "Message sent" } });
 
-    if (!user_id) {
-        return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
-    }
-    try {
-        const audiosDeleted = await Audio.deleteUser(user_id)
-        if (!audiosDeleted) {
-            console.log("No audios associated with user.")
+        } catch (error) {
+            console.log('Error sending users mail to chordExplorer');
+            return null;
         }
-        const detailsDeleted = await Details.delete(user_id)
-        if (!detailsDeleted) {
-            return res.status(404).json({ message: "Details not deleted." });
-        }
-        const userDeleted = await User.delete(user_id)
-        if (!userDeleted) {
-            return res.status(404).json({ message: "User not deleted." });
-        }
+    };
 
-        const event_type = "delete_success"
-        const event_message = `Deleted ${user_id}.`;
-        const endpoint = "/api/users/delete"
+    exports.deleteUser = async (req, res, next) => {
+
+        const user_id = req.params.user_id || null;
+        console.log("Deleting user: ", user_id)
+
+        if (!user_id) {
+            return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
+        }
+        try {
+            const audiosDeleted = await Audio.deleteUser(user_id)
+            if (!audiosDeleted) {
+                console.log("No audios associated with user.")
+            }
+            const detailsDeleted = await Details.delete(user_id)
+            if (!detailsDeleted) {
+                return res.status(404).json({ message: "Details not deleted." });
+            }
+            const userDeleted = await User.delete(user_id)
+            if (!userDeleted) {
+                return res.status(404).json({ message: "User not deleted." });
+            }
+
+            const event_type = "delete_success"
+            const event_message = `Deleted ${user_id}.`;
+            const endpoint = "/api/users/delete"
+            data = { user_id, event_type, event_message, endpoint };
+            try {
+                await Logs.create(data);
+            } catch (log_error) {
+                console.log(`Error creating deletion log: ${log_error}`)
+            }
+            console.log(`User ${user_id} deleted from Details, Users tables`)
+            return next();
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Failed to update user.", formData: { msg: "Error deleting user from system." } });
+        }
+    };
+
+    exports.logoutUser = async (req, res) => {
+        const user_id = req.params.user_id;
+        const event_type = "logout";
+        const event_message = `Logged out.`;
+        const endpoint = "/api/users/logout"
         data = { user_id, event_type, event_message, endpoint };
         try {
             await Logs.create(data);
-        } catch (log_error) {
-            console.log(`Error creating deletion log: ${log_error}`)
+        } catch (error) {
+            console.log(error);
         }
-        console.log(`User ${user_id} deleted from Details, Users tables`)
-        return next();
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Failed to update user.", formData: { msg: "Error deleting user from system." } });
-    }
-};
+        res.clearCookie('token');
+        res.redirect('/');
 
-exports.logoutUser = async (req, res) => {
-    const user_id = req.params.user_id;
-    const event_type = "logout";
-    const event_message = `Logged out.`;
-    const endpoint = "/api/users/logout"
-    data = { user_id, event_type, event_message, endpoint };
-    try {
-        await Logs.create(data);
-    } catch (error) {
-        console.log(error);
-    }
-    res.clearCookie('token');
-    res.redirect('/');
-
-};
+    };
