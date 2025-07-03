@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const predicted_chord = document.getElementById('predicted_chord');
     const delete_audio_form = document.getElementById('delete_audio_form');
     const delete_user_btn = document.getElementById('delete_user_btn');
+    const temp_audio_file = document.getElementById('temp_audio_file');
 
 
 
@@ -108,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         html += "<h5 id='audio_filename'>";
                         html += `File Name: ${result.filename}`
                         html += "</h5>"
+                        temp_audio_file.value = result.filename;
                         result_div.innerHTML = html;
                         result_div.style.display = "block";
                         save_btn.style.display = "block";
@@ -258,27 +260,36 @@ document.addEventListener('DOMContentLoaded', function () {
     if (save_form) {
         save_form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log("Saving user prediction...")
+            console.log("Saving user prediction...", temp_audio_file.value);
             // Get user audio file, so they can save it if desired.
 
             const user_id = document.getElementById('user_id').value;
-            let AudioInput = document.getElementById('audio_blob_input');
+            //let AudioInput = document.getElementById('audio_blob_input');
             let chord = predicted_chord.value;
-            if (!AudioInput || !AudioInput.files.length) {
-                saveErrorDiv.innerText = "No audio file saved."
-                return;
+            console.log("User ID:", user_id, "Chord:", chord);
+            let audio_filename = temp_audio_file.value;
+            //if (!AudioInput || !AudioInput.files.length) {
+            //    saveErrorDiv.innerText = "No audio file saved."
+            //    return;
+            //}
+
+            const data = {
+                user_id: user_id,
+                chord: chord,
+                audio_filename: audio_filename
             }
 
-            const formData = new FormData();
-            formData.append('audio', AudioInput.files[0]);
-            formData.append('chord', chord);
-
-            console.log('Sending to backend:', formData)
+            //const formData = new FormData();
+            //formData.append('audio', AudioInput.files[0]);
+            //formData.append('chord', chord);
+            //formData.append('audio_filename', audio_filename);
+            console.log('Sending to backend:', data)
 
             try {
                 const response = await fetch(`/api/audios/predict/${user_id}/save`, {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
                 });
                 if (!response.ok) {
                     const saveErrorDiv = document.getElementById('saveErrorDiv');
@@ -301,6 +312,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     html += "<h5 id='audio_filename'>";
                     html += `${data.filename}`
                     html += "</h5>"
+                    html += "<h5 id='audio_filename'>";
+                    html += `ID: ${data.audio_id}`
+                    html += "</h5>"                    
                     result_div.innerHTML = html;
                     result_div.style.display = "block";
                     save_btn.style.display = "none";

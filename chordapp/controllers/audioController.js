@@ -10,7 +10,7 @@ var FormData = require('form-data');
 // node-fetch is only compatible with using APIs
 const fetch = require('node-fetch');
 // S3 Bucket connection
-const { getS3 }  = require('../utils/aws-s3.js');
+const { getS3 } = require('../utils/aws-s3.js');
 
 //child process to work with python script running in Flask Application
 const { spawn } = require('child_process');
@@ -113,25 +113,25 @@ exports.deleteAudio = async (req, res) => {
 // REF: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
 
 exports.saveAudio = async (req, res) => {
+
     const user_id = req.params?.user_id || null
     const chord = req.body.chord
+    const file_name = req.body.audio_filename || null
+    // Get full DIR path to the temp uploads folder
+    const filepath = path.join(__dirname, '../uploads', file_name);
+    console.log(`Saving audio for user ${user_id} with chord: ${chord} and file_name: ${file_name}`)
     result = {}
 
-    if (!req.file) {
-        console.log("No file sent.");
-        return res.status(400).json({ errors: [{ msg: 'No audio sent with request.' }] })
-    }
-    console.log(`Saving audio for user ${user_id}: ${JSON.stringify(req.file)}`)
     // Connect to S3
     const s3 = await getS3()
 
-    // Get the temp audio saved in /uploads
-    var fileStream = fs.createReadStream(req.file.path);
+    // Get the temp audio saved in /uploads, create filestream 
+    var fileStream = fs.createReadStream(filepath);
     fileStream.on("error", function (err) {
         console.log("File Error", err);
     });
-
-    var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `audios/${user_id}/${req.file.filename}`, Body: fileStream };
+    // parameters to upload file to S3
+    var uploadParams = { Bucket: process.env.AWS_BUCKET, Key: `audios/${user_id}/${file_name}`, Body: fileStream };
     try {
         // call S3 to save upload file to specified bucket
         const result = await s3.upload(uploadParams).promise();
@@ -140,15 +140,18 @@ exports.saveAudio = async (req, res) => {
         const S3_key = result.Key;
         const data = { user_id, S3_location, S3_key, chord }
         // Save details from S3 to PostsgreSQL audios table
-        Audio.create(data)
-        result.filename = req.file.filename
+        const audio_id = await Audio.create(data)
+        if (audio_id) {
+            result.audio_id = audio_id.audio_id
+        }
+        result.filename = file_name
         return res.status(200).json(result)
     } catch (err) {
         console.log(`Error uploading to S3 Bucket: ${err}`)
         return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3' }] });
     } finally {
-        console.log("Removing: ", req.file.path)
-        fs.unlink(req.file.path, (err) => err && console.error(err))
+        console.log("Removing: ", file_name)
+        fs.unlink(`${filepath}`, (err) => err && console.error(err))
         console.log("Audio file removed from temp directory")
     }
 
@@ -187,9 +190,12 @@ exports.predict = async (req, res) => {
         return res.status(500).json({ errors: [{ msg: 'Error submitted request.' }] });
     } finally {
         // Remove audio file from /uploads
-        console.log("Removing: ", req.file.path)
-        fs.unlink(req.file.path, (err) => err && console.error(err))
-        console.log("Audio file removed from temp directory")
+        setTimeout(() => {
+            console.log("Removing: ", req.file.path)
+            fs.unlink(req.file.path, (err) => err && console.error(err))
+            console.log("Audio file removed from temp directory")
+        }, 5 * 60 * 1000) // Wait 5 minutes before removing file
+
     }
 };
 exports.deleteUser = async (req, res) => {

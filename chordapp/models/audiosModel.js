@@ -6,7 +6,7 @@ const Audios = {
         client = await pool.connect();
         console.log("User data being saved in audios: ", user_id, S3_location, S3_key, chord)
         try {
-            const reponse = await client.query("INSERT INTO audios (user_id, file_name, chord, file_path ) VALUES ($1,$2,$3,$4) RETURNING user_id", [user_id, S3_key, chord, S3_location]);
+            const reponse = await client.query("INSERT INTO audios (user_id, file_name, chord, file_path ) VALUES ($1,$2,$3,$4) RETURNING audio_id", [user_id, S3_key, chord, S3_location]);
             console.log("User Audio created for user: ", user_id)
             return reponse.rows[0];
         } catch (error) {
