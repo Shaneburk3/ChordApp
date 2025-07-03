@@ -20,7 +20,7 @@
                   <a class="nav-link" href="/about">About</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/api/audios/translator/<%= user.user_id %>">Audio Translator</a>
+                  <a class="nav-link" id="translator_link" href="/api/audios/translator/<%= user.user_id %>">Audio Translator</a>
                 </li>
                 <% } else if (!user) { %>
                   <li class="nav-item">

@@ -97,13 +97,16 @@ document.addEventListener('DOMContentLoaded', function () {
                         result_div.style.display = "block";
                     } else if (response.status === 200) {
                         const result = await response.json();
-                        // Temporarily store users audio
+                        const result_div = document.getElementById('result_div')
 
                         let html = "<h3>";
                         html += `Classification: ${result.prediction.Chord}`
                         html += "</h3>"
                         html += "<h5>";
                         html += `User: ${result.user_id}`
+                        html += "</h5>"
+                        html += "<h5 id='audio_filename'>";
+                        html += `File Name: ${result.filename}`
                         html += "</h5>"
                         result_div.innerHTML = html;
                         result_div.style.display = "block";
@@ -241,9 +244,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     regErrorDiv.innerHTML = html;
                     regErrorDiv.style.display = "block";
                 } else if (response.status === 200) {
-                    localStorage.setItem('registerSucess', true)
-                    const data = await response.json();
-                    window.location.href = data.redirect;
+                    let html = "<h3>";
+                    html += `File saved in profile: ${result.filename}`
+                    html += "</h3>"
+                    result_div.innerHTML = html;
+                    result_div.style.display = "block";
                 }
             } catch (error) {
                 console.log(error);
@@ -260,10 +265,9 @@ document.addEventListener('DOMContentLoaded', function () {
             let AudioInput = document.getElementById('audio_blob_input');
             let chord = predicted_chord.value;
             if (!AudioInput || !AudioInput.files.length) {
-                saveErrorDiv.innerText = "No  audio file saved."
+                saveErrorDiv.innerText = "No audio file saved."
                 return;
             }
-
 
             const formData = new FormData();
             formData.append('audio', AudioInput.files[0]);
@@ -289,9 +293,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     saveErrorDiv.style.display = "block";
                     console.log("No Update received, status:", response.status);
                 } else if (response.status === 200) {
+                    const result_div = document.getElementById('result_div')
                     const data = await response.json();
-                    saveErrorDiv.style.display == "none";
-                    window.location.href = data.redirect;
+                    let html = "<h3>";
+                    html += `File saved in profile:`
+                    html += "</h3>"
+                    html += "<h5 id='audio_filename'>";
+                    html += `${data.filename}`
+                    html += "</h5>"
+                    result_div.innerHTML = html;
+                    result_div.style.display = "block";
+                    save_btn.style.display = "none";
+
                 }
             } catch (error) {
                 console.log(error);
@@ -315,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const response = await fetch(`/api/users/delete/${user_id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({user_id})
+                    body: JSON.stringify({ user_id })
                 });
                 if (!response.ok) {
                     const errorData = await response.json();

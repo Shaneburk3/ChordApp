@@ -115,6 +115,8 @@ exports.deleteAudio = async (req, res) => {
 exports.saveAudio = async (req, res) => {
     const user_id = req.params?.user_id || null
     const chord = req.body.chord
+    result = {}
+
     if (!req.file) {
         console.log("No file sent.");
         return res.status(400).json({ errors: [{ msg: 'No audio sent with request.' }] })
@@ -139,9 +141,8 @@ exports.saveAudio = async (req, res) => {
         const data = { user_id, S3_location, S3_key, chord }
         // Save details from S3 to PostsgreSQL audios table
         Audio.create(data)
-        const redirect = `/api/audios/translator/${user_id}`;
-        return res.status(200).json({ redirect: redirect, message: 'Audio uploaded to S3 successfull' })
-
+        result.filename = req.file.filename
+        return res.status(200).json(result)
     } catch (err) {
         console.log(`Error uploading to S3 Bucket: ${err}`)
         return res.status(500).json({ errors: [{ msg: 'Failed to updload to S3' }] });
@@ -161,7 +162,7 @@ exports.predict = async (req, res) => {
     const filePath = req.file.path;
     // Path to audios loaded will be saved in /uploads
     console.log(`User ${user_id} audio path `, filePath)
-    // Create formData, append user audio.
+    // Create formData, append user audio, renamed from multer.
     const form = new FormData();
     form.append('audio', fs.createReadStream(filePath), {
         fileName: req.file.filename,
@@ -178,12 +179,14 @@ exports.predict = async (req, res) => {
         const chord = await response.json();
         result.prediction = chord
         result.user_id = user_id
+        result.filename = req.file.filename
         console.log("RESULT FROM FLASK API: ", result)
         return res.status(200).json(result)
     } catch (err) {
         console.error(err);
         return res.status(500).json({ errors: [{ msg: 'Error submitted request.' }] });
     } finally {
+        // Remove audio file from /uploads
         console.log("Removing: ", req.file.path)
         fs.unlink(req.file.path, (err) => err && console.error(err))
         console.log("Audio file removed from temp directory")
