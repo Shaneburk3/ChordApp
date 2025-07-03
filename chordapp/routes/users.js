@@ -25,7 +25,7 @@ router.get('/register', (req, res) => {
 });
 router.post('/register', validateRegister, userController.registerUser);
 router.post('/login', validateLogin, userController.loginUser); 
-router.post('/login', validateLogin, userController.loginUser); 
+router.get('/logout/:user_id', authToken, userController.logoutUser); 
 router.get('/send_message', optionalAuth, userController.sendMessage);
 
 router.get("/terms", optionalAuth, (req, res) => {

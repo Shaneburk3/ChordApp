@@ -104,11 +104,16 @@ npx jest tests/jest/unit/testXXS.test.js
 1. Create the virtual environment
 
  - C:\Users\[username]\Documents, create the venv: 
- - powershell: py -3.11 -m venv chordApp_venv
+ - powershell: python -3.11 -m venv chordApp_venv
 
 2. Bypass script blocker and activate venv in powershell: 
- - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass 
+ - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass
  - .\venv\Scripts\Activate.ps1
+ 
+ 3. install all dependencies
+ - pip install -r requirments.txt
+
+## OR
 
 3. install packages using Bash: 
  - pip install matplotlib tensorflow==2.19.0 librosa numpy scikit-learn ipykernel flask

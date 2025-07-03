@@ -4,14 +4,13 @@ const Audio = require('../models/audiosModel.js')
 const { getAge } = require('../public/scripts/backend/functions.js');
 const path = require('path');
 const fs = require('fs');
-const { Blob } = require("buffer");
 // Found at https://stackoverflow.com/questions/63576988/how-to-use-formdata-in-node-js-without-browser
 var FormData = require('form-data');
 
 // node-fetch is only compatible with using APIs
 const fetch = require('node-fetch');
 // S3 Bucket connection
-const getS3 = require('../utils/aws-s3.js')
+const { getS3 }  = require('../utils/aws-s3.js');
 
 //child process to work with python script running in Flask Application
 const { spawn } = require('child_process');

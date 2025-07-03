@@ -19,14 +19,6 @@ const Logs = {
             client.release()
         }
     },
-    findByID: async (data) => {
-        console.log(`Finding log by user ID: ${data}`)
-
-    },
-    findByEvent: async (data) => {
-        console.log(`Finding logs by event: ${data}`)
-
-    },
     getAllLogs: async (req, res) => {
         console.log("Getting all Logs.")
         const client = await pool.connect();
