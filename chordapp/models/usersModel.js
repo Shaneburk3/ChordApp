@@ -76,6 +76,7 @@ const User = {
     },
     findById: async (user_id) => {
         console.log(`findByID: ${user_id}`);
+        let client
         const query = `SELECT 
         users.user_id,
         users.first_name,
@@ -89,8 +90,8 @@ const User = {
         user_details.user_city, 
         user_details.user_country 
         FROM users JOIN user_details ON users.user_id = user_details.info_id WHERE users.user_id = ($1)`;
-        const client = await pool.connect();
         try {
+            client = await pool.connect();
             await client.query('BEGIN');
             const response = await client.query(query, [user_id]);
             if (response.rows.length === 0) {
@@ -109,8 +110,9 @@ const User = {
     },
     findOne: async (email) => {
         console.log(`Searching for: ${email}`);
-        const client = await pool.connect();
+        let client
         try {
+            client = await pool.connect();
             await client.query('BEGIN');
             const response = await client.query('SELECT * FROM users WHERE "email" = ($1)', [email]);
             if (response.rows.length == 0) {
@@ -125,7 +127,9 @@ const User = {
             console.log("ERROR:", error.message);
             return false;
         } finally {
-            client.release();
+            if (client) {
+                client.release();
+            }
         }
     },
     update: async (data) => {

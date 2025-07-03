@@ -1,8 +1,10 @@
 // Simulate a HTTP request with SuperTest
 const supertest = require('supertest');
 const app = require('../../../app');
+require('dotenv').config();
 const Func = require('../../testFunction');
-const { beforeAll, test, expect } = require('@jest/globals');
+// Import necessary env modules for testing
+const { beforeAll, describe, test, expect } = require('@jest/globals');
 
 
 beforeAll(async () => {
@@ -22,6 +24,7 @@ describe('POST /api/users/register', () => {
             terms_check: "on"
         });
         expect(res.status).toBe(400);
+        expect(res.body.errors[0].msg).toBe('Password must contain one special character.');
 
     });
 

@@ -6,7 +6,7 @@ require('dotenv').config();
         user: process.env.DB_USERNAME,
         database: process.env.DB_NAME,
         password: process.env.DB_PASSWORD,
-        port: 5432,
+        port: process.env.DB_PORT,
     });
   
 module.exports = pool;
