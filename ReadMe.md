@@ -101,22 +101,24 @@ npx jest tests/jest/unit/testXXS.test.js
 
 ## Jupyter Setup
 
-In C:\Users\[username]\Documents, create the venv: 
-- py -3.11 -m venv chordApp_venv
+1. Create the virtual environment
 
-Bypass script blocker and activate venv in powershell: 
+ - C:\Users\[username]\Documents, create the venv: 
+ - powershell: py -3.11 -m venv chordApp_venv
+
+2. Bypass script blocker and activate venv in powershell: 
  - Set-ExecutionPolicy -Scope Process -executionPolicy Bypass 
- - .\chordApp_venv\Scripts\Activate.ps1
+ - .\venv\Scripts\Activate.ps1
 
-- install packages using Bash: 
-    - pip install matplotlib tensorflow==2.19.0 librosa numpy scikit-learn ipykernel
+3. install packages using Bash: 
+ - pip install matplotlib tensorflow==2.19.0 librosa numpy scikit-learn ipykernel flask
 
-- Register the venv as a Jupyter Kernel in git bash chordApp_venv:
-    - python -m ipykernel install --user --name=chordexplorer_venv --display-name "Python (chordexplorer_venv)"
+4. Register the venv as a Jupyter Kernel in git bash chordApp_venv:
+ - python -m ipykernel install --user --name=chordexplorer_venv --display-name "Python (chordexplorer_venv)"
 
 ## Jupyter Dependencies to install in venv
 
-pip install os re pathlib random numpy librosa matplotlib matplotlib tensorflow sklearn
+- pip install os re pathlib random numpy librosa matplotlib matplotlib tensorflow sklearn
 
 ## Run
 
