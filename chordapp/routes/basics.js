@@ -11,7 +11,8 @@ router.get("/about", optionalAuth, (req, res) => {
 
 router.get("/contact", optionalAuth, (req, res) => {
     formErrors = []
-    res.render("contact", { header: "Contact", title: "Contact", formErrors});
+    formData = []
+    res.render("contact", { header: "Contact", title: "Contact", formErrors, formData});
 });
 
 router.get("/404", optionalAuth, (req, res) => {

@@ -43,6 +43,7 @@ const Admins = {
             let deleted_user_ids = []
             await client.query('BEGIN');
             for (let i = 0; i < data.length; i++) {
+                await client.query(`DELETE FROM audios WHERE "user_id" = $1`, [data[i]]);
                 const details_result = await client.query(`DELETE FROM user_details WHERE "info_id" = $1 RETURNING "info_id"`, [data[i]]);
                 const users_result = await client.query(`DELETE FROM users WHERE "user_id" = $1 RETURNING "user_id"`, [data[i]]);
                 deleted_user_ids.push(users_result.rows[0])

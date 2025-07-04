@@ -77,13 +77,13 @@ const Audios = {
 
         try {
             await client.query('BEGIN');
-            response = await client.query("DELETE FROM audios WHERE user_id = $1 RETURNING user_id", [user_id]);
+            await client.query("DELETE FROM audios WHERE user_id = $1", [user_id]);
             if (response.rows.length === 0) {
                 await client.query('ROLLBACK');
-                console.log('Not user audios to delete.');
+                console.log('No user audios to delete.');
                 await client.query('COMMIT');
                 await client.release();
-                return false;;
+                return;
             }
             await client.query('COMMIT');
             console.log(`User ${response} deleted from audios`)

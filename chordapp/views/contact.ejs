@@ -51,10 +51,11 @@
                                                 </div>
                                                 <button class="btn-primary" type="submit" style="margin: 2rem;">Send
                                                     Message</button>
-                                                <p class="text-danger">
-                                                    <%= formData.msg %>
-                                                </p>
-
+                                                <% if (formData) { %>
+                                                    <p class="text-danger">
+                                                        <%= formData.msg %>
+                                                    </p>
+                                                    <% } %>
                                 </form>
                             </div>
                         </div>
