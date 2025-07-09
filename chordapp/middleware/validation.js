@@ -2,12 +2,12 @@ const { body, validationResult } = require('express-validator');
 const Logs = require('../models/logsModel');
 
 const validateRegister = [
-    body('first_name').escape().trim().notEmpty().withMessage('First name required').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('First Name: No special characters'),
-    body('last_name').escape().trim().notEmpty().withMessage('Last name required').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('Last Name: No special characters'),
+    body('first_name').escape().trim().notEmpty().withMessage('First name required.').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('First Name: No special characters.'),
+    body('last_name').escape().trim().notEmpty().withMessage('Last name required.').matches(/^[A-Za-z0-9 .,'!&]+$/).withMessage('Last Name: No special characters.'),
     body('register_email').trim().isEmail().withMessage('Must be an email.'),
-    body('register_password1').trim().isLength({ min: 8 }).withMessage("Password is not long enough").matches(/^(?=.*[!@#$%^&*()<>,.:"])/).withMessage('Must contain atleast 1 special character.'),
-    body('register_password2').trim().custom((value, { req }) => { if(value !== req.body.register_password1) { throw new Error('Passwords do not match'); } return true; }),
-    body('terms_check').equals("on").withMessage('Please agree to T&Cs'),
+    body('register_password1').trim().isLength({ min: 8 }).withMessage("Password is not long enough.").matches(/^(?=.*[!@#$%^&*()<>,.:"])/).withMessage('Must contain at least 1 special character.'),
+    body('register_password2').trim().custom((value, { req }) => { if(value !== req.body.register_password1) { throw new Error('Passwords do not match.'); } return true; }),
+    body('terms_check').equals("on").withMessage('Please agree to T&Cs.'),
     body('user_dob').isDate().withMessage('DOB must be a date.'),
     async (req, res, next) => { 
         const errors = validationResult(req);
