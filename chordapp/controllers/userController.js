@@ -39,7 +39,7 @@ exports.registerUser = async (req, res) => {
         //await Details.create(user.user_id, user_dob);
         var formData = [{ msg: "User registered succesfully." }];
         console.log("New user registered. status 200")
-        return res.status(200).json({ redirect: '/', formData });
+        return res.status(200).json({ redirect: '/', formData: formData });
     } catch (error) {
         console.log(error.message);;
         var formErrors = [{ msg: "Error creating user." }];

@@ -246,11 +246,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     regErrorDiv.innerHTML = html;
                     regErrorDiv.style.display = "block";
                 } else if (response.status === 200) {
-                    let html = "<h3>";
-                    html += `File saved in profile: ${result.filename}`
-                    html += "</h3>"
-                    result_div.innerHTML = html;
-                    result_div.style.display = "block";
+                    console.log("Registration successful, redirecting...");
+                    const regErrorDiv = document.getElementById('regErrorDiv')
+                    regErrorDiv.style.display = "none";
+                    // Registration successful, redirect to login page
+                    const data = await response.json();
+                    window.location.href = data.redirect;
                 }
             } catch (error) {
                 console.log(error);
