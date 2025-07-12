@@ -87,10 +87,12 @@ npm run test:selenium
 
 - SELENIUM
 
-node tests/selenium/testLogin.test.js 
-node tests/selenium/testRegister.test.js
-node tests/selenium/testUpdateUser.test.js
-node tests/selenium/testTermsCheck.test.js
+node tests/selenium/integration/testLogin.test.js
+node tests/selenium/integration/testRegister.test.js
+node tests/selenium/integration/testUpdateUser.test.js
+node tests/selenium/integration/testTermsCheck.test.js
+node tests/selenium/integration/negativeTestRegister.test.js
+
 
 ## Jest
 
