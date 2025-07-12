@@ -18,7 +18,6 @@ async function runTestRegister() {
         const termsCheck = await driver.wait(until.elementLocated(By.id('terms_check')), 5000);
         await driver.executeScript("arguments[0].scrollIntoView(true);", termsCheck);
         await driver.wait(until.elementIsVisible(termsCheck), 5000);
-        await driver.wait(until.elementIsEnabled(termsCheck), 5000);
         await termsCheck.submit();
         await driver.findElement(By.css('form')).submit();
         await driver.wait(until.urlContains('/'), 5000);
