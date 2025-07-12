@@ -36,7 +36,7 @@ async function runTestTermsCheck() {
 
         const errorMessage = await errorList.getText();
 
-        assert.strictEqual(errorMessage, 'Please agree to T&Cs');
+        assert.strictEqual(errorMessage, 'Please agree to T&Cs.');
         console.log('Terms check test passed')
     } finally {
         await driver.quit()

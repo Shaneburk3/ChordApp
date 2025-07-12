@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:jest": "jest tests/jest/unit/testAge.test.js && jest tests/jest/unit/testPassword.test.js && jest tests/jest/unit/testXXS.test.js",
-    "test:selenium": "node tests/selenium/integration/testRegister.test.js && node tests/selenium/integration/testLogin.test.js && node tests/selenium/integration/testUpdateUser.test.js && node tests/selenium/integration/testTermsCheck.test.js",
+    "test:selenium": "node tests/selenium/integration/testRegister.test.js && node tests/selenium/integration/testLogin.test.js && node tests/selenium/integration/testUpdateUser.test.js && node tests/selenium/integration/testTermsCheck.test.js && node tests/selenium/integration/negativeTestRegister.test.js",
     "devStart": "nodemon server.js"
   },
   "keywords": [],
@@ -15,7 +15,6 @@
     "@aws-sdk/client-secrets-manager": "^3.839.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
-    "chromedriver": "^136.0.3",
     "cookie-parser": "^1.4.7",
     "crypto": "^1.0.1",
     "dotenv": "^16.6.1",
@@ -39,6 +38,7 @@
     "bson": "^4.0.4"
   },
   "devDependencies": {
+    "chromedriver": "^138.0.2",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.1"
   }
