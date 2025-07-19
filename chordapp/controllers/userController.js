@@ -14,9 +14,20 @@ exports.registerUser = async (req, res) => {
     //check if passwords match
     if (register_password1 != register_password2) {
         var formErrors = [{ msg: "ERROR: Passwords are not the same." }];
-
         const formData = { first_name: req.body.first_name, last_name: req.body.last_name, email: req.body.email, user_dob: req.body.user_dob }
+        //failed - Create log in database.
+        const user_id = '';
+        const event_type = "register_failure"
+        const event_message = `Password: ${req.body.register_password1} does not match ${req.body.register_password2}`;
+        const endpoint = "/api/users/register"
+        data = { user_id, event_type, event_message, endpoint };
+        try {
+            await Logs.create(data);
+        } catch (error) {
+            console.log(error)
+        }
         return res.status(400).json({ errors: formErrors, formData });
+
     }
     try {
         //Check if user exists
@@ -24,6 +35,17 @@ exports.registerUser = async (req, res) => {
         if (userExists) {
             const formData = { first_name: req.body.first_name, last_name: req.body.last_name, }
             var formErrors = [{ msg: "Error please try again." }];
+            //failed - Create log in database.
+            const user_id = '';
+            const event_type = "register_failure"
+            const event_message = `User: ${req.body.email} already exists.`;
+            const endpoint = "/api/users/register"
+            data = { user_id, event_type, event_message, endpoint };
+            try {
+                await Logs.create(data);
+            } catch (error) {
+                console.log(error)
+            }
             return res.status(400).json({ errors: formErrors, formData });
         }
         //Hashing password
@@ -189,95 +211,95 @@ exports.sendMessage = async (req, res) => {
         // Email sending simulation using Ethereal
         if (!message_name || !message_email || !message_text || !message_type) {
             // If fields are missing, return an error response
-                console.log("Missing required fields.");
-                return res.status(400).render('contact', { title: "Contact", formErrors: ["Missing required fields."], formData: {} });
-            } else {
-                const transporter = nodemailer.createTransport({
-                    host: 'smtp.ethereal.email',
-                    port: 587,
-                    auth: {
-                        user: 'hans.beer62@ethereal.email',
-                        pass: '3YCURRZRQkWX9fpeBU'
-                    }
-                });
-            }
-
-
-            const mailOptions = {
-                from: message_email,
-                to: process.env.SMTP_USER,
-                subject: message_name + ': ' + message_type,
-                text: message_text
-            };
-
-            transporter.sendMail(mailOptions, function (error, res) {
-                if (error) {
-                    console.error('Email error:', error);
-                    return false;
-                } else {
-                    console.log('Email sent:', res.response);
-                    return true;
+            console.log("Missing required fields.");
+            return res.status(400).render('contact', { title: "Contact", formErrors: ["Missing required fields."], formData: {} });
+        } else {
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.ethereal.email',
+                port: 587,
+                auth: {
+                    user: 'hans.beer62@ethereal.email',
+                    pass: '3YCURRZRQkWX9fpeBU'
                 }
             });
-            return res.status(200).render('contact', { title: "Contact", formData: { msg: "Message sent" } });
-
-        } catch (error) {
-            console.log('Error sending users mail to chordExplorer');
-            return null;
         }
-    };
 
-    exports.deleteUser = async (req, res, next) => {
 
-        const user_id = req.params.user_id || null;
-        console.log("Deleting user: ", user_id)
+        const mailOptions = {
+            from: message_email,
+            to: process.env.SMTP_USER,
+            subject: message_name + ': ' + message_type,
+            text: message_text
+        };
 
-        if (!user_id) {
-            return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
+        transporter.sendMail(mailOptions, function (error, res) {
+            if (error) {
+                console.error('Email error:', error);
+                return false;
+            } else {
+                console.log('Email sent:', res.response);
+                return true;
+            }
+        });
+        return res.status(200).render('contact', { title: "Contact", formData: { msg: "Message sent" } });
+
+    } catch (error) {
+        console.log('Error sending users mail to chordExplorer');
+        return null;
+    }
+};
+
+exports.deleteUser = async (req, res, next) => {
+
+    const user_id = req.params.user_id || null;
+    console.log("Deleting user: ", user_id)
+
+    if (!user_id) {
+        return res.status(404).render('404', { title: "404", formErrors: ["User updates not found!"] });
+    }
+    try {
+        const audiosDeleted = await Audio.deleteUser(user_id)
+        if (!audiosDeleted) {
+            console.log("No audios associated with user.")
         }
-        try {
-            const audiosDeleted = await Audio.deleteUser(user_id)
-            if (!audiosDeleted) {
-                console.log("No audios associated with user.")
-            }
-            const detailsDeleted = await Details.delete(user_id)
-            if (!detailsDeleted) {
-                return res.status(404).json({ message: "Details not deleted." });
-            }
-            const userDeleted = await User.delete(user_id)
-            if (!userDeleted) {
-                return res.status(404).json({ message: "User not deleted." });
-            }
-
-            const event_type = "delete_success"
-            const event_message = `Deleted ${user_id}.`;
-            const endpoint = "/api/users/delete"
-            data = { user_id, event_type, event_message, endpoint };
-            try {
-                await Logs.create(data);
-            } catch (log_error) {
-                console.log(`Error creating deletion log: ${log_error}`)
-            }
-            console.log(`User ${user_id} deleted from Details, Users tables`)
-            return next();
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ message: "Failed to update user.", formData: { msg: "Error deleting user from system." } });
+        const detailsDeleted = await Details.delete(user_id)
+        if (!detailsDeleted) {
+            return res.status(404).json({ message: "Details not deleted." });
         }
-    };
+        const userDeleted = await User.delete(user_id)
+        if (!userDeleted) {
+            return res.status(404).json({ message: "User not deleted." });
+        }
 
-    exports.logoutUser = async (req, res) => {
-        const user_id = req.params.user_id;
-        const event_type = "logout";
-        const event_message = `Logged out.`;
-        const endpoint = "/api/users/logout"
+        const event_type = "delete_success"
+        const event_message = `Deleted ${user_id}.`;
+        const endpoint = "/api/users/delete"
         data = { user_id, event_type, event_message, endpoint };
         try {
             await Logs.create(data);
-        } catch (error) {
-            console.log(error);
+        } catch (log_error) {
+            console.log(`Error creating deletion log: ${log_error}`)
         }
-        res.clearCookie('token');
-        res.redirect('/');
+        console.log(`User ${user_id} deleted from Details, Users tables`)
+        return next();
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to update user.", formData: { msg: "Error deleting user from system." } });
+    }
+};
 
-    };
+exports.logoutUser = async (req, res) => {
+    const user_id = req.params.user_id;
+    const event_type = "logout";
+    const event_message = `Logged out.`;
+    const endpoint = "/api/users/logout"
+    data = { user_id, event_type, event_message, endpoint };
+    try {
+        await Logs.create(data);
+    } catch (error) {
+        console.log(error);
+    }
+    res.clearCookie('token');
+    res.redirect('/');
+
+};

@@ -16,17 +16,12 @@ const validateRegister = [
         if (!errors.isEmpty()) {
             //send validated messages and user input back to user.
             const formErrors = errors.array();
-            const formData = {
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                email: req.body.register_email,
-            }
+            const formData = { first_name: req.body.first_name, last_name: req.body.last_name, email: req.body.register_email, }
             // Map errors from array, to a message for each error.
-            const errorMessages = formErrors.map(err =>
-                `Registration: "${err.msg}": Value ${err.value}`
+            const errorMessages = formErrors.map(err => `Registration: "${err.msg}": Value ${err.value}`
             );
             // Log error in database.
-            const event_type = "validation_failure"
+            const event_type = "register_failure"
             const event_message = `${errorMessages}`;
             const endpoint = "/api/users/register"
             data = { event_type, event_message, endpoint };
@@ -66,7 +61,7 @@ const validateLogin = [
             );
             console.log(errorMessages);
             // Log error in database.
-            const event_type = "validation_failure"
+            const event_type = "login_failure"
             const event_message = `${errorMessages}`;
             const endpoint = "/api/users/login"
             data = { event_type, event_message, endpoint };

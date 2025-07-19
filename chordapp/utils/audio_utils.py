@@ -14,11 +14,10 @@ def convert_to_spectrogram(waveform, target_len=64000):
 
     # Cast waveform to a sensor, so it can be reshaped, then converted to a spectrogram
     waveform = tf.cast(waveform, dtype=tf.float32)
-    # shape of [-1] flattens tensor into 1-D (Audio wave diagram)
+    # shape of [-1] tensor to ensure 1-D (Audio wave diagram)
     waveform = tf.reshape(waveform, [-1])
 
-    # pad_sequences fixes the audio tensor, so each array is the same length. 32000kHz
-    # Truncating removes sequences larger than max length
+    # pad fixes the audio tensor, so each array is the same length. 64000kHz
     waveform = waveform[:target_len]
     padding = target_len - tf.shape(waveform)[0]
     waveform = tf.pad(waveform, [[0, padding]])

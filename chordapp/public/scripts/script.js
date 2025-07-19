@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     regErrorDiv.innerHTML = html;
                     regErrorDiv.style.display = "block";
                 } else if (response.status === 200) {
-                    console.log("Registration successful, redirecting...");
+                    console.log("Registration successfull, redirecting...");
                     const regErrorDiv = document.getElementById('regErrorDiv')
                     regErrorDiv.style.display = "none";
                     // Registration successful, redirect to login page

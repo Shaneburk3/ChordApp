@@ -1,5 +1,4 @@
 import sys
-import librosa
 import os
 # Remove warnings on server start up:
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
@@ -9,11 +8,6 @@ import numpy as np
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from utils.audio_utils import convert_to_spectrogram, convert_file_to_wav, create_waveform
-
-
-# Convert .webm file to .wav for the Model
-import ffmpeg
-
 
 
 model = tf.keras.models.load_model('C:/Users/shane/Documents/GitHub/Chord_App/notebooks/models/chord_model_64.h5')
@@ -49,7 +43,6 @@ def predict_chord(temp_input_path):
         # Add dimension for batch number: 1 
         spectrogram = tf.expand_dims(spectrogram, axis=0)
         # Model being utilized to make prediction.
-
         prediction = model.predict(spectrogram)
         predicted_index = np.argmax(prediction)
         ("Raw Label", predicted_index)

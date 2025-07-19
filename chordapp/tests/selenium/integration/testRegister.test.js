@@ -21,7 +21,7 @@ async function runTestRegister() {
         await termsCheck.submit();
         await driver.findElement(By.css('form')).submit();
         await driver.wait(until.urlContains('/'), 5000);
-        console.log('register test passed')
+        console.log('register test passed. User created successfully.');
     } catch (error) {
         console.log(error);
         await driver.quit();
@@ -30,3 +30,5 @@ async function runTestRegister() {
     }
 }
 runTestRegister()
+
+// node tests/selenium/integration/testRegister.test.js

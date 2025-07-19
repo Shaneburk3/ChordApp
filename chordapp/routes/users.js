@@ -3,12 +3,11 @@ dotenv.config();
 const express = require('express');
 const router = express.Router();
 const session = require('express-session');
-const { optionalAuth, authToken, authAdmin } = require('../middleware/authentication');
 
+const { optionalAuth, authToken, authAdmin } = require('../middleware/authentication');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
 const audioController = require('../controllers/audioController')
-
 const { validateRegister, validateLogin, validateUpdate } = require('../middleware/validation');
 
 // Session Setup to reload formdata
@@ -23,22 +22,19 @@ router.use(session({
 router.get('/register', (req, res) => {
     res.render('register', { title: 'Register', formData: {}, formErrors: {}});
 });
-router.post('/register', validateRegister, userController.registerUser);
-router.post('/login', validateLogin, userController.loginUser); 
-router.get('/logout/:user_id', authToken, userController.logoutUser); 
-router.get('/send_message', optionalAuth, userController.sendMessage);
-
 router.get("/terms", optionalAuth, (req, res) => {
     res.render("Terms", { header: "Terms and Conditions", title: "T&C's" });
 }); 
 
+router.post('/register', validateRegister, userController.registerUser);
+router.post('/login', validateLogin, userController.loginUser); 
+router.get('/logout/:user_id', authToken, userController.logoutUser); 
+router.get('/send_message', optionalAuth, userController.sendMessage);
 // Protected Routes
 router.get('/profile/:user_id', authToken, userController.renderProfile);
 router.get('/update/:user_id', authToken, userController.renderUpdate);
 router.post('/update/:user_id', authToken, validateUpdate, userController.updateUser);
 router.post('/delete/:user_id', authToken, userController.deleteUser, audioController.deleteUser);
-
- 
 // Admin Section
 router.get('/admin', authToken, authAdmin, adminController.renderAdmin);
 router.post('/admin/delete/:user_id', authToken, authAdmin, adminController.deleteUser);

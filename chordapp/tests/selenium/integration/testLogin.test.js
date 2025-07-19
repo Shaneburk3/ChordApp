@@ -16,4 +16,6 @@ async function runTestLogin() {
 
  runTestLogin()
 
+ // node tests/selenium/integration/testLogin.test.js
+
 

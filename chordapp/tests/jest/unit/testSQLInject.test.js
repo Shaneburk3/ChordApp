@@ -9,8 +9,8 @@ beforeAll(async () => {
 })
 // a pass with be if this test fails - returns res.status(400)
 
-describe('POST /api/users/register', () => {
-    test('Test protect register email against SQL injection on user login', async () => {
+describe('POST /api/users/login', () => {
+    test('Test protect register email against SQL injection on user register', async () => {
         const res = await supertest(app).post('/api/users/register').send({
             first_name: 'Test',
             last_name: "User",

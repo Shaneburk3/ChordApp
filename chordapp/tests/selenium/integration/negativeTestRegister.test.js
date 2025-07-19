@@ -15,7 +15,6 @@ async function runNegativeTestRegister() {
         await driver.findElement(By.name('register_password2')).sendKeys('111')
         await driver.findElement(By.name('register_dob')).sendKeys('12-03-1995');
 
-
         driver.sleep(3000);
 
         const register_btn = await driver.wait(until.elementLocated(By.id('register_btn')), 5000);
@@ -43,3 +42,5 @@ async function runNegativeTestRegister() {
     }
 }
 runNegativeTestRegister()
+
+// node tests/selenium/integration/negativeTestRegister.test.js

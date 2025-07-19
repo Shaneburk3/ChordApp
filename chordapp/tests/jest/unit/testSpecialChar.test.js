@@ -24,10 +24,9 @@ describe('POST /api/users/register', () => {
             terms_check: "on"
         });
         expect(res.status).toBe(400);
-        expect(res.body.errors[0].msg).toBe('Password must contain one special character.');
-
+        expect(res.body.errors[0].msg).toBe('Must contain at least 1 special character.');
     });
 
 });
 
-// npx jest tests/jest/unit/testPassword.test.js
+// npx jest tests/jest/unit/testSpecialChar.test.js

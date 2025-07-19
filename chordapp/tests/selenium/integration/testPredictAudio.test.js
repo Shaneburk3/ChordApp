@@ -27,11 +27,9 @@ async function runPredictAudioTest() {
         await driver.wait(until.urlContains('api/audios/translator'), 5000);
         console.log('Made it to translator page in test')
 
-
         const record_btn = await driver.wait(until.elementLocated(By.id('record_btn')), 5000);
         await driver.executeScript("arguments[0].scrollIntoView(true);", record_btn);
         await driver.findElement(By.id('record_btn')).click();
-
 
         const stop_btn = await driver.wait(until.elementLocated(By.id('stop_btn')), 5000);
         driver.wait(until.elementIsEnabled(stop_btn), 5000);
