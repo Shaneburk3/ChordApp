@@ -18,9 +18,21 @@ ChordExplorer is a web based application that allows its users to register, log 
 
 Clone the Repo
 
-git clone https://github.com/Shaneburk3/ChordApp.git
-cd ChordApp
+1 - git clone https://github.com/Shaneburk3/ChordApp.git
+2 - Navigate to ChordApp in code editor
+4 - run pip install --default-timeput=1000 -r requirements.txt
 
+
+# PostgreSQL Setup
+1. Download env_variables.txt.
+2. Create .env in Chord_App, add text this file.
+3. Install pgAdmin 4, log in to server (credentials in .env)
+4. Create database: chordExplorer
+5. Right click chordExplorer > Restore... > upload chordExplorer_backup.backup > save
+
+File found in: /Chord_App/DB_backup/chordExplorer_backup.sql
+
+PostgreSQL functions use transaction blocks to avoid table locking!
 
 # Python (Flask) Setup
 
@@ -70,16 +82,7 @@ Convert Keras model for TensorFlow.js use
 # Node/Express app Setup
 
 cd chordapp
-npm install sqlite3 body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch@2 @aws-sdk/client-secrets-manager jest@30.0.4 express-validator crypto jsonwebtoken cookie-parser
-
-# PostgreSQL Setup
-
-1. Install pgAdmin 4 and PostgreSQL
-2. Restore the database using:
-
-File: /Chord_App/DB_backup/chordExplorer_backup.sql
-
-PostgreSQL functions use transaction blocks to avoid table locking.
+npm install sqlite3 pg body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch@2 @aws-sdk/client-secrets-manager jest@30.0.4 express-validator crypto jsonwebtoken cookie-parser
 
 # Testing
 
