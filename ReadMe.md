@@ -20,12 +20,12 @@ Clone the Repo
 
 1 - git clone https://github.com/Shaneburk3/ChordApp.git
 2 - Navigate to ChordApp in code editor
-4 - run pip install --default-timeput=1000 -r requirements.txt
+4 - Flask dependencies: run pip install --default-timeput=1000 -r requirements.txt
 
 
 # PostgreSQL Setup
-1. Download env_variables.txt.
-2. Create .env in Chord_App, add text this file.
+1. Download env_variables.txt file.
+2. Create .env in Chord_App/chordapp, add text this file.
 3. Install pgAdmin 4, log in to server (credentials in .env)
 4. Create database: chordExplorer
 5. Right click chordExplorer > Restore... > upload chordExplorer_backup.backup > save
@@ -82,7 +82,7 @@ Convert Keras model for TensorFlow.js use
 # Node/Express app Setup
 
 cd chordapp
-npm install sqlite3 pg body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch@2 @aws-sdk/client-secrets-manager jest@30.0.4 express-validator crypto jsonwebtoken cookie-parser
+npm install sqlite3 pg body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch@2 @aws-sdk/client-secrets-manager jest@30.0.4 express-validator crypto jsonwebtoken cookie-parser aws-sdk
 
 # Testing
 
