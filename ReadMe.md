@@ -62,9 +62,9 @@ See requirements.txt
 
 # Machine Learning Setup
 
-# Convert Keras model for TensorFlow.js use
-cd notebooks
-tensorflowjs_converter --input_format=keras chord_model.keras ../chordapp/model
+Convert Keras model for TensorFlow.js use
+- cd notebooks
+- tensorflowjs_converter --input_format=keras chord_model.keras ../chordapp/model
 
 
 # Node/Express app Setup
