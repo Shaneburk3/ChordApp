@@ -18,14 +18,18 @@ ChordExplorer is a web based application that allows its users to register, log 
 
 Clone the Repo
 
-1 - git clone https://github.com/Shaneburk3/ChordApp.git
-2 - Navigate to ChordApp in code editor
-4 - Flask dependencies: run pip install --default-timeput=1000 -r requirements.txt
+1. git clone https://github.com/Shaneburk3/ChordApp.git
+2. download the requirements folder, add .env file to application.
 
+# Node/Express app Setup
+
+1. cd chordapp
+2. npm install sqlite3 pg body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch@2 @aws-sdk/client-secrets-manager jest@30.0.4 express-validator crypto jsonwebtoken cookie-parser aws-sdk
+3. run: npm run devStart
 
 # PostgreSQL Setup
 1. Download env_variables.txt file.
-2. Create .env in Chord_App/chordapp, add text this file.
+2. Create .env in Chord_App/chordapp, add text from this file.
 3. Install pgAdmin 4, log in to server (credentials in .env)
 4. Create database: chordExplorer
 5. Right click chordExplorer > Restore... > upload chordExplorer_backup.backup > save
@@ -36,21 +40,19 @@ PostgreSQL functions use transaction blocks to avoid table locking!
 
 # Python (Flask) Setup
 
-Environment
-
 Virtual environment is required and gitignored.
 
 # PowerShell
-cd /Chord_App
-python -m venv venv
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python predict_server.py
+1. cd /Chord_App
+2. python -m venv venv
+3. Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+4. .\venv\Scripts\Activate.ps1
+4. Flask dependencies: run pip install --default-timeput=1000 -r requirements.txt
+5. python predict_server.py
 
 # Bash
 source venv/Scripts/activate
-pip install -r requirements.txt
+pip install --default-timeout=1000 -r requirements.txt
 python predict_server.py
 
 Test Prediction using audio data:
@@ -78,11 +80,6 @@ Convert Keras model for TensorFlow.js use
 - cd notebooks
 - tensorflowjs_converter --input_format=keras chord_model.keras ../chordapp/model
 
-
-# Node/Express app Setup
-
-cd chordapp
-npm install sqlite3 pg body-parser express ejs express-session nodemailer dotenv nodemon multer fs form-data node-fetch@2 @aws-sdk/client-secrets-manager jest@30.0.4 express-validator crypto jsonwebtoken cookie-parser aws-sdk
 
 # Testing
 

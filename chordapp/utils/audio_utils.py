@@ -5,11 +5,12 @@ from pydub import AudioSegment
 import subprocess
 import librosa
 import numpy as np
-
+import shutil
 
 
 def convert_to_spectrogram(waveform, target_len=64000):
     print("*********** Convert_to_spectrogram *************")
+    print(shutil.which('ffmpeg'))
     print("Audio before reshaping: ", waveform.shape)
 
     # Cast waveform to a sensor, so it can be reshaped, then converted to a spectrogram
@@ -58,6 +59,7 @@ def convert_file_to_wav(input_path):
             os.remove(output_path)
 
         # Convert new file path to .wav using ffmpeg import
+        
         result = subprocess.call(['ffmpeg', '-i', input_path, output_path])
         if result == 0:
             print("Conversion to wav was successful.")
