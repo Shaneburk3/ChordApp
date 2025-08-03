@@ -34,7 +34,7 @@ exports.renderTranslate = async (req, res) => {
             console.log("Getting user profile...");
             const age = await getAge(UserDetails.user_dob);
             UserDetails.user_dob = age;
-            return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: UserDetails || null })
+            return res.render('translator', { title: "Chord translator", formErrors: [], formData: [], user: UserDetails })
         } else {
             const audios = [];
             const formErrors = req.session.formErrors || [];

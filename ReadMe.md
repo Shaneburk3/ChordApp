@@ -19,6 +19,7 @@ ChordExplorer is a web based application that allows its users to register, log 
 Clone the Repo
 
 1. git clone https://github.com/Shaneburk3/ChordApp.git
+
 2. download the requirements folder, add .env file to application.
 
 # Node/Express app Setup

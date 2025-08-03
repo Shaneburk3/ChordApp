@@ -10,12 +10,11 @@
                 <!-- Title -->
                 <h1 class="display-4">ChordExplorer</h1>
                 <% if (user) { %>
-                    <h3> Hello, <%= user.first_name %>
+                    <h3 class="text-muted"> Hello, <%= user.first_name %>! lets classify some audio! </h3>
                     </h3>
                     <% } else { %>
-                        <h3>Hello, let classify some audio!</h3>
+                        <h3 class="text-muted">Hello, lets classify some audio!</h3>
                         <% } %>
-                            <h5 class="text-muted">if you would like to save audios, please login</h5>
             </div>
 
             <div class="container py-4">
