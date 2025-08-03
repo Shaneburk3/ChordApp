@@ -10,8 +10,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from utils.audio_utils import convert_to_spectrogram, convert_file_to_wav, create_waveform
 
 
-model = tf.keras.models.load_model('C:/Users/shane/Documents/GitHub/Chord_App/notebooks/models/chord_model_64.h5')
-
+model = tf.keras.models.load_model('../Chord_App/notebooks/models/chord_model_64.h5')
 index_to_label = { 0: 'Am', 1: 'Bb', 2: 'Bdim', 3: 'C', 4: 'Dm', 5: 'Em', 6: 'F', 7: 'G' }
 
     # Load audio file with librosa, fix the length, convert to Spectrogram for the model.
