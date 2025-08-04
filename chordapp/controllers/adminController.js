@@ -301,10 +301,11 @@ exports.filterLogs = async (req, res) => {
         results.filteredLogs = filtered.slice(startIndex, endIndex)
 
         console.log(`Filtered: ${results.filteredLogs.length}`)
-
+        // Page limit should be the number of logs divided by the limit requested.
         results.pagesNeeded = Math.ceil(filtered.length / limit)
         results.currentPage = page
         console.log(`Current page: ${results.currentPage}`)
+        // If the end index is less than the filtered logs, then there are more pages to load.
         if (endIndex < filtered.length) {
             results.next = { page: page + 1, limit: limit }
         }

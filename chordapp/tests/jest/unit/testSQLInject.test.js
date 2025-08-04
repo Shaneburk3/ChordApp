@@ -1,12 +1,16 @@
 // Simulate a HTTP request with SuperTest
 const supertest = require('supertest');
-const app = require('../../../app');
+const{ app , client }= require('../../../app');
 const Func = require('../../testFunction');
 
 
 beforeAll(async () => {
     await Func.deleteTestUserIfExist();
 })
+
+afterAll(async () => {
+    await client.end();
+});
 // a pass with be if this test fails - returns res.status(400)
 
 describe('POST /api/users/login', () => {

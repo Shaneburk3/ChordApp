@@ -127,9 +127,7 @@ const User = {
             console.log("ERROR:", error.message);
             return false;
         } finally {
-            if (client) {
                 client.release();
-            }
         }
     },
     update: async (data) => {

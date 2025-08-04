@@ -7,7 +7,7 @@ async function runNegativeTestRegister() {
 
     let driver = await new Builder().forBrowser(Browser.CHROME).build()
     try {
-        await driver.get('http://localhost:3000/register');
+        await driver.get('http://localhost:3000/api/users/register');
         await driver.findElement(By.name('first_name')).sendKeys('Test$');
         await driver.findElement(By.name('last_name')).sendKeys('User$');
         await driver.findElement(By.name('register_email')).sendKeys('test@t.c')

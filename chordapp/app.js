@@ -115,7 +115,7 @@ app.get("/terms", (req, res) => {
 });
 
 //Export for supertests in testing.
-module.exports = app;
+module.exports = { app, client };
 
 
 

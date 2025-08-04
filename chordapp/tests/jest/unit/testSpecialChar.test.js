@@ -1,15 +1,18 @@
 // Simulate a HTTP request with SuperTest
 const supertest = require('supertest');
-const app = require('../../../app');
+const{ app , client }= require('../../../app');
 require('dotenv').config();
 const Func = require('../../testFunction');
 // Import necessary env modules for testing
-const { beforeAll, describe, test, expect } = require('@jest/globals');
+const { beforeAll, describe, test, expect, afterAll } = require('@jest/globals');
 
 
 beforeAll(async () => {
     await Func.deleteTestUserIfExist();
 })
+afterAll(async () => {
+    await client.end();
+});
 // a pass with be if this test fails - returns res.status(400)
 
 describe('POST /api/users/register', () => {

@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:jest": "jest tests/jest/unit/testAge.test.js && jest tests/jest/unit/testShortPassword.test.js && jest tests/jest/unit/testSpecialChar.test.js && jest tests/jest/unit/testXXS.test.js",
+    "test:jest": "jest tests/jest/unit/testAge.test.js && jest tests/jest/unit/testShortPassword.test.js && jest tests/jest/unit/testSpecialChar.test.js && jest tests/jest/unit/testXXS.test.js && jest tests/jest/unit/testSQLInject.test.js",
     "test:selenium": "node tests/selenium/integration/testRegister.test.js && node tests/selenium/integration/testLogin.test.js && node tests/selenium/integration/testUpdateUser.test.js && node tests/selenium/integration/testTermsCheck.test.js && node tests/selenium/integration/negativeTestRegister.test.js",
     "devStart": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "ISC", 
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.839.0",
     "bcrypt": "^5.1.1",
