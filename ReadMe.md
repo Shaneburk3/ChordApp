@@ -48,9 +48,10 @@ The application uses package ffmpeg to convert .webm files to .wav files. This n
 
 1. Visit: https://ffmpeg.org/
 2. Download the executable ffmpeg zip. 
-3. Add Path the the .bin location for ffmpeg to System Variables.
+3. Extract folder.
+4. Add Path the the .bin location for ffmpeg to System Variables.
 
-# PowerShell
+# PowerShell - create and activate venv
 1. cd /Chord_App
 2. python -m venv venv
 3. Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
@@ -58,7 +59,7 @@ The application uses package ffmpeg to convert .webm files to .wav files. This n
 5. run pip install --default-timeout=1000 -r requirements.txt
 6. Run Server: python predict_server.py
 
-# Bash
+# Bash activate venv
 1. source venv/Scripts/activate
 2. pip install --default-timeout=1000 -r requirements.txt
 3. python predict_server.py
@@ -93,18 +94,29 @@ Install Test Dependencies
 Run All Tests
 
 1. cd chordapp
-2. npm run test:jest
-3. npm run test:selenium
+2. npm run devStart
+3. new bash terminal, run: python predict_server.py
+4. new terminal: npm run test:jest
+5. new terminak: npm run test:selenium
 
-Run Individual Tests
+# Run Flask tests
 
-# Selenium
+1. cd Chord_App
+2. Ensure node.JS and flask servers are both running
+3. Run tests
+    - python -m unittest unit-testing/TestConvertFileToWav.py
+    - python -m unittest unit-testing/TestConvertToSpectrogram.py
+    - python -m unittest unit-testing/TestCreateWaveform.py
+
+# Selenium single test
 
 node tests/selenium/integration/TESTNAME.test.js
 
-# Jest
+# Jest single test
 
 npx jest tests/jest/unit/TESTNAME.test.js
+
+
 
 
 # Jupyter Notebook Setup (Not required to run application)
